@@ -35,7 +35,16 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-
+      
+    - name: Deplot to Production
+      env:
+        ACTIVE_PROFILE: ${{ secretes.ACTIVE_PROFILE }}
+        DATASOURCE_URL_LOCAL: ${{ secretes.DATASOURCE_URL_LOCAL }}
+        DATASOURCE_USERNAME: ${{ secretes.DATASOURCE_USERNAME }}
+        DATASOURCE_PASSWORD: ${{ secretes.DATASOURCE_PASSWORD }}
+        DATASOURCE_URL_DEV: ${{ secretes.DATASOURCE_URL_DEV }}
+        DATASOURCE_URL_PROD: ${{ secretes.DATASOURCE_URL_PROD }}
+        
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
