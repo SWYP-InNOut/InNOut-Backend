@@ -95,3 +95,23 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "devPort"
+
+server:
+  port: 9000
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prodPort"
+
+server:
+  port: 9001
