@@ -1,5 +1,5 @@
 FROM bellsoft/liberica-openjdk-alpine:17
-ARG JAR_PATH=/build/libs/backend-0.0.1-SNAPSHOT.jar
+ARG JAR_PATH=/build/libs/*.jar
 COPY ${JAR_PATH} /home/server.jar
 ARG ACTIVE_PROFILE
 ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
