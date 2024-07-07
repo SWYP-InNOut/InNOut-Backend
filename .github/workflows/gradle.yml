@@ -66,10 +66,12 @@ jobs:
           --build-arg DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }} \
           --build-arg DATASOURCE_URL_DEV=${{ secrets.DATASOURCE_URL_DEV }} \
           --build-arg DATASOURCE_URL_PROD=${{ secrets.DATASOURCE_URL_PROD }} \
+          --build-arg REGION=${{ secrets.REGION }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           docker images
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
           
+
 
       - name: Deploy to prod
         uses: appleboy/ssh-action@master
@@ -81,5 +83,5 @@ jobs:
           script: |
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
+            sudo docker run -d -p 9000:9000 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
             sudo docker image prune -f
