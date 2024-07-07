@@ -74,7 +74,7 @@ jobs:
       - name: Deploy to prod
         uses: appleboy/ssh-action@master
         with:
-          username: ec2-user
+          username: ubuntu
           host: ${{ secrets.WAS_HOST }}
           key: ${{ secrets.WAS_PRIVATE_KEY }}
           port: ${{ secrets.WAS_PORT }}
