@@ -22,8 +22,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Build with Gradle
-        run: ./gradlew --warning-mode all build -i
+        run: ./gradlew build -x test
         env:
           ACTIVE_PROFILE: ${{ secrets.ACTIVE_PROFILE }}
           DATASOURCE_URL_LOCAL: ${{ secrets.DATASOURCE_URL_LOCAL }}
@@ -36,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-artifact
-          path: build/libs/*.jar
+          path: build/libs/backend-0.0.1-SNAPSHOT.jar
 
   docker-build:
     runs-on: ubuntu-latest
@@ -51,16 +54,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant execute permisson for gradlew
-        run: chmod +x gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew clean build -x test
 
       - name: Docker Hub build & push
         run: |
-          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
-          docker build --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
+          sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
+          sudo docker build --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
           --build-arg DATASOURCE_URL_LOCAL=${{ secrets.DATASOURCE_URL_LOCAL }} \
           --build-arg DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }} \
           --build-arg DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }} \
@@ -68,8 +66,8 @@ jobs:
           --build-arg DATASOURCE_URL_PROD=${{ secrets.DATASOURCE_URL_PROD }} \
           --build-arg REGION=${{ secrets.REGION }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
-          docker images
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
+          sudo docker images
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
           
 
 
@@ -82,6 +80,6 @@ jobs:
           port: ${{ secrets.WAS_PORT }}
           script: |
             sudo docker ps
-            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
-            sudo docker run -d -p 9000:9000 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
+            sudo docker run -d -p 9000:9000 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
             sudo docker image prune -f
