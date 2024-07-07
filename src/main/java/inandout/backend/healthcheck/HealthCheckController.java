@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckController {
     @GetMapping("/healthcheck")
     public String testConnection() {
-        return "Im not ok";
+        return "CICD SUCCESS";
     }
 }
