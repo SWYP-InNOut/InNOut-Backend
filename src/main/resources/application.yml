@@ -13,6 +13,7 @@ spring:
     activate:
       on-profile: "localDB" # MySQL ver 8
 
+
   datasource:
     url: ${DATASOURCE_URL_LOCAL}
     username: ${DATASOURCE_USERNAME}
@@ -35,6 +36,9 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+  KAKAO_API_KEY: ${KAKAO_API_KEY}
+  KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
 
 ---
 
@@ -118,6 +122,3 @@ server:
 
 ---
 
-KAKAO_API_KEY: ${KAKAO_API_KEY}
-
-KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
