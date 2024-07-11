@@ -76,7 +76,6 @@ jobs:
           sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
           
 
-
       - name: Deploy to prod
         uses: appleboy/ssh-action@master
         with:

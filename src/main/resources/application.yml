@@ -115,3 +115,9 @@ spring:
 
 server:
   port: 9001
+
+---
+
+KAKAO_API_KEY: ${KAKAO_API_KEY}
+
+KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
