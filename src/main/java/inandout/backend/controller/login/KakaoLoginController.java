@@ -3,6 +3,7 @@ package inandout.backend.controller.login;
 
 import inandout.backend.dto.login.KakoLoginResponseDTO;
 import inandout.backend.service.login.KakaoLoginService;
+import inandout.backend.service.login.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ public class KakaoLoginController {
 
     @Autowired
     public KakaoLoginService kakaoLoginService;
+    @Autowired
+    public RedisService redisService;
 
     @GetMapping("")
     public void KakaoLogin() {
@@ -33,13 +36,19 @@ public class KakaoLoginController {
     public ResponseEntity KakaoLoginCallBack(@RequestParam(value = "code") String code) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
 
-        // 엑세스 토큰 받기
-        String accessToken = kakaoLoginService.getAccessToken(code);
+        // 엑세스/리프레쉬 토큰 받기
+        HashMap<String, String> kakaoToken  = kakaoLoginService.getAccessToken(code);
 
-        HashMap<String, Object> kakaoUserInfo = kakaoLoginService.getUserInfo(accessToken);
+        // 유저 정보 받기
+        HashMap<String, Object> kakaoUserInfo = kakaoLoginService.getUserInfo(kakaoToken.get("accessToken"));
+        String accessToken = kakaoToken.get("accessToken");
+        String refreshToken = kakaoToken.get("refreshToken");
         String email = (String) kakaoUserInfo.get("email");
 
-        KakoLoginResponseDTO kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, email);
+        KakoLoginResponseDTO kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, refreshToken, email);
+
+        //redis에 refreshToken 저장
+        redisService.setValues(email, refreshToken);
 
         return ResponseEntity.ok().body(kakoLoginResponseDTO);
     }

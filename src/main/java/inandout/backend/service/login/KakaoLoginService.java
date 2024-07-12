@@ -25,7 +25,8 @@ public class KakaoLoginService {
     private String kakaoRedirectURI;
 
     // 토큰 가져오기
-    public String getAccessToken(String code) throws IOException {
+    public HashMap<String, String> getAccessToken(String code) throws IOException {
+        HashMap<String, String> kakaoToken = new HashMap<>();
         System.out.println("KakaoLoginService/getAccessToken");
         System.out.println("code: "+code);
         String accessToken = "";
@@ -66,13 +67,16 @@ public class KakaoLoginService {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(result);
         accessToken = element.getAsJsonObject().get("access_token").getAsString();
+        refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
 
+        kakaoToken.put("accessToken",accessToken);
+        kakaoToken.put("refreshToken",refreshToken);
         br.close();
         bw.close();
 
         System.out.println("accessToken: "+accessToken+", refreshToken: "+refreshToken);
 
-        return accessToken;
+        return kakaoToken;
     }
 
 
