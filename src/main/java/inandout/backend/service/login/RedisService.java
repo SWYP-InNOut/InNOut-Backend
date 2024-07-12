@@ -18,4 +18,10 @@ public class RedisService {
         values.set(key, value);
     }
 
+    public String getRefreshToken(String email){
+        return (String) redisTemplate.opsForValue().get(email);
+    }
+
+
+
 }

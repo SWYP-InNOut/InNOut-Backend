@@ -64,4 +64,22 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<Post> posts = new ArrayList<>();
+
+    public Member(String name, String email, String memberImgUrl, String password, Platform platform, String platformId, LocalDateTime createdAt, LocalDateTime updatedAt, MemberStatus status, boolean isPublic) {
+
+        this.name = name;
+        this.email = email;
+        this.memberImgUrl = memberImgUrl;
+        this.password = password;
+        this.platform = platform;
+        this.platformId = platformId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        this.isPublic = isPublic;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
