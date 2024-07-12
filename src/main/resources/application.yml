@@ -75,6 +75,10 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+  KAKAO_API_KEY: ${KAKAO_API_KEY}
+  KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -110,6 +114,9 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+  KAKAO_API_KEY: ${KAKAO_API_KEY}
+  KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
 
   data:
     redis:

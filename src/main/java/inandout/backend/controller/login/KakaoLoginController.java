@@ -9,6 +9,7 @@ import inandout.backend.service.login.KakaoLoginService;
 import inandout.backend.service.login.RedisService;
 import inandout.backend.service.login.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +29,6 @@ public class KakaoLoginController {
     @Autowired
     public RedisService redisService;
     @Autowired
-    public LoginService loginService;
-    @Autowired
     public UserService userService;
 
 
@@ -40,7 +39,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
-    public String KakaoLoginCallBack(@RequestParam(value = "code") String code) throws IOException {
+    public ResponseEntity KakaoLoginCallBack(@RequestParam(value = "code") String code) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
@@ -61,7 +60,7 @@ public class KakaoLoginController {
 
             //redis에서 refreshToken 칮기
             String prevRefreshToken = redisService.getRefreshToken(email);
-            kakoLoginResponseDTO = new KakoLoginResponseDTO(member.get().getPassword(), prevRefreshToken,member.get().getName());
+            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, prevRefreshToken,member.get().getName());
 
 
         }else{  //비회원 ->가입
@@ -81,11 +80,10 @@ public class KakaoLoginController {
 
         }
 
-        //accessToken 만료되었는지 검사
-        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
-        System.out.println("accessToken 유효한지: "+isTokenValid);
+//        //accessToken 만료되었는지 검사
+//        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
+//        System.out.println("accessToken 유효한지: "+isTokenValid);
 
-        return "kakologin 끝!";
-        //return ResponseEntity.ok().body(kakoLoginResponseDTO);
+        return ResponseEntity.ok().body(kakoLoginResponseDTO);
     }
 }
