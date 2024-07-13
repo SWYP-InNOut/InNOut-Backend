@@ -20,13 +20,13 @@ public class JoinService {
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
 
-        boolean isExist = memberRepository.existsByName(username);
+        boolean isExist = memberRepository.existsByEmail(email);
 
         if (isExist) {
             return;
         }
 
-        Member member = Member.createMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL);
+        Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL);
 
         memberRepository.save(member);
     }

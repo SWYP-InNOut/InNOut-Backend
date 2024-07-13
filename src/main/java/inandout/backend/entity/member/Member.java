@@ -35,8 +35,8 @@ public class Member {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(name = "member_img_url", length = 500, nullable = false)
-    private String memberImgUrl;
+//    @Column(name = "member_img_url", length = 500, nullable = false)
+//    private String memberImgUrl;
 
     @Column(length = 500, nullable = false)
     private String password;
@@ -68,21 +68,19 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<Post> posts = new ArrayList<>();
 
-    public Member(String name, String email, String memberImgUrl, String password, Platform platform, String platformId, LocalDateTime createdAt, LocalDateTime updatedAt, MemberStatus status, boolean isPublic) {
+    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId) {
+        Member member = new Member();
 
-        this.name = name;
-        this.email = email;
-        this.memberImgUrl = memberImgUrl;
-        this.password = password;
-        this.platform = platform;
-        this.platformId = platformId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.status = status;
-        this.isPublic = isPublic;
+        member.name = name;
+        member.email = email;
+        member.password = password;
+        member.platform = platform;
+        member.platformId = platformId;
+
+        return member;
     }
 
-    public static Member createMember(String username, String email, String password, Platform platform) {
+    public static Member createGeneralMember(String username, String email, String password, Platform platform) {
         Member member = new Member();
 
         member.name = username;
