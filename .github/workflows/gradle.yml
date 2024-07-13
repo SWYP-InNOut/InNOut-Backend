@@ -34,6 +34,11 @@ jobs:
           DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
           DATASOURCE_URL_DEV: ${{ secrets.DATASOURCE_URL_DEV }}
           DATASOURCE_URL_PROD: ${{ secrets.DATASOURCE_URL_PROD }}
+          KAKAO_API_KEY: ${{ secrets.KAKAO_API_KEY }}
+          KAKAO_REDIRECT_URI: ${{ secrets.KAKAO_REDIRECT_URI }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
@@ -71,6 +76,11 @@ jobs:
           --build-arg DATASOURCE_URL_DEV=${{ secrets.DATASOURCE_URL_DEV }} \
           --build-arg DATASOURCE_URL_PROD=${{ secrets.DATASOURCE_URL_PROD }} \
           --build-arg REGION=${{ secrets.REGION }} \
+          --build-arg KAKAO_API_KEY=${{ secrets.KAKAO_API_KEY }} \
+          --build-arg KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+          --build-arg REDIS_HOST=${{ secrets.REDIS_HOST }} \
+          --build-arg REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+          --build-arg REDIS_PORT=${{ secrets.REDIS_PORT }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           sudo docker images
           sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
