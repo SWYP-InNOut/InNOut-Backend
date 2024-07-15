@@ -12,6 +12,7 @@ public class MainController {
     @GetMapping("/main")
     public String mainP() {
         log.info(((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-        return "Main Controller";
+        String email = ((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return "Main Controller email";
     }
 }
