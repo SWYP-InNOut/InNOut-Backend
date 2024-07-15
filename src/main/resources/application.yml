@@ -65,7 +65,7 @@ spring:
       platform: mysql
   jpa:
     hibernate:
-      ddl-auto: update #create
+      ddl-auto: create #create
     properties:
       hibernate:
         format_sql: true
