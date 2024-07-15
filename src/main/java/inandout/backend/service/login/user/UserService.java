@@ -18,9 +18,7 @@ public class UserService{
     //회원가입
     public void save(LoginDTO loginDTO) {
         // 기본은 status='ACTIVE', isPublic=true
-        Member member = new Member(loginDTO.getName(), loginDTO.getEmail(), "Temp_memberImgUrl",loginDTO.getPassword(), loginDTO.getPlatform(),
-                loginDTO.getPlatformId(), LocalDateTime.now(), LocalDateTime.now(), MemberStatus.ACTIVE, true);
-
+        Member member = Member.createSocialMember(loginDTO.getName(), loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getPlatform(), loginDTO.getPlatformId());
         memberRepository.save(member);
     }
 
