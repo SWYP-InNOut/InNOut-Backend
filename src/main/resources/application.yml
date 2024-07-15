@@ -147,7 +147,11 @@ server:
 ---
 
 spring:
-  jwt:
-    secret: ${JWT_SECRET_KEY}
+  config:
+    activate:
+      on-profile: "secret"
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
 
 ---
