@@ -36,9 +36,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         //UserDetails
-        CustomMemberDetails customUserDetails = (CustomMemberDetails) authentication.getPrincipal();
+        CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
 
-        String email = customUserDetails.getUsername();
+        String email = customMemberDetails.getUsername();
 
         String token = jwtUtil.createJwt(email, 1000000000000L);
 
