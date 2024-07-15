@@ -1,5 +1,6 @@
 package inandout.backend.config;
 
+import inandout.backend.jwt.JWTFilter;
 import inandout.backend.jwt.JWTUtil;
 import inandout.backend.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,9 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join", "/healthcheck").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .anyRequest().authenticated());    // 로그인 한 사용자만 접근 가능
+
+        //JWTFilter 등록
+        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
