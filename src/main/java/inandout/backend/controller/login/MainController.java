@@ -13,6 +13,6 @@ public class MainController {
     public String mainP() {
         log.info(((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         String email = ((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return "Main Controller email";
+        return "Main Controller" + email;
     }
 }
