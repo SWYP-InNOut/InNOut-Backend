@@ -1,31 +1,19 @@
 package inandout.backend.config;
 
+import inandout.backend.chat.WebSocketChatHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSocket
-@RequiredArgsConstructor
-@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketConfigurer {
 
-   private final WebSocketHandler webSocketHandler;
+    private final WebSocketChatHandler webSocketChatHandler;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler,"/ws/chat").setAllowedOrigins("*");
+        System.out.println("WebSocketConfig/registerWebSocketHandlers");
+        registry.addHandler(webSocketChatHandler,"/ws/chat").setAllowedOrigins("*");
     }
-
-//    @Override
-//    public void registerStompEndpoints(final StompEndpointRegistry registry) {
-//        registry.addEndpoint("/chat");
-//        registry.addEndpoint("/chat").withSockJS();
-//    }
-
-//    @Override
-//    public void configureMessageBroker(final MessageBrokerRegistry registry) {
-//        registry.enableSimpleBroker("/listen");
-//        //registry.setApplicationDestinationPrefixes();
-//    }
 }

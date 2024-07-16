@@ -1,23 +1,53 @@
 package inandout.backend.chat;
 
+import inandout.backend.dto.chat.ChatMessageDTO;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.reactive.socket.WebSocketSession;
 
+import lombok.Getter;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Getter
 public class ChatRoom {
-    private String roomId; // 채팅방 아이디
-    private String name; // 채팅방 이름
-    private Set<WebSocketSession> sessions = new HashSet<>();
+    private final String roomId;
+    private final String name;
+    private final Set<WebSocketSession> sessions = new HashSet<>();
+
     @Builder
-    public ChatRoom(String roomId, String name){
+    public ChatRoom(String roomId, String name) {
         this.roomId = roomId;
         this.name = name;
     }
 
+    public void sendMessage(TextMessage message) {
+        this.getSessions()
+                .parallelStream()
+                .forEach(session -> sendMessageToSession(session, message));
+    }
 
+    private void sendMessageToSession(WebSocketSession session, TextMessage message) {
+        try {
+            session.sendMessage(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void join(WebSocketSession session) {
+        sessions.add(session);
+    }
+
+    public static ChatRoom of(String roomId, String name) {
+        return ChatRoom.builder()
+                .roomId(roomId)
+                .name(name)
+                .build();
+    }
 
 }

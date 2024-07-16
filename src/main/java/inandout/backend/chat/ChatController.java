@@ -5,16 +5,29 @@ import inandout.backend.dto.chat.ChatMessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-
+@RequestMapping("/chat")
 public class ChatController {
+    private final ChatService chatService;
 
+    @PostMapping
+    public ChatRoom createRoom(@RequestParam(value="name") String name) {
+        System.out.println("ChatController/createRoom");
+        return chatService.createRoom(name);
+    }
+
+    @GetMapping
+    public List<ChatRoom> getAll() {
+        System.out.println("ChatController/getAll");
+        return chatService.findAll();
+    }
 
 }

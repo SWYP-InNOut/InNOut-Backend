@@ -3,24 +3,20 @@ package inandout.backend.dto.chat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter
 @AllArgsConstructor
-@Data
+@NoArgsConstructor
+@Builder
 public class ChatMessageDTO {
 
-    public ChatMessageDTO(Long roomId, String message) {
-    }
-
-    public enum MessageType{
+    public enum MessageType {
         ENTER, TALK
     }
 
-    private MessageType messageType; // 메시지 타입
-    private Long RoomId; // 방 번호
-    private Long senderId; // 채팅을 보낸 사람
-    private String message; // 메시지
+    private MessageType messageType;
+    private String roomId;
+    private String sender;
+    private String message;
 
 //    public enum MessageType{
 //        WHOLE, BULLETIN
