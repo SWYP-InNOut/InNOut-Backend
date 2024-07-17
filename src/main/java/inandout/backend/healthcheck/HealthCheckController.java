@@ -20,6 +20,7 @@ public class HealthCheckController {
 
     @GetMapping("/healthcheck")
     public String testConnection() {
+
         log.info("testConnection");
         return "SUCCESS";
     }
@@ -28,5 +29,6 @@ public class HealthCheckController {
     public Long testDBConnection(@RequestBody HealthDomain healthDomain) {
         log.info(healthDomain.getName());
         return healthCheckService.saveUser(healthDomain);
+
     }
 }
