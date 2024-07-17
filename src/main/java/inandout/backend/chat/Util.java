@@ -10,6 +10,7 @@ public class Util {
         private static final ObjectMapper objectMapper = new ObjectMapper();
 
         public static TextMessage resolveTextMessage(ChatMessageDTO message) {
+            System.out.println("Util/Chat/resolveTextMessage");
             try {
                 return new TextMessage(objectMapper.writeValueAsString(message));
             } catch (JsonProcessingException e) {

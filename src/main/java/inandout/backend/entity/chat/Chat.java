@@ -39,4 +39,8 @@ public class Chat {
     @UpdateTimestamp // UPDATE 시 자동으로 값을 채워줌
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom;
 }

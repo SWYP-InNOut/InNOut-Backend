@@ -19,9 +19,9 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public ChatRoom createRoom(@RequestParam(value="name") String name) {
+    public ChatRoom createRoom(@RequestParam(value="memberId") int memberId) {
         System.out.println("ChatController/createRoom");
-        return chatService.createRoom(name);
+        return chatService.createRoom(memberId);
     }
 
     @GetMapping

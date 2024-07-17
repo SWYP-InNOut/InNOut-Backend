@@ -16,22 +16,25 @@ import java.util.Set;
 @Getter
 public class ChatRoom {
     private final String roomId;
-    private final String name;
+    private final int memberId;
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Builder
-    public ChatRoom(String roomId, String name) {
+    public ChatRoom(String roomId, int memberId) {
         this.roomId = roomId;
-        this.name = name;
+        this.memberId = memberId;
     }
 
     public void sendMessage(TextMessage message) {
+        System.out.println("ChatRoom/sendMessage");
         this.getSessions()
                 .parallelStream()
                 .forEach(session -> sendMessageToSession(session, message));
+
     }
 
     private void sendMessageToSession(WebSocketSession session, TextMessage message) {
+        System.out.println("ChatRoom/sendMessageToSession");
         try {
             session.sendMessage(message);
         } catch (IOException e) {
@@ -40,13 +43,14 @@ public class ChatRoom {
     }
 
     public void join(WebSocketSession session) {
+        System.out.println("ChatRoom/join");
         sessions.add(session);
     }
 
-    public static ChatRoom of(String roomId, String name) {
+    public static ChatRoom of(String roomId, int name) {
         return ChatRoom.builder()
                 .roomId(roomId)
-                .name(name)
+                .memberId(name)
                 .build();
     }
 

@@ -24,10 +24,12 @@ public class ChatService {
         return chatRepository.findById(roomId);
     }
 
-    public ChatRoom createRoom(String name) {
+    public ChatRoom createRoom(int memberId) {
         String roomId = UUID.randomUUID().toString();
-        ChatRoom chatRoom = ChatRoom.of(roomId, name);
+        ChatRoom chatRoom = ChatRoom.of(roomId, memberId);
         chatRepository.save(roomId, chatRoom);
+        // DB에 저장
+
         return chatRoom;
     }
 
@@ -38,6 +40,7 @@ public class ChatService {
     ) {
         ChatRoom room = findRoomById(roomId);
 
+        //방에 입장하는 코드
         if (isEnterRoom(chatMessage)) {
             room.join(session);
             chatMessage.setMessage(chatMessage.getSender() + "님 환영합니다.");
