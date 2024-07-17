@@ -24,6 +24,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     private final ChatService chatService;
 
+
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         System.out.println("WebSocketChatHandler/handleTextMessage");
@@ -31,7 +33,6 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
         ChatMessageDTO chatMessage = Util.Chat.resolvePayload(payload);
         chatService.handleAction(chatMessage.getRoomId(), session, chatMessage);
-
 
     }
 
