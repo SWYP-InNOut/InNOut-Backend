@@ -53,6 +53,9 @@ dependencies {
 
 	implementation 'com.google.code.gson:gson:2.8.8'
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
+	//websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

@@ -1,6 +1,7 @@
 package inandout.backend.entity.member;
 
 import inandout.backend.entity.auth.Platform;
+import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.post.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -68,6 +69,8 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<Post> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
+    private List<ChatRoom> chatrooms = new ArrayList<>();
     public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId) {
         Member member = new Member();
 
