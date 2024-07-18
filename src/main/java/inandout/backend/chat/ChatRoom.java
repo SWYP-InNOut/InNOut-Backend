@@ -30,7 +30,6 @@ public class ChatRoom {
         this.getSessions()
                 .parallelStream()
                 .forEach(session -> sendMessageToSession(session, message));
-
     }
 
     private void sendMessageToSession(WebSocketSession session, TextMessage message) {

@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "chat")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chat {

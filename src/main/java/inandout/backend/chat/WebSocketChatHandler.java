@@ -22,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class WebSocketChatHandler extends TextWebSocketHandler {
 
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
 
 
 
@@ -32,7 +32,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
 
         ChatMessageDTO chatMessage = Util.Chat.resolvePayload(payload);
-        chatService.handleAction(chatMessage.getRoomId(), session, chatMessage);
+        chatRoomService.handleAction(chatMessage.getRoomId(), session, chatMessage);
 
     }
 
