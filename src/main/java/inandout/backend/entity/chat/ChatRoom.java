@@ -2,6 +2,7 @@ package inandout.backend.entity.chat;
 
 
 import inandout.backend.entity.member.Member;
+import inandout.backend.entity.post.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,5 +27,8 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat> chats = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "chatRoom")
+    private Post post;
 
 }
