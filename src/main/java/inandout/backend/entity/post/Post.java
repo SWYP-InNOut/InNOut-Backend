@@ -1,6 +1,7 @@
 package inandout.backend.entity.post;
 
 import inandout.backend.entity.chat.Chat;
+import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -57,4 +58,8 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<Chat> chats = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom;
 }
