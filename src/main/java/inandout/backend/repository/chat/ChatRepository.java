@@ -1,5 +1,6 @@
 package inandout.backend.repository.chat;
 
+import com.sun.tools.javac.Main;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.entity.chat.Chat;
 import jakarta.persistence.EntityManager;
@@ -25,7 +26,8 @@ public class ChatRepository {
     private final EntityManager em;
 
 
-    public List<ChatResponseDTO> getChats(List<Long> chatRoomIds){
+    //채팅룸 id 리스트 받아서 채팅 최신순으로 반환
+    public List<ChatResponseDTO> getChats(List<Integer> chatRoomIds){
         System.out.println(chatRoomIds.size());
         System.out.println("ChatRepository/getChats");
         // 최근꺼부터 반환하는걸로 함
@@ -50,5 +52,41 @@ public class ChatRepository {
 
         return chatResponseDTOList;
     }
+
+    // 전체채팅룸Id + 모든 게시물 채팅룸Id  (memberId)
+    public List<Integer> getTotalChatIdList(Long memberId) {
+       List<Integer> resultList = em.createQuery("SELECT cr.id FROM ChatRoom cr WHERE cr.member.id = :member_id")
+               .setParameter("member_id", memberId).getResultList();
+        return resultList;
+    }
+
+    public Integer getMainChatRoomIdByMemberId(Integer memberId) {
+
+        List<Integer> MainChatRoomIds = em.createQuery("SELECT rm.id FROM ChatRoom rm WHERE rm.member.id = :member_id AND rm.id NOT IN (" +
+                        "SELECT p.chatRoom.id FROM Post p WHERE p.member.id = :member_id)")
+                .setParameter("member_id", memberId).getResultList();
+
+        return MainChatRoomIds.get(0);
+    }
+
+    public Integer getPostChatRoomIdByPostId(Integer postId) {
+
+        Integer PostChatRoomId = (Integer) em.createQuery("SELECT p.chatRoom.id FROM Post p WHERE p.id = :post_id")
+                .setParameter("post_id", postId).getSingleResult();
+
+        System.out.println(PostChatRoomId);
+
+        return PostChatRoomId;
+    }
+
+    public Integer getMemberIdByPostId(Integer postId) {
+
+        Integer MemberId = (Integer) em.createQuery("SELECT p.member.id FROM Post p WHERE p.id = :post_id")
+                .setParameter("post_id", postId).getSingleResult();
+
+        return MemberId;
+    }
+
+
 
 }

@@ -49,7 +49,7 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/chat", "/ws/chat", "/kakaologin/callback", "/myroom/chat").permitAll()    // 모든 권한 허용
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/chat", "/ws/chat", "/kakaologin/callback", "/myroom/chat","/myroom/detail/{postId}/chat", "/others/room/detail/{postId}/chat").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .anyRequest().authenticated());    // 로그인 한 사용자만 접근 가능
 

@@ -36,16 +36,31 @@ public class ChatController {
         return ResponseEntity.ok(chatResponseDTOList);
     }
 
-    @GetMapping("/myroom/detail/{bulletinId}/chat")
-    public ResponseEntity<List<ChatResponseDTO>> getBulletinChat(@PathVariable(name = "bulletinId") Long bulletinId,
-                                                                 @RequestParam(name = "memberId") Long memberId) {
-        System.out.println("ChatController/getBulletinChat");
+    @GetMapping("/myroom/detail/{postId}/chat")
+    public ResponseEntity<List<ChatResponseDTO>> getPostChat(@PathVariable(name = "postId") Integer postId,
+                                                                 @RequestParam(name = "memberId") Integer memberId) {
+        System.out.println("ChatController/getPostChat");
 
-        //전체 채팅 조회
-        List<ChatResponseDTO> chatResponseDTOList = chatService.getBulletinChat(memberId);
+       // Integer postId =2;
+        //게시물 채팅조회
+        List<ChatResponseDTO> chatResponseDTOList = chatService.getPostChat(memberId, postId);
 
         return ResponseEntity.ok(chatResponseDTOList);
     }
+
+    @GetMapping("/others/room/detail/{postId}/chat")
+    public ResponseEntity<List<ChatResponseDTO>> getOtherPostChat(@PathVariable(name = "postId") Integer postId) {
+        System.out.println("ChatController/getOtherPostChat");
+
+        //게시물 채팅조회
+        List<ChatResponseDTO> chatResponseDTOList = chatService.getOtherPostChat(postId);
+
+        return ResponseEntity.ok(chatResponseDTOList);
+    }
+
+
+
+
 
 
     // 룸 생성 관련
