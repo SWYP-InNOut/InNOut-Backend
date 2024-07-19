@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Repository
-public class ChatRepository {
+public class ChatRoomRepository {
     private final Map<String, ChatRoom> chatRooms;
 
     public void save(String roomId, ChatRoom chatRoom) {
@@ -23,4 +23,7 @@ public class ChatRepository {
     public List<ChatRoom> findAll() {
         return new ArrayList<>(chatRooms.values());
     }
+
+
+
 }
