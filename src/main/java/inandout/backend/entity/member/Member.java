@@ -28,7 +28,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(length = 20, nullable = false)
     private String name;
