@@ -43,4 +43,14 @@ public class Chat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
+
+    @Column(name = "is_reply")
+    private boolean isReply;
+
+    @Column(name = "reply_chat_id")
+    private Integer replyChatId;
+
+    @Column(name = "reply_member_id")
+    private Integer replyMemberId;
+
 }
