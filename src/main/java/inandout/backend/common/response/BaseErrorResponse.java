@@ -2,10 +2,12 @@ package inandout.backend.common.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import inandout.backend.common.response.status.ResponseStatus;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Getter
 @RequiredArgsConstructor
 @JsonPropertyOrder({"code", "status", "message", "timestamp"})
 public class BaseErrorResponse implements ResponseStatus {
@@ -23,16 +25,16 @@ public class BaseErrorResponse implements ResponseStatus {
 
     @Override
     public int getCode() {
-        return 0;
+        return code;
     }
 
     @Override
     public int getStatus() {
-        return 0;
+        return status;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 }

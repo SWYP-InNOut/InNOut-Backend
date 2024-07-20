@@ -49,6 +49,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     INVALID_PLATFORM(5001, HttpStatus.BAD_REQUEST.value(), "플랫폼 정보가 올바르지 않습니다."),
     NOT_FOUND_MEMBER(5002, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 사용자입니다."),
     INACTIVE_MEMBER(5003, HttpStatus.BAD_REQUEST.value(), "활성화 상태가 아닌 사용자입니다."),
+    DUPLICATED_EMAIL(5004, HttpStatus.BAD_REQUEST.value(), "중복된 이메일입니다."),
+    DUPLICATED_NICKNAME(5005, HttpStatus.BAD_REQUEST.value(), "중복된 닉네임입니다."),
 
     /**
      * 9000: 기타 오류
@@ -63,16 +65,16 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
 
     @Override
     public int getCode() {
-        return 0;
+        return code;
     }
 
     @Override
     public int getStatus() {
-        return 0;
+        return status;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 }
