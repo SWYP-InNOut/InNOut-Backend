@@ -20,42 +20,42 @@ import static inandout.backend.common.response.status.BaseExceptionResponseStatu
 @Slf4j
 @RestControllerAdvice
 public class BaseExceptionControllerAdvice {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({BaseException.class})
     public BaseErrorResponse handle_BaseException(BaseException e) {
         log.error("[handle_BadRequest]", e);
         return new BaseErrorResponse(e.getExceptionStatus());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({TypeMismatchException.class})
     public BaseErrorResponse handle_TypeMismatchException(Exception e) {
         log.error("[handle_BadRequest]", e);
         return new BaseErrorResponse(INAPPROPRIATE_TYPE_DATA);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({NoHandlerFoundException.class})
     public BaseErrorResponse handle_NoHandlerFoundException(Exception e) {
         log.error("[handle_BadRequest]", e);
         return new BaseErrorResponse(URL_NOT_FOUND);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public BaseErrorResponse handle_HttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error("[handle_HttpRequestMethodNotSupportedException]", e);
         return new BaseErrorResponse(METHOD_NOT_ALLOWED);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({IllegalStateException.class, IOException.class})
     public BaseErrorResponse handle_IllegalArgumentException(Exception e) {
         log.error("[handle_IllegalArgumentException]", e);
         return new BaseErrorResponse(BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({IllegalArgumentException.class, MethodArgumentNotValidException.class, MissingServletRequestPartException.class})
     public BaseErrorResponse handle_MethodArgumentNotValidException(Exception e) {
         log.error("[handle_MethodArgumentNotValidException]", e);

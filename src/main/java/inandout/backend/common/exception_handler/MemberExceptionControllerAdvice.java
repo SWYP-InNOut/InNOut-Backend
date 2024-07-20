@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Priority(0)
 @RestControllerAdvice
 public class MemberExceptionControllerAdvice {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MemberException.class)
     public BaseErrorResponse handel_MemberException(MemberException e) {
         log.error("[handel_MemberException]", e);
