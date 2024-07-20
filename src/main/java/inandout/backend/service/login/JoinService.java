@@ -1,14 +1,20 @@
 package inandout.backend.service.login;
 
+import inandout.backend.common.exception.MemberException;
 import inandout.backend.config.SecurityConfig;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
 import inandout.backend.repository.login.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.DUPLICATED_EMAIL;
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.DUPLICATED_NICKNAME;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JoinService {
@@ -20,10 +26,17 @@ public class JoinService {
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
 
-        boolean isExist = memberRepository.existsByEmail(email);
+        boolean isExistEmail = memberRepository.existsMemberByEmail(email);
+        boolean isExistName = memberRepository.existsMemberByName(username);
 
-        if (isExist) {
-            return;
+        if (isExistEmail) {
+            log.error(DUPLICATED_EMAIL.getMessage());
+            throw new MemberException(DUPLICATED_EMAIL);
+        }
+
+        if (isExistName) {
+            log.error(DUPLICATED_NICKNAME.getMessage());
+            throw new MemberException(DUPLICATED_NICKNAME);
         }
 
         Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL);

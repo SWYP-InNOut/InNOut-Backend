@@ -1,5 +1,6 @@
 package inandout.backend.controller.login;
 
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.service.login.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,8 @@ public class JoinController {
     private final JoinService joinService;
 
     @PostMapping("/join")
-    public String joinProcess(@ModelAttribute JoinDTO joinDTO) {
+    public BaseResponse<String> joinProcess(@ModelAttribute JoinDTO joinDTO) {
         joinService.joinProcess(joinDTO);
-        return "ok";
+        return new BaseResponse<>("회원가입에 성공하였습니다.");
     }
 }
