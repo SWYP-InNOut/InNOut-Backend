@@ -4,6 +4,7 @@ import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.service.login.JoinService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class JoinController {
     private final JoinService joinService;
 
+//    @CrossOrigin(origins = "http://stuffinout.site")
     @PostMapping("/join")
     public BaseResponse<String> joinProcess(@ModelAttribute JoinDTO joinDTO) {
         joinService.joinProcess(joinDTO);
