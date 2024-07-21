@@ -47,14 +47,20 @@ public class ChatRepository {
             chatResponseDTO.setSender((long) result.getSender());
             chatResponseDTO.setCreatedAt(result.getCreatedAt());
 
+            //답장 관련
             chatResponseDTO.setReply(result.isReply());
-
             if(result.isReply()){ // 답장있으면
                 String replyContent = getChatContentByChatId(result.getReplyChatId());
                 chatResponseDTO.setReplyContent(replyContent);
 
                 String replyName = getMemberNameByMemberId(result.getReplyMemberId());
                 chatResponseDTO.setReplySenderName(replyName);
+            }
+
+            //게시물 관련
+            if(result.getPost() != null){
+                chatResponseDTO.setPostChat(true);
+                chatResponseDTO.setStuffName(getStuffNameByPostId(result.getPost().getId()));
             }
 
             chatResponseDTOList.add(chatResponseDTO);
@@ -108,6 +114,12 @@ public class ChatRepository {
         String memberName = (String) em.createQuery("SELECT m.name FROM Member m WHERE m.id = :member_id")
                 .setParameter("member_id", memberId).getSingleResult();
         return memberName;
+    }
+
+    public String getStuffNameByPostId(Integer postId) {
+        String stuffName = (String) em.createQuery("SELECT p.title FROM Post p WHERE p.id = : post_id")
+                .setParameter("post_id", postId).getSingleResult();
+        return stuffName;
     }
 
 
