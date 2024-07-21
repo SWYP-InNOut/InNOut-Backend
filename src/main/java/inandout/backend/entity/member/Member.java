@@ -39,6 +39,9 @@ public class Member {
 //    @Column(name = "member_img_url", length = 500, nullable = false)
 //    private String memberImgUrl;
 
+    @Column(name = "user_count", nullable = false)
+    private int userCount;
+
     @Column(length = 500, nullable = false)
     private String password;
 

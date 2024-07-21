@@ -70,7 +70,7 @@ public class ChatRepository {
     }
 
     // 전체채팅룸Id + 모든 게시물 채팅룸Id  (memberId)
-    public List<Integer> getTotalChatIdList(Long memberId) {
+    public List<Integer> getTotalChatIdList(Integer memberId) {
        List<Integer> resultList = em.createQuery("SELECT cr.id FROM ChatRoom cr WHERE cr.member.id = :member_id")
                .setParameter("member_id", memberId).getResultList();
         return resultList;
