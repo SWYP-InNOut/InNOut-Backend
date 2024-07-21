@@ -27,7 +27,7 @@ public class ChatController {
 
 
     @GetMapping("/myroom/chat")
-    public ResponseEntity<List<ChatResponseDTO>> getMyRoomChat(@RequestParam(name = "memberId") Long memberId) {
+    public ResponseEntity<List<ChatResponseDTO>> getMyRoomChat(@RequestParam(name = "memberId") Integer memberId) {
         System.out.println("ChatController/getMyRoomChat");
 
         //전체 채팅 조회
@@ -57,9 +57,6 @@ public class ChatController {
 
         return ResponseEntity.ok(chatResponseDTOList);
     }
-
-
-
 
 
 

@@ -19,7 +19,7 @@ public class ChatService {
     private ChatRepository chatRepository;
 
     // 전체 채팅 조회
-    public List<ChatResponseDTO> getTotalChat(Long memberId) {
+    public List<ChatResponseDTO> getTotalChat(Integer memberId) {
 
         //메인 채팅 + 모든 게시물 채팅 roomid
         List<Integer> wholeChatRoomIdList =chatRepository.getTotalChatIdList(memberId);

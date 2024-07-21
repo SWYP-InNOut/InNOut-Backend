@@ -42,8 +42,8 @@ public class Post {
     @Column(name = "in_count", nullable = false)
     private int inCount;
 
-    @Column(name = "user_count", nullable = false)
-    private int userCount;
+//    @Column(name = "user_count", nullable = false)
+//    private int userCount;
 
     @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     @Column(name = "created_at", nullable = false)
