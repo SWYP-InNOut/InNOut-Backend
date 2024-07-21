@@ -75,7 +75,7 @@ spring:
       platform: mysql
   jpa:
     hibernate:
-      ddl-auto: none #create
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -182,5 +182,9 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET_KEY}
+
+mail:
+  username: ${GOOGLE_EMAIL}
+  password: ${GOOGLE_APP_PASSWORD}
 
 ---
