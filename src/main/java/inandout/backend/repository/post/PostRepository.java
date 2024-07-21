@@ -1,5 +1,6 @@
 package inandout.backend.repository.post;
 
+import inandout.backend.entity.post.Post;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,12 @@ public class PostRepository {
 
         return postIdList;
     }
+
+    public Post getPostByPostId(Integer postId){
+        Post post = (Post) em.createQuery("SELECT p FROM Post p WHERE p.id = :post_id")
+                .setParameter("post_id", postId).getSingleResult();
+        return post;
+    }
+
+
 }

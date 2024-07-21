@@ -19,9 +19,11 @@ public class MyRoomController {
     public MyRoomService myRoomService;
 
     @PostMapping("")
-    public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestPart MyRoomRequestDTO myRoomRequestDTO) {
+    public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
+
+        myRoomService.plusUserCount(myRoomRequestDTO);
 
         return ResponseEntity.ok(myRoomResponseDTO);
     }
