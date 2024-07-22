@@ -1,6 +1,7 @@
 package inandout.backend.service.login;
 
 import inandout.backend.Util.EmailUtils;
+import inandout.backend.common.exception.MemberException;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.ACTIVE_MEMBER;
 
 @Slf4j
 @Service
@@ -36,11 +39,16 @@ public class JoinService {
             // 이메일 중복이 아닐 때만 이름 중복 검사 실시
             memberValidator.validateDuplicateUsername(username);
         } else {
-            // 이메일 중복 + 토큰 만료 인 경우
-            Optional<Member> member = memberRepository.existsMemberByEmail(email);
-            member.get().updateToken(authToken);
-            emailUtils.sendEmail(member.get());
-            return;
+            if (memberRepository.isNoncertifiedMember(email)) {
+                // 이메일 중복 + NONCERTIFIED 회원 + 토큰 만료 인 경우
+                Optional<Member> member = memberRepository.existsMemberByEmail(email);
+                member.get().updateToken(authToken);
+                emailUtils.sendEmail(member.get());
+                return;
+            } else if (memberRepository.isActiveMember(email)){
+                log.error(ACTIVE_MEMBER.getMessage());
+                throw new MemberException(ACTIVE_MEMBER);
+            }
         }
 
         Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL);
