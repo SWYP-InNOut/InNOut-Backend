@@ -50,7 +50,7 @@ public class MemberValidator {
         LocalDateTime joinRequestTime = LocalDateTime.now();
         LocalDateTime generatedTime = member.getUpdatedAt();
 //        LocalDateTime expirationDateTime = generatedTime.plusDays(1);
-        LocalDateTime expirationDateTime = generatedTime.plusSeconds(30);
+        LocalDateTime expirationDateTime = generatedTime.plusSeconds(60); // 일단은 유효기한 1분으로 해놓음 테스트 위해
 
         log.info("expiration date time: {}", expirationDateTime);
         log.info("requested time: {}", joinRequestTime);
