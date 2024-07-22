@@ -8,14 +8,18 @@ import inandout.backend.dto.myroom.MyRoomResponseDTO;
 import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.post.Post;
+import inandout.backend.entity.post.PostImage;
 import inandout.backend.repository.chat.ChatRoomJPARepository;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.repository.myroom.MyRoomRepository;
+import inandout.backend.repository.post.PostImageJPARepository;
 import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import inandout.backend.service.chat.ChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MyRoomService {
 
     @Autowired
@@ -41,6 +46,10 @@ public class MyRoomService {
     private PostJPARepository postJPARepository;
     @Autowired
     private ChatRoomJPARepository chatRoomJPARepository;
+    @Autowired
+    private S3Service s3Service;
+    @Autowired
+    private PostImageJPARepository postImageJPARepository;
 
 
 
@@ -100,9 +109,8 @@ public class MyRoomService {
         memberRepository.save(member.get());
     }
 
-    public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO) {
+    public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO, List<MultipartFile> multipartFile) {
         System.out.println("addStuff");
-
 
         //Member 찾기
         Optional<Member> member = memberRepository.findById(myRoomAddStuffRequestDTO.getMemberId());
@@ -114,16 +122,25 @@ public class MyRoomService {
 
         LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-//        // 이미지
-//        PostImage postImage;
-//
-
         // 채팅방 생성
         ChatRoom chatRoom = new ChatRoom(member.get());
         chatRoomJPARepository.save(chatRoom);
 
+        // s3에 이미지 저장
+        List<String> imageUrls = s3Service.uploadFile(multipartFile);
+
         //post 객체 생성
         Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime, chatRoom);
         postJPARepository.save(post);
+
+        // url을 DB에 저장
+        for (String imageUrl : imageUrls) {
+            PostImage postImage = new PostImage(post, imageUrl, currentDateTime, currentDateTime);
+            postImageJPARepository.save(postImage);
+        }
+
     }
+
+
+
 }

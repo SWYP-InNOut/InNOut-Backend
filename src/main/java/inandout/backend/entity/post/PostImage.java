@@ -33,4 +33,11 @@ public class PostImage {
     @UpdateTimestamp // UPDATE 시 자동으로 값을 채워줌
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public PostImage(Post post, String postImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.post = post;
+        this.postImgUrl = postImgUrl;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }
