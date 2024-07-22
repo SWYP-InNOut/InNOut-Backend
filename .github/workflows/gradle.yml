@@ -37,6 +37,12 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          GOOGLE_APP_PASSWORD: ${{ secrets.GOOGLE_APP_PASSWORD }}
+          GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
+          MAIL_REQUEST_URI: ${{ secrets.MAIL_REQUEST_URI }}
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
@@ -84,6 +90,9 @@ jobs:
           --build-arg ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
           --build-arg BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
+          --build-arg GOOGLE_APP_PASSWORD=${{ secrets.GOOGLE_APP_PASSWORD }} \
+          --build-arg GOOGLE_EMAIL=${{ secrets.GOOGLE_EMAIL }} \
+          --build-arg MAIL_REQUEST_URI=${{ secrets.MAIL_REQUEST_URI }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           sudo docker images
           sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest

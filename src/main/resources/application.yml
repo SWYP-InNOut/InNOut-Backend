@@ -46,6 +46,9 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
+
   cloud:
     aws:
       s3:
@@ -95,6 +98,9 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
+
   cloud:
     aws:
       s3:
@@ -142,6 +148,9 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
 
   cloud:
     aws:

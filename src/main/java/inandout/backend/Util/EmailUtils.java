@@ -21,6 +21,9 @@ import static inandout.backend.common.response.status.BaseExceptionResponseStatu
 public class EmailUtils {
     @Value("${mail.username}")
     private String email;
+    @Value("${spring.mail.request_Uri}")
+    private String requestUri;
+
     private final JavaMailSender mailSender;
 
     public void sendEmail(Member member) {
@@ -29,7 +32,7 @@ public class EmailUtils {
 
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
-            message.setSubject("Artify 회원가입 이메일 인증");// 제목
+            message.setSubject("in&out 회원가입 이메일 인증");// 제목
 
             log.info(member.getAuthToken());
             log.info(email);
@@ -38,7 +41,7 @@ public class EmailUtils {
                     + "<h1> 안녕하세요. in&out 입니다</h1>"
                     + "<br>"
                     + "<p>아래 링크를 클릭하면 이메일 인증이 완료됩니다.<p>"
-                    + "<a href='http://localhost:9000/auth/verify?token=" + member.getAuthToken() + "'>인증 링크</a>"
+                    + "<a href='" + requestUri + member.getAuthToken() + "'>인증 링크</a>"
                     + "</div>";
 
             message.setText(body, "utf-8", "html");// 내용, charset 타입, subtype
