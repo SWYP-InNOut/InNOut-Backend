@@ -1,6 +1,7 @@
 package inandout.backend.repository.post;
 
 import inandout.backend.entity.post.Post;
+import inandout.backend.entity.post.PostImage;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,19 @@ public class PostRepository {
     }
 
 
+    public String getOldestPostImage(Integer postId) {
+        System.out.println("postId: "+postId);
+        List<String> postImageList = em.createQuery("SELECT pi.postImgUrl FROM PostImage pi WHERE pi.post.id = :post_id ORDER BY pi.createdAt ASC")
+                .setParameter("post_id", postId).getResultList();
 
+        for (String postImage : postImageList) {
+            System.out.println(postImage);
+            return postImage;
+        }
+
+        //System.out.println("psotUrl: "+postImgUrl);
+        return null;
+
+    }
 
 }
