@@ -5,6 +5,7 @@ import inandout.backend.config.SecurityConfig;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
+import inandout.backend.entity.member.MemberStatus;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.validator.MemberValidator;
 import jakarta.mail.MessagingException;
@@ -83,7 +84,7 @@ public class JoinService {
         Optional<Member> member = memberRepository.findByAuthToken(token);
 
         if (member.isPresent()) {
-            memberRepository.updateStateByToken(token);
+            member.get().updateStatus(MemberStatus.ACTIVE);  // 변경감지
             return member;
         } else {
             return Optional.empty();

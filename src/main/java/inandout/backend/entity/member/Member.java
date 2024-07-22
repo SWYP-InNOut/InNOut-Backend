@@ -106,6 +106,10 @@ public class Member {
         this.authToken = token;
     }
 
+    public void updateStatus(MemberStatus status) {
+        this.status = status;
+    }
+
     public void addPost(Post post) {
         this.posts.add(post);
     }
