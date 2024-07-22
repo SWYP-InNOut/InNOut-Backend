@@ -60,36 +60,13 @@ public class JoinService {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
             message.setSubject("Artify 회원가입 이메일 인증");// 제목
 
-//            String body = "<div>"
-//                    + "<h1> 안녕하세요. in&out 입니다</h1>"
-//                    + "<br>"
-//                    + "<p>아래 링크를 클릭하면 이메일 인증이 완료됩니다.<p>"
-//                    + "<a href='http://localhost:9000/auth/verify?token=" + member.getAuthToken() + "'>인증 링크</a>"
-//                    + "</div>";
-
             log.info(member.getAuthToken());
 
             String body = "<div>"
                     + "<h1> 안녕하세요. in&out 입니다</h1>"
                     + "<br>"
                     + "<p>아래 링크를 클릭하면 이메일 인증이 완료됩니다.<p>"
-                    + "<a href='#' onclick='verifyEmail(\"" + member.getAuthToken() + "\")'>인증 링크</a>"
-                    + "<script>"
-                    + "function verifyEmail(token) {"
-                    + "  fetch('http://localhost:9000/auth/verify?token=' + token, { method: 'GET' })"
-                    + "    .then(response => { "
-                    + "      if (response.ok) {"
-                    + "        window.location.href = 'http://stuffinout.site/';"
-                    + "      } else {"
-                    + "        alert('인증 실패');"
-                    + "      }"
-                    + "    })"
-                    + "    .catch(error => {"
-                    + "      console.error('Error:', error);"
-                    + "      alert('인증 실패');"
-                    + "    });"
-                    + "}"
-                    + "</script>"
+                    + "<a href='http://localhost:9000/auth/verify?token=" + member.getAuthToken() + "'>인증 링크</a>"
                     + "</div>";
 
             message.setText(body, "utf-8", "html");// 내용, charset 타입, subtype

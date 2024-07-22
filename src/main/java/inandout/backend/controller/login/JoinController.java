@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Optional;
 
@@ -31,7 +32,8 @@ public class JoinController {
         Optional<Member> member = joinService.updateByVerifyToken(token);
 
         if (member.isPresent()) {
-            return new BaseResponse<>("회원가입에 성공하였습니다.");
+//            return new BaseResponse<>("회원가입에 성공하였습니다.");
+            return new RedirectView("http://stuffinout.site");
         } else {
             log.error(FAILED_EMAIL_CERTIFICATION.getMessage());
             throw new MemberException(FAILED_EMAIL_CERTIFICATION);
