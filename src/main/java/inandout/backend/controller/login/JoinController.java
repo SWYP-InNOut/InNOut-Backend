@@ -1,19 +1,12 @@
 package inandout.backend.controller.login;
 
-import inandout.backend.common.exception.MemberException;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.JoinDTO;
-import inandout.backend.entity.member.Member;
 import inandout.backend.service.login.JoinService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.Optional;
-
-import static inandout.backend.common.response.status.BaseExceptionResponseStatus.FAILED_EMAIL_CERTIFICATION;
 
 @Slf4j
 @RestController
@@ -29,14 +22,12 @@ public class JoinController {
 
     @GetMapping("/auth/verify")
     public Object verifyEmail(@RequestParam("token") String token) {
-        Optional<Member> member = joinService.updateByVerifyToken(token);
+        boolean isComplete = joinService.updateByVerifyToken(token);
 
-        if (member.isPresent()) {
-//            return new BaseResponse<>("회원가입에 성공하였습니다.");
+        if (isComplete) {
             return new RedirectView("http://stuffinout.site/login");
         } else {
-            log.error(FAILED_EMAIL_CERTIFICATION.getMessage());
-            throw new MemberException(FAILED_EMAIL_CERTIFICATION);
+            return new RedirectView("http://stuffinout.site");    // 링크 만료 페이지로 이동
         }
     }
 }

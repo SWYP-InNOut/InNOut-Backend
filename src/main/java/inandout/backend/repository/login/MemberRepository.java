@@ -3,20 +3,13 @@ package inandout.backend.repository.login;
 import inandout.backend.entity.member.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-//public interface MemberRepository extends JpaRepository<Member, Long> {
-//    Optional<Member> findByEmail(String email);
-//    Boolean existsMemberByEmail(String email);
-//    Boolean existsMemberByName(String name);
-//    Optional<Member> findByAuthToken(String authToken);
-//
-//    @Query("update Member m set m.status='NONCERTIFIED' where m.authToken=:authToken")
-//    void updateStateByToken(@Param("authToken") String authToken);
-//}
-
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class MemberRepository {
@@ -27,11 +20,11 @@ public class MemberRepository {
     }
 
     public Optional<Member> findByEmail(String email) {
-        Member member = em.createQuery("select m from Member m where m.email=:email", Member.class)
+        List<Member> members = em.createQuery("select m from Member m where m.email=:email", Member.class)
                 .setParameter("email", email)
-                .getSingleResult();
+                .getResultList();
 
-        return Optional.ofNullable(member);
+        return members.stream().findAny();
     }
 
     public Optional<Member> findById(Integer memberId) {
@@ -43,17 +36,19 @@ public class MemberRepository {
     }
 
     public Optional<Member> findByAuthToken(String authToken) {
-        Member member = em.createQuery("select m from Member m where m.authToken=:authToken", Member.class)
+        List<Member> members = em.createQuery("select m from Member m where m.authToken=:authToken", Member.class)
                 .setParameter("authToken", authToken)
-                .getSingleResult();
+                .getResultList();
 
-        return Optional.ofNullable(member);
+        return members.stream().findAny();
     }
 
-    public boolean existsMemberByEmail(String email) {
-        return  em.createQuery("select count(m) > 0 from Member m where m.email = :email", boolean.class)
+    public Optional<Member> existsMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email = :email", Member.class)
                 .setParameter("email", email)
-                .getSingleResult();
+                .getResultList();
+
+        return members.stream().findAny();
     }
 
     public boolean existsMemberByName(String name) {
@@ -61,11 +56,4 @@ public class MemberRepository {
                 .setParameter("name", name)
                 .getSingleResult();
     }
-
-    public void updateStateByToken(String authToken) {
-        em.createQuery("update Member m set m.status='ACTIVE' where m.authToken=:authToken")
-                .setParameter("authToken", authToken)
-                .executeUpdate();
-    }
-
 }
