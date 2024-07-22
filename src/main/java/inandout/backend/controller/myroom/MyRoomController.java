@@ -1,5 +1,6 @@
 package inandout.backend.controller.myroom;
 
+import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
 import inandout.backend.dto.myroom.MyRoomRequestDTO;
 import inandout.backend.dto.myroom.MyRoomResponseDTO;
 import inandout.backend.service.myroom.MyRoomService;
@@ -26,6 +27,13 @@ public class MyRoomController {
         myRoomService.plusUserCount(myRoomRequestDTO);
 
         return ResponseEntity.ok(myRoomResponseDTO);
+    }
+
+    @PostMapping("/addstuff")
+    public ResponseEntity<String> myRoomAddStuffController(@RequestBody MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO) {
+        myRoomService.addStuff(myRoomAddStuffRequestDTO);
+
+        return ResponseEntity.ok("ok");
     }
 
 

@@ -1,18 +1,25 @@
 package inandout.backend.service.myroom;
 
 import inandout.backend.dto.chat.ChatResponseDTO;
+import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
 import inandout.backend.dto.myroom.MyRoomPostDTO;
 import inandout.backend.dto.myroom.MyRoomRequestDTO;
 import inandout.backend.dto.myroom.MyRoomResponseDTO;
+import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.post.Post;
+import inandout.backend.entity.post.PostImage;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.repository.myroom.MyRoomRepository;
+import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import inandout.backend.service.chat.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +38,8 @@ public class MyRoomService {
 
     @Autowired
     private ChatService chatService;
+    @Autowired
+    private PostJPARepository postJPARepository;
 
 
 
@@ -88,5 +97,29 @@ public class MyRoomService {
         member.get().setUserCount(userCount+1);
 
         memberRepository.save(member.get());
+    }
+
+    public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO) {
+        System.out.println("addStuff");
+        //Member 찾기
+        Optional<Member> member = memberRepository.findById(myRoomAddStuffRequestDTO.getMemberId());
+
+        //myRoomAddStuffRequestDTO 요소 가져오기
+        String title = myRoomAddStuffRequestDTO.getTitle();
+        String outContent = myRoomAddStuffRequestDTO.getOutContent();
+        String inContent = myRoomAddStuffRequestDTO.getInContent();
+
+        LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+//        // 이미지
+//        PostImage postImage;
+//
+//        // chatRoom 생성
+//        ChatRoom chatRoom;
+
+
+        //post 객체 생성
+        Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime);
+        postJPARepository.save(post);
     }
 }
