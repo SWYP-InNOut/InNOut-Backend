@@ -31,4 +31,7 @@ public class ChatRoom {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "chatRoom")
     private Post post;
 
+    public ChatRoom(Member member) {
+        this.member = member;
+    }
 }

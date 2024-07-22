@@ -8,14 +8,13 @@ import inandout.backend.dto.myroom.MyRoomResponseDTO;
 import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.post.Post;
-import inandout.backend.entity.post.PostImage;
+import inandout.backend.repository.chat.ChatRoomJPARepository;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.repository.myroom.MyRoomRepository;
 import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import inandout.backend.service.chat.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,6 +39,8 @@ public class MyRoomService {
     private ChatService chatService;
     @Autowired
     private PostJPARepository postJPARepository;
+    @Autowired
+    private ChatRoomJPARepository chatRoomJPARepository;
 
 
 
@@ -101,6 +102,8 @@ public class MyRoomService {
 
     public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO) {
         System.out.println("addStuff");
+
+
         //Member 찾기
         Optional<Member> member = memberRepository.findById(myRoomAddStuffRequestDTO.getMemberId());
 
@@ -114,12 +117,13 @@ public class MyRoomService {
 //        // 이미지
 //        PostImage postImage;
 //
-//        // chatRoom 생성
-//        ChatRoom chatRoom;
 
+        // 채팅방 생성
+        ChatRoom chatRoom = new ChatRoom(member.get());
+        chatRoomJPARepository.save(chatRoom);
 
         //post 객체 생성
-        Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime);
+        Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime, chatRoom);
         postJPARepository.save(post);
     }
 }

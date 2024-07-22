@@ -63,7 +63,7 @@ public class Post {
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
 
-    public Post(Member member, String title, String outContent, String inContent, int outCount, int inCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Post(Member member, String title, String outContent, String inContent, int outCount, int inCount, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom) {
         this.member = member;
         this.title = title;
         this.outContent = outContent;
@@ -74,6 +74,6 @@ public class Post {
         this.updatedAt = updatedAt;
 //        this.postImages = postImages;
 //        this.chats = chats;
-//        this.chatRoom = chatRoom;
+        this.chatRoom = chatRoom;
     }
 }
