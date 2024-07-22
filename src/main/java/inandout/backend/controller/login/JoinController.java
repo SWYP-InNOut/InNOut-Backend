@@ -28,12 +28,12 @@ public class JoinController {
     }
 
     @GetMapping("/auth/verify")
-    public Object verifyEmail(HttpSession session, @RequestParam("token") String token) {
+    public Object verifyEmail(@RequestParam("token") String token) {
         Optional<Member> member = joinService.updateByVerifyToken(token);
 
         if (member.isPresent()) {
 //            return new BaseResponse<>("회원가입에 성공하였습니다.");
-            return new RedirectView("http://stuffinout.site");
+            return new RedirectView("http://stuffinout.site/login");
         } else {
             log.error(FAILED_EMAIL_CERTIFICATION.getMessage());
             throw new MemberException(FAILED_EMAIL_CERTIFICATION);
