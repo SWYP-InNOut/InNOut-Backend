@@ -62,4 +62,18 @@ public class Post {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
+
+    public Post(Member member, String title, String outContent, String inContent, int outCount, int inCount, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom) {
+        this.member = member;
+        this.title = title;
+        this.outContent = outContent;
+        this.inContent = inContent;
+        this.outCount = outCount;
+        this.inCount = inCount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+//        this.postImages = postImages;
+//        this.chats = chats;
+        this.chatRoom = chatRoom;
+    }
 }
