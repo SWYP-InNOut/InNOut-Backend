@@ -50,7 +50,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join", "/healthcheck",
-                                "/auth/verify ", "/chat", "/ws/chat", "/kakaologin/callback",
+                                "/auth/verify", "/chat", "/ws/chat", "/kakaologin/callback",
                                 "/myroom/chat","/myroom/detail/{postId}/chat",
                                 "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff", "/myroom/detail/{postId}").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
