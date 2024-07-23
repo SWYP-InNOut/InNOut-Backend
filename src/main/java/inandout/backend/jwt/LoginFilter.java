@@ -19,6 +19,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
+    // "/login"으로 요청이 오면 해당 메서드 실행됨
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //클라이언트 요청에서 username, password 추출
@@ -40,7 +41,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String email = customMemberDetails.getUsername();
 
-        String token = jwtUtil.createJwt(email, 1000000000000L);
+        //TODO: 토큰 만료 시간 설정
+        String token = jwtUtil.createJwt(email, 60*60*24*1000L); // 24시간
 
         response.addHeader("Authorization", "Bearer " + token);
     }

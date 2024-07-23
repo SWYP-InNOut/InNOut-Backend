@@ -54,9 +54,9 @@ public class SecurityConfig {
                                 "/myroom/chat","/myroom/detail/{postId}/chat",
                                 "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff", "/myroom/detail/{postId}").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
-                        .anyRequest().authenticated());    // 로그인 한 사용자만 접근 가능
+                        .requestMatchers("/main").authenticated());    // 로그인 한 사용자만 접근 가능
 
-        //JWTFilter 등록
+        //LoginFilter 이전에 JWTFilter 등록
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
