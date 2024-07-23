@@ -1,5 +1,6 @@
 package inandout.backend.controller.login;
 
+import inandout.backend.argumentresolver.MemberEmail;
 import inandout.backend.dto.login.CustomMemberDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
     @GetMapping("/main")
-    public String mainP() {
-        log.info(((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-        String email = ((CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return "Main Controller" + email;
+    public String mainP(@MemberEmail String email) {
+        return "Main Controller " + email;
     }
 }
