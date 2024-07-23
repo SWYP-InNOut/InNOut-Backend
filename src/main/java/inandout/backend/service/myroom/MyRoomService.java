@@ -92,7 +92,8 @@ public class MyRoomService {
 
         Post post = postRepository.getPostByPostId(postId);
         myRoomPostDTO.setPostId(post.getId());
-        myRoomPostDTO.setImgUrl(post.getPostImages().get(0).getPostImgUrl());  // 제일 첫번쨰것으로
+        myRoomPostDTO.setImgUrl(postRepository.getOldestPostImage(postId));
+        //myRoomPostDTO.setImgUrl(post.getPostImages().get(0).getPostImgUrl());  // 가장 먼저 등록된거
         myRoomPostDTO.setCreatedAt(post.getCreatedAt());
 
         return myRoomPostDTO;

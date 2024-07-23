@@ -3,8 +3,10 @@ package inandout.backend.repository.chat;
 import com.sun.tools.javac.Main;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.entity.chat.Chat;
+import inandout.backend.repository.post.PostRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ import java.util.List;
 public class ChatRepository {
 
     private final EntityManager em;
+
+    @Autowired
+    public PostRepository postRepository;
 
 
     //채팅룸 id 리스트 받아서 채팅 최신순으로 반환
@@ -60,7 +65,7 @@ public class ChatRepository {
             //게시물 관련
             if(result.getPost() != null){
                 chatResponseDTO.setPostChat(true);
-                chatResponseDTO.setStuffName(getStuffNameByPostId(result.getPost().getId()));
+                chatResponseDTO.setStuffName(postRepository.getStuffNameByPostId(result.getPost().getId()));
             }
 
             chatResponseDTOList.add(chatResponseDTO);
@@ -81,7 +86,10 @@ public class ChatRepository {
         List<Integer> MainChatRoomIds = em.createQuery("SELECT rm.id FROM ChatRoom rm WHERE rm.member.id = :member_id AND rm.id NOT IN (" +
                         "SELECT p.chatRoom.id FROM Post p WHERE p.member.id = :member_id)")
                 .setParameter("member_id", memberId).getResultList();
-
+        if(MainChatRoomIds.size() < 1){
+            System.out.println("채팅룸이 없어요");
+            return 0;
+        }
         return MainChatRoomIds.get(0);
     }
 
@@ -116,11 +124,11 @@ public class ChatRepository {
         return memberName;
     }
 
-    public String getStuffNameByPostId(Integer postId) {
-        String stuffName = (String) em.createQuery("SELECT p.title FROM Post p WHERE p.id = : post_id")
-                .setParameter("post_id", postId).getSingleResult();
-        return stuffName;
-    }
+//    public String getStuffNameByPostId(Integer postId) {
+//        String stuffName = (String) em.createQuery("SELECT p.title FROM Post p WHERE p.id = : post_id")
+//                .setParameter("post_id", postId).getSingleResult();
+//        return stuffName;
+//    }
 
 
 
