@@ -41,7 +41,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     INVALID_CLAIMS(4011, HttpStatus.UNAUTHORIZED.value(), "OAuth Claims 값이 올바르지 않습니다."),
     INVALID_REFRESH_TOKEN(4012, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 Refresh Token입니다."),
     IP_MISMATCH(4013, HttpStatus.UNAUTHORIZED.value(), "다른 IP에서 접속했습니다. 다시 로그인해주세요."),
-    OPTION_TERM_ALREADY_SET(4014, HttpStatus.UNAUTHORIZED.value(), "입력한 선택 약관의 선택 여부와 기존 선택 약관의 선택 여부가 동일합니다."),
+    FAILED_SEND_EMAIL(4014, HttpStatus.BAD_REQUEST.value(), "인증 메일 전송에 실패하였습니다."),
+    FAILED_EMAIL_CERTIFICATION(4015, HttpStatus.UNAUTHORIZED.value(), "이메일 인증에 실패하였습니다."),
 
     /**
      * 5000: 회원 정보 오류
@@ -51,6 +52,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     INACTIVE_MEMBER(5003, HttpStatus.BAD_REQUEST.value(), "활성화 상태가 아닌 사용자입니다."),
     DUPLICATED_EMAIL(5004, HttpStatus.BAD_REQUEST.value(), "중복된 이메일입니다."),
     DUPLICATED_NICKNAME(5005, HttpStatus.BAD_REQUEST.value(), "중복된 닉네임입니다."),
+    ACTIVE_MEMBER(5006, HttpStatus.BAD_REQUEST.value(), "이미 가입된 사용자입니다."),
 
     /**
      * 9000: 기타 오류

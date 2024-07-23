@@ -46,6 +46,9 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
+
   cloud:
     aws:
       s3:
@@ -75,7 +78,7 @@ spring:
       platform: mysql
   jpa:
     hibernate:
-      ddl-auto: none #create
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -94,6 +97,9 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
 
   cloud:
     aws:
@@ -143,6 +149,9 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  mail:
+    request_Uri: ${MAIL_REQUEST_URI}
+
   cloud:
     aws:
       s3:
@@ -182,5 +191,9 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET_KEY}
+
+mail:
+  username: ${GOOGLE_EMAIL}
+  password: ${GOOGLE_APP_PASSWORD}
 
 ---

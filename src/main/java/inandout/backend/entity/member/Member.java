@@ -63,13 +63,15 @@ public class Member {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @Column(nullable = false)
-    @ColumnDefault("'ACTIVE'")
+    @ColumnDefault("'NONCERTIFIED'")
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
     @Column(nullable = false)
     @ColumnDefault("true")
     private Boolean isPublic;
+
+    private String authToken;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<Post> posts = new ArrayList<>();
@@ -85,6 +87,7 @@ public class Member {
         member.platform = platform;
         member.platformId = platformId;
 
+
         return member;
     }
 
@@ -97,6 +100,14 @@ public class Member {
         member.platform = platform;
 
         return member;
+    }
+
+    public void updateToken(String token) {
+        this.authToken = token;
+    }
+
+    public void updateStatus(MemberStatus status) {
+        this.status = status;
     }
 
     public void addPost(Post post) {

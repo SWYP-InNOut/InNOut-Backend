@@ -1,6 +1,7 @@
 package inandout.backend.dto.login;
 
 import inandout.backend.entity.member.Member;
+import inandout.backend.entity.member.MemberStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,6 +54,6 @@ public class CustomMemberDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return member.getStatus().equals(MemberStatus.ACTIVE);
     }
 }
