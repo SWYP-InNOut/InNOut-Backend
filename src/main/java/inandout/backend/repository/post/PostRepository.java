@@ -14,6 +14,7 @@ public class PostRepository {
 
     private final EntityManager em;
 
+
     public List<Integer> getPostIdsByMemberId(Integer memberId) {
         List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id")
                 .setParameter("member_id", memberId).getResultList();
@@ -38,9 +39,14 @@ public class PostRepository {
             return postImage;
         }
 
-        //System.out.println("psotUrl: "+postImgUrl);
         return null;
 
+    }
+
+    public String getStuffNameByPostId(Integer postId) {
+        String stuffName = (String) em.createQuery("SELECT p.title FROM Post p WHERE p.id = : post_id")
+                .setParameter("post_id", postId).getSingleResult();
+        return stuffName;
     }
 
 }

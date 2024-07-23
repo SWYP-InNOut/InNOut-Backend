@@ -3,8 +3,10 @@ package inandout.backend.controller.myroom;
 import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
 import inandout.backend.dto.myroom.MyRoomRequestDTO;
 import inandout.backend.dto.myroom.MyRoomResponseDTO;
+import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.service.myroom.MyRoomService;
 import inandout.backend.service.myroom.S3Service;
+import inandout.backend.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class MyRoomController {
     @Autowired
     public S3Service s3Service;
 
+    @Autowired
+    public PostService postService;
+
     @PostMapping("")
     public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
@@ -42,6 +47,12 @@ public class MyRoomController {
         myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
 
         return ResponseEntity.ok("addstuff success");
+    }
+
+    @GetMapping("/detail/{postId}")
+    public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId) {
+        PostResponseDTO postResponseDTO = postService.getPost(postId);
+        return ResponseEntity.ok(postResponseDTO);
     }
 
 
