@@ -1,6 +1,8 @@
 package inandout.backend.common.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import inandout.backend.common.response.status.ResponseStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +16,13 @@ public class BaseErrorResponse implements ResponseStatus {
     private final int code;
     private final int status;
     private final String message;
-    private final LocalDateTime timestamp;
+//    private final LocalDateTime timestamp;
 
     public BaseErrorResponse(ResponseStatus status){
         this.code = status.getCode();
         this.status = status.getStatus();
         this.message = status.getMessage();
-        this.timestamp = LocalDateTime.now();
+//        this.timestamp = LocalDateTime.now();
     }
 
     @Override

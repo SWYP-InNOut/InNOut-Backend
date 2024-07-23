@@ -1,19 +1,27 @@
 package inandout.backend.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import inandout.backend.common.exception.MemberException;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.login.CustomMemberDetails;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.EXPIRED_ACCESSTOKEN;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -40,12 +48,24 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         //토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
+        try {
+            jwtUtil.isExpired(token);
+        } catch (ExpiredJwtException e) {
+            System.out.println("=============================token expired==================================");
+            // 예외 정보를 JSON 형식으로 변환
+            BaseErrorResponse errorResponse = new BaseErrorResponse(EXPIRED_ACCESSTOKEN);
 
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
+            // 응답의 콘텐츠 타입을 JSON으로 설정
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setCharacterEncoding("utf-8");
 
-            //조건이 해당되면 메소드 종료 (필수)
+            // JSON 응답 작성
+            PrintWriter writer = response.getWriter();
+            ObjectMapper mapper = new ObjectMapper();
+            writer.write(mapper.writeValueAsString(errorResponse));
+            writer.flush();
+            writer.close();
             return;
         }
 

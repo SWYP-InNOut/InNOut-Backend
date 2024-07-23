@@ -40,7 +40,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     TOKEN_MISMATCH(4010, HttpStatus.UNAUTHORIZED.value(), "로그인 정보가 토큰 정보와 일치하지 않습니다."),
     INVALID_CLAIMS(4011, HttpStatus.UNAUTHORIZED.value(), "OAuth Claims 값이 올바르지 않습니다."),
     INVALID_REFRESH_TOKEN(4012, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 Refresh Token입니다."),
-    IP_MISMATCH(4013, HttpStatus.UNAUTHORIZED.value(), "다른 IP에서 접속했습니다. 다시 로그인해주세요."),
+    EXPIRED_ACCESSTOKEN(4013, HttpStatus.UNAUTHORIZED.value(), "AccessToken 유효 기간이 만료되었습니다."),
     FAILED_SEND_EMAIL(4014, HttpStatus.BAD_REQUEST.value(), "인증 메일 전송에 실패하였습니다."),
     FAILED_EMAIL_CERTIFICATION(4015, HttpStatus.UNAUTHORIZED.value(), "이메일 인증에 실패하였습니다."),
 
