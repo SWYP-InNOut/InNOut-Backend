@@ -105,9 +105,10 @@ public class MyRoomService {
         Integer memberId = myRoomRequestDTO.getMemberId();
         Optional<Member> member = memberRepository.findById(memberId);
         Integer userCount = member.get().getUserCount();
-        member.get().setUserCount(userCount+1);
+      //  member.get().setUserCount(userCount+1);
 
-        memberRepository.save(member.get());
+        memberRepository.updateUserCount(memberId, userCount + 1);
+        //memberRepository.save(member.get());
     }
 
     public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO, List<MultipartFile> multipartFile) {
