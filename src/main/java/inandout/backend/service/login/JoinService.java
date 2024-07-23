@@ -1,7 +1,6 @@
 package inandout.backend.service.login;
 
 import inandout.backend.Util.EmailUtils;
-import inandout.backend.common.exception.MemberException;
 import inandout.backend.dto.login.JoinDTO;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import static inandout.backend.common.response.status.BaseExceptionResponseStatus.ACTIVE_MEMBER;
 
 @Slf4j
 @Service
@@ -34,6 +31,8 @@ public class JoinService {
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
 
+        memberValidator.validateActiveMember(email);
+
         String authToken = UUID.randomUUID().toString();
         if (!memberValidator.validateDuplicateEmailAndCheckExpiredToken(email)) {
             // 이메일 중복이 아닐 때만 이름 중복 검사 실시
@@ -45,9 +44,6 @@ public class JoinService {
                 member.get().updateToken(authToken);
                 emailUtils.sendEmail(member.get());
                 return;
-            } else if (memberRepository.isActiveMember(email)){
-                log.error(ACTIVE_MEMBER.getMessage());
-                throw new MemberException(ACTIVE_MEMBER);
             }
         }
 

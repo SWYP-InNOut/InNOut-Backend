@@ -13,17 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static inandout.backend.common.response.status.BaseExceptionResponseStatus.DUPLICATED_EMAIL;
-import static inandout.backend.common.response.status.BaseExceptionResponseStatus.DUPLICATED_NICKNAME;
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.*;
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.ACTIVE_MEMBER;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 @Transactional
 public class MemberValidator {
-    private final EmailUtils emailUtils;
-    private final EntityManager em;
     private final MemberRepository memberRepository;
+
+    public void validateActiveMember(String email) {
+        if (memberRepository.isActiveMember(email)) {
+            log.error(ACTIVE_MEMBER.getMessage());
+            throw new MemberException(ACTIVE_MEMBER);
+        }
+    }
 
     public boolean validateDuplicateEmailAndCheckExpiredToken(String email) {
         Optional<Member> member = memberRepository.existsMemberByEmail(email);
