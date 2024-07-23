@@ -42,7 +42,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = customMemberDetails.getUsername();
 
         //TODO: 토큰 만료 시간 설정
-        String token = jwtUtil.createJwt(email, 60*60*1000L); // 한시간
+        String token = jwtUtil.createJwt(email, 60*60*24*1000L); // 24시간
 
         response.addHeader("Authorization", "Bearer " + token);
     }
