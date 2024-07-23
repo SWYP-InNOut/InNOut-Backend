@@ -83,6 +83,7 @@ jobs:
           --build-arg REDIS_PORT=${{ secrets.REDIS_PORT }} \
           --build-arg ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          --build-arg BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           sudo docker images
           sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
