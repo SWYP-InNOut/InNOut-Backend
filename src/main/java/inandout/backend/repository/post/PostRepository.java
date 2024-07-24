@@ -17,7 +17,7 @@ public class PostRepository {
 
 
     public List<Integer> getPostIdsByMemberId(Integer memberId) {
-        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id")
+        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt DESC")
                 .setParameter("member_id", memberId).getResultList();
 
         return postIdList;

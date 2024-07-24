@@ -69,7 +69,7 @@ public class MyRoomService {
         }
 
 
-        // 게시물 id 가져오기
+        // 게시물 id 가져오기 (게시물 최신순)
         List<Integer> postIdList = postRepository.getPostIdsByMemberId(memberId);
 
         // 게시물 id로 정보 가져와서 DTO에 추가
@@ -93,7 +93,8 @@ public class MyRoomService {
         Post post = postRepository.getPostByPostId(postId);
         myRoomPostDTO.setPostId(post.getId());
         myRoomPostDTO.setImgUrl(postRepository.getOldestPostImage(postId));
-        //myRoomPostDTO.setImgUrl(post.getPostImages().get(0).getPostImgUrl());  // 가장 먼저 등록된거
+        myRoomPostDTO.setInCount(post.getInCount());
+        myRoomPostDTO.setOutCount(post.getOutCount());
         myRoomPostDTO.setCreatedAt(post.getCreatedAt());
 
         return myRoomPostDTO;
