@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -49,4 +50,16 @@ public class PostRepository {
         return stuffName;
     }
 
+    public List<Post> getPostListByMemberId(Integer memberId) {
+        List<Post> posts = em.createQuery("SELECT p FROM Post p WHERE p.member.id = :member_id")
+                .setParameter("member_id", memberId).getResultList();
+        return posts;
+    }
+
+    public LocalDateTime getRecentPostDateByMemberId(Integer memberId) {
+        LocalDateTime postCreatedAt = (LocalDateTime) em.createQuery("SELECT MAX(p.createdAt) FROM Post p WHERE p.member.id = :member_id")
+                .setParameter("member_id", memberId).getSingleResult();
+        System.out.println("최근 발행일: "+postCreatedAt);
+        return postCreatedAt;
+    }
 }

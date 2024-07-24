@@ -3,10 +3,12 @@ package inandout.backend.repository.login;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,5 +72,16 @@ public class MemberRepository {
                 .setParameter("email", email)
                 .setParameter("status", MemberStatus.ACTIVE)
                 .getSingleResult();
+    }
+
+    @Transactional
+    public void updateUserCount(Integer memberId, Integer userCount) {
+        em.createQuery("UPDATE Member m SET m.userCount = :user_count WHERE m.id = :member_id")
+                .setParameter("user_count", userCount).setParameter("member_id", memberId).executeUpdate();
+    }
+
+    public List<Member> getMembersOrderByUserCount() {
+        List<Member> members = em.createQuery("SELECT m FROM Member m ORDER BY m.userCount DESC").getResultList();
+        return members;
     }
 }
