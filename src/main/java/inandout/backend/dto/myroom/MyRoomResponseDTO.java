@@ -15,9 +15,9 @@ import java.util.List;
 public class MyRoomResponseDTO {
     private String memberName;
     private List<ChatResponseDTO> chats;
-    private List<MyRoomPostDTO> postsLatest; // 최신순
-    private List<MyRoomPostDTO> postsIn; // in많은순
-    private List<MyRoomPostDTO> postsOut; // out많은순
-    private List<MyRoomPostDTO> postsOldest; // 오래된순
+    private List<MyRoomPostDTO> posts; // 최신순
+//    private List<MyRoomPostDTO> postsIn; // in많은순
+//    private List<MyRoomPostDTO> postsOut; // out많은순
+//    private List<MyRoomPostDTO> postsOldest; // 오래된순
 
 }
