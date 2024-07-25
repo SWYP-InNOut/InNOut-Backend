@@ -1,7 +1,10 @@
 package inandout.backend.controller.post;
 
 import inandout.backend.dto.myroom.PostResponseDTO;
+import inandout.backend.dto.others.InOutRequestDTO;
+import inandout.backend.entity.post.Post;
 import inandout.backend.service.post.PostService;
+import inandout.backend.service.stuff.StuffService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +21,33 @@ public class PostController {
     @Autowired
     public PostService postService;
 
-    @PostMapping("/in")
-    public ResponseEntity inController(@RequestParam(value = "postId") Integer postId) {
-        log.info("in");
-        postService.plusInCount(postId);
+    @Autowired
+    public StuffService stuffService;
 
-        return ResponseEntity.ok("in증가");
+    @PostMapping("/in")
+    public ResponseEntity inController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
+        log.info("in");
+
+        //inout 테이블에 저장
+        stuffService.saveIn(inOutRequestDTO);
+        //post 테이블에서 in 증가
+        Integer newInCount = postService.plusInCount(inOutRequestDTO.getPostId());
+
+
+        return ResponseEntity.ok(newInCount);
     }
 
     @PostMapping("/out")
-    public ResponseEntity outController(HttpServletRequest request, @RequestParam(value = "postId") Integer postId) {
+    public ResponseEntity outController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("out");
-        HttpSession session = request.getSession();
-        System.out.println("Session: "+session.getId());
-        postService.plusOutCount(postId);
+       // HttpSession session = request.getSession();
+        //inout 테이블에 저장
+        stuffService.saveOut(inOutRequestDTO);
+        //post 테이블에서 in 증가
+        Integer newOutCount = postService.plusOutCount(inOutRequestDTO.getPostId());
 
-        return ResponseEntity.ok("out 증가");
+
+        return ResponseEntity.ok(newOutCount);
     }
 
 }

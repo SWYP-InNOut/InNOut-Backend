@@ -61,24 +61,28 @@ public class PostService {
         return postResponseDTO;
     }
 
-    public void plusInCount(Integer postId) {
+    public Integer plusInCount(Integer postId) {
         // post찾고
         Post post = postRepository.getPostByPostId(postId);
         //update 쿼리
         Integer newInCount = post.getInCount() + 1;
 
-        //inout 테이블에 insert
-
-
         postRepository.updateInCount(postId, newInCount);
+
+        return newInCount;
     }
 
-    public void plusOutCount(Integer postId) {
+    public Integer plusOutCount(Integer postId) {
         // post찾고
         Post post = postRepository.getPostByPostId(postId);
         //update 쿼리
         Integer newOutCount = post.getOutCount() + 1;
 
         postRepository.updateOutCount(postId, newOutCount);
+
+        return newOutCount;
     }
+
+
+
 }
