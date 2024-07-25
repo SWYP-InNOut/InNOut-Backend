@@ -32,7 +32,7 @@ public class Member {
     @Column(name = "member_id", nullable = false)
     private Integer id;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 100, nullable = false)
     private String name;
 
     @Column(length = 100, nullable = false)
