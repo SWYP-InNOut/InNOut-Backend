@@ -44,7 +44,7 @@ public class Chat {
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
 
-    @Column(name = "is_reply")
+    @Column(name = "is_reply", nullable = false)
     private boolean isReply;
 
     @Column(name = "reply_chat_id", nullable = true)
@@ -53,7 +53,10 @@ public class Chat {
     @Column(name = "reply_member_id", nullable = true)
     private Integer replyMemberId;
 
-    public Chat(Post post, int sender, String chatContent, LocalDateTime sendAt, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom, boolean isReply, Integer replyChatId, Integer replyMemberId) {
+    @Column(name = "is_from_main_chat", nullable = false)
+    private Boolean isFromMainChat;
+
+    public Chat(Post post, int sender, String chatContent, LocalDateTime sendAt, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom, boolean isReply, Integer replyChatId, Integer replyMemberId, boolean isFromMainChat) {
         this.post = post;
         this.sender = sender;
         this.chatContent = chatContent;
@@ -64,5 +67,6 @@ public class Chat {
         this.isReply = isReply;
         this.replyChatId = replyChatId;
         this.replyMemberId = replyMemberId;
+        this.isFromMainChat = isFromMainChat;
     }
 }

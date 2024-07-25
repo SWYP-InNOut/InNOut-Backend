@@ -78,17 +78,26 @@ public class ChatService {
 
         Integer chatRoomId = stompChatMessageDTO.getChatRoomId();
 
-        boolean isReply = stompChatMessageDTO.isReply();
+        Boolean isReply = stompChatMessageDTO.getIsReply();
+        Boolean isFromMainChat = stompChatMessageDTO.getIsFromMainChat();
 
+        System.out.println("isReplt:?: "+isReply);
+        System.out.println("메인에서옴? "+isFromMainChat);
         //채팅방id로 post찾기
-        Post post = postRepository.getPostByRoodId(chatRoomId);
+        Post post;
+        if (isFromMainChat) {
+            post = null;
+        } else {
+            post = postRepository.getPostByRoodId(chatRoomId);
+        }
+
 
         //시간
         LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
         // Chat생성
         Chat chat = new Chat(post, stompChatMessageDTO.getSender(), stompChatMessageDTO.getChatContent(), dateTime, dateTime, dateTime,
-                chatRoomJPARepository.findById(chatRoomId).get(), isReply, stompChatMessageDTO.getReplyChatId(), stompChatMessageDTO.getReplyMemberId());
+                chatRoomJPARepository.findById(chatRoomId).get(), isReply, stompChatMessageDTO.getReplyChatId(), stompChatMessageDTO.getReplyMemberId(), stompChatMessageDTO.getIsFromMainChat());
 
         chatRepository.save(chat);
     }

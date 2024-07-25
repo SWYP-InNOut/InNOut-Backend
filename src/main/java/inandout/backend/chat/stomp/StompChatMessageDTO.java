@@ -13,12 +13,13 @@ public class StompChatMessageDTO {
 //    private String message;
 
     private Integer chatRoomId;
-    private boolean isReply;
+    private Boolean isReply;
   //  private  Integer postId;
     private Integer replyChatId;
     private Integer replyMemberId;
     private Integer sender;
    // private LocalDateTime createdAt;
     private String chatContent;
+    private Boolean isFromMainChat;
 
 }
