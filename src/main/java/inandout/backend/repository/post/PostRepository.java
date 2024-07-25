@@ -77,6 +77,8 @@ public class PostRepository {
     public void updateOutCount(Integer postId, Integer newOutCount) {
         em.createQuery("UPDATE Post p SET p.outCount = :new_out_count WHERE p.id = :post_id")
                 .setParameter("new_out_count", newOutCount).setParameter("post_id", postId).executeUpdate();
+    }
+
 
     public List<Integer> getPostIdsOrderByLatest(Integer memberId) {
         List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt DESC")
