@@ -49,9 +49,9 @@ public class MyRoomController {
         return ResponseEntity.ok("addstuff success");
     }
 
-    @GetMapping("/detail/{postId}")
-    public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId) {
-        PostResponseDTO postResponseDTO = postService.getPost(postId);
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
+        PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
         return ResponseEntity.ok(postResponseDTO);
     }
 
