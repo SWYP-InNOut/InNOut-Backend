@@ -47,10 +47,22 @@ public class Chat {
     @Column(name = "is_reply")
     private boolean isReply;
 
-    @Column(name = "reply_chat_id")
+    @Column(name = "reply_chat_id", nullable = true)
     private Integer replyChatId;
 
-    @Column(name = "reply_member_id")
+    @Column(name = "reply_member_id", nullable = true)
     private Integer replyMemberId;
 
+    public Chat(Post post, int sender, String chatContent, LocalDateTime sendAt, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom, boolean isReply, Integer replyChatId, Integer replyMemberId) {
+        this.post = post;
+        this.sender = sender;
+        this.chatContent = chatContent;
+        this.sendAt = sendAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.chatRoom = chatRoom;
+        this.isReply = isReply;
+        this.replyChatId = replyChatId;
+        this.replyMemberId = replyMemberId;
+    }
 }

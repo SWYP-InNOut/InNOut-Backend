@@ -3,9 +3,12 @@ package inandout.backend.repository.chat;
 import com.sun.tools.javac.Main;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.entity.chat.Chat;
+import inandout.backend.entity.member.Member;
 import inandout.backend.repository.post.PostRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +24,7 @@ import java.util.List;
 //
 //}
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class ChatRepository {
@@ -122,6 +126,11 @@ public class ChatRepository {
         String memberName = (String) em.createQuery("SELECT m.name FROM Member m WHERE m.id = :member_id")
                 .setParameter("member_id", memberId).getSingleResult();
         return memberName;
+    }
+
+    @Transactional
+    public void save(Chat chat) {
+        em.persist(chat);
     }
 
 //    public String getStuffNameByPostId(Integer postId) {

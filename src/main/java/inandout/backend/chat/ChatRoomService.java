@@ -23,7 +23,7 @@ public class ChatRoomService {
         return chatRoomRepository.findAll();
     }
 
-    public ChatRoom findRoomById(String roomId) {
+    public ChatRoom findRoomById(Integer roomId) {
 
         return chatRoomRepository.findById(roomId);
     }
@@ -59,7 +59,7 @@ public class ChatRoomService {
         return chatRoom2;
     }
     public void handleAction(
-            String roomId,
+            Integer roomId,
             WebSocketSession session,
             ChatMessageDTO chatMessage
     ) {

@@ -16,7 +16,7 @@ public class ChatRoomRepository {
         chatRooms.put(roomId, chatRoom);
     }
 
-    public ChatRoom findById(String roomId) {
+    public ChatRoom findById(Integer roomId) {
         return chatRooms.get(roomId);
     }
 
