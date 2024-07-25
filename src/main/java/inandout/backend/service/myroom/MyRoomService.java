@@ -1,5 +1,6 @@
 package inandout.backend.service.myroom;
 
+import inandout.backend.common.exception.BaseException;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
 import inandout.backend.dto.myroom.MyRoomPostDTO;
@@ -26,6 +27,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.BAD_REQUEST;
 
 @Service
 @Slf4j
@@ -69,8 +72,26 @@ public class MyRoomService {
         }
 
 
-        // 게시물 id 가져오기
-        List<Integer> postIdList = postRepository.getPostIdsByMemberId(memberId);
+        // 게시물 id 가져오기 (게시물 최신순)
+        List<Integer> postIdList = new ArrayList<>();
+        Integer fillterType = myRoomRequestDTO.getFillterType();
+        switch (fillterType) {
+            case 0: // 최신순
+                postIdList =  postRepository.getPostIdsOrderByLatest(memberId);
+                break;
+            case 1: // in 많은순
+                postIdList = postRepository.getPostIdsOrderByIn(memberId);
+                break;
+            case 2: //out 많은순
+                postIdList = postRepository.getPostIdsOrderByOut(memberId);
+                break;
+            case 3: // 오래된순
+                postIdList = postRepository.getPostIdsOrderByOldest(memberId);
+                break;
+            default:
+                throw new BaseException(BAD_REQUEST);
+
+        }
 
         // 게시물 id로 정보 가져와서 DTO에 추가
         List<MyRoomPostDTO> myRoomPostDTOList = new ArrayList<>();
@@ -78,11 +99,13 @@ public class MyRoomService {
             myRoomPostDTOList.add(getMyRoomPostDTO(postId));
         }
 
+
         //리턴할 DTO 만들기
         MyRoomResponseDTO myRoomResponseDTO = new MyRoomResponseDTO();
         myRoomResponseDTO.setMemberName(memberName);
         myRoomResponseDTO.setChats(chatResponseDTOList);
         myRoomResponseDTO.setPosts(myRoomPostDTOList);
+
 
         return myRoomResponseDTO;
     }
@@ -93,8 +116,7 @@ public class MyRoomService {
         Post post = postRepository.getPostByPostId(postId);
         myRoomPostDTO.setPostId(post.getId());
         myRoomPostDTO.setImgUrl(postRepository.getOldestPostImage(postId));
-        //myRoomPostDTO.setImgUrl(post.getPostImages().get(0).getPostImgUrl());  // 가장 먼저 등록된거
-        myRoomPostDTO.setCreatedAt(post.getCreatedAt());
+
 
         return myRoomPostDTO;
     }

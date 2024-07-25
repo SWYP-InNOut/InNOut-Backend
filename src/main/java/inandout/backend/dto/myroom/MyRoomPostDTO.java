@@ -15,6 +15,5 @@ public class MyRoomPostDTO {
 
     private Integer postId;
     private String imgUrl;
-    private LocalDateTime createdAt;
 
 }
