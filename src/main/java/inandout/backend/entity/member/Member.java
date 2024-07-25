@@ -112,6 +112,9 @@ public class Member {
     public void updateStatus(MemberStatus status) {
         this.status = status;
     }
+    public void updateNickname(String nickname) {
+        this.name = nickname;
+    }
 
     public void addPost(Post post) {
         this.posts.add(post);
