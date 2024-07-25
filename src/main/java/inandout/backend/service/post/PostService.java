@@ -4,6 +4,7 @@ import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.entity.post.Post;
 import inandout.backend.repository.chat.ChatRepository;
+import inandout.backend.repository.post.InOutRepository;
 import inandout.backend.repository.post.PostImageJPARepository;
 import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
@@ -33,16 +34,37 @@ public class PostService {
     @Autowired
     public PostImageJPARepository postImageJPARepository;
 
-    public PostResponseDTO getPost(Integer postId) {
+    @Autowired
+    public InOutRepository inOutRepository;
+
+    public PostResponseDTO getPost(Integer memberId, Integer postId) {
         //postId로 memberId -> memberName
-        Integer memberId = chatRepository.getMemberIdByPostId(postId);
-        String memberName = chatRepository.getMemberNameByMemberId(memberId);
+        Integer ownerId = chatRepository.getMemberIdByPostId(postId);
+        String ownerName = chatRepository.getMemberNameByMemberId(ownerId);
 
         //postId로 post객체
         Optional<Post> post = postJPARepository.findById(postId);
         String title = post.get().getTitle();
         String inContent = post.get().getInContent();
         String outContent = post.get().getOutContent();
+
+        //in/out 선택했는지 여부 가져오기
+        List<?> isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
+        boolean isCheckedIn = false;
+        boolean isCheckedOut = false;
+
+        for (Object o : isCheckedInfo) {
+            Object[] result = (Object[]) o;
+            boolean resultIn = (boolean) result[0];
+            boolean resultOut = (boolean) result[1];
+
+            if (resultIn) {
+                isCheckedIn = resultIn;
+            }
+            if (resultOut) {
+                isCheckedOut = resultOut;
+            }
+        }
 
         // 상위 5개 가져오기(임의)
         List<ChatResponseDTO> chatResponseDTOS = chatService.getPostChat(memberId, postId);
@@ -56,7 +78,7 @@ public class PostService {
         // 이미지 URLs 가져오기
         List<String> imageUrls = postImageJPARepository.findUrlByPostId(postId);
 
-        PostResponseDTO postResponseDTO = new PostResponseDTO(memberName, title, inContent, outContent, LocalDateTime.now(ZoneId.of("Asia/Seoul")), chatResponseDTOList, imageUrls);
+        PostResponseDTO postResponseDTO = new PostResponseDTO(ownerName, title, inContent, outContent,  LocalDateTime.now(ZoneId.of("Asia/Seoul")), isCheckedIn, isCheckedOut, chatResponseDTOList, imageUrls);
 
         return postResponseDTO;
     }
