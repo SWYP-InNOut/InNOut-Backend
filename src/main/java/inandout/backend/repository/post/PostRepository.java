@@ -3,6 +3,7 @@ package inandout.backend.repository.post;
 import inandout.backend.entity.post.Post;
 import inandout.backend.entity.post.PostImage;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -63,6 +64,22 @@ public class PostRepository {
         return postCreatedAt;
     }
 
+
+    @Transactional
+    public void updateInCount(Integer postId, Integer newInCount) {
+        System.out.println("ㅕ");
+        em.createQuery("UPDATE Post p SET p.inCount = :new_in_count WHERE p.id = :post_id")
+                .setParameter("new_in_count", newInCount).setParameter("post_id", postId).executeUpdate();
+
+    }
+
+    @Transactional
+    public void updateOutCount(Integer postId, Integer newOutCount) {
+        em.createQuery("UPDATE Post p SET p.outCount = :new_out_count WHERE p.id = :post_id")
+                .setParameter("new_out_count", newOutCount).setParameter("post_id", postId).executeUpdate();
+    }
+
+
     public List<Integer> getPostIdsOrderByLatest(Integer memberId) {
         List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt DESC")
                 .setParameter("member_id", memberId).getResultList();
@@ -90,5 +107,6 @@ public class PostRepository {
                 .setParameter("member_id", memberId).getResultList();
 
         return postIdList;
+
     }
 }

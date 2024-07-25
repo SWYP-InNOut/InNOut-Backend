@@ -63,6 +63,10 @@ public class Post {
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
+    private List<InOut> inOuts = new ArrayList<>();
+
+
     public Post(Member member, String title, String outContent, String inContent, int outCount, int inCount, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom) {
         this.member = member;
         this.title = title;

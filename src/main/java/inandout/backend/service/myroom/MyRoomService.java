@@ -72,7 +72,7 @@ public class MyRoomService {
         }
 
 
-        // 게시물 id 가져오기 (게시물 최신순)
+        // 게시물 id 가져오기
         List<Integer> postIdList = new ArrayList<>();
         Integer fillterType = myRoomRequestDTO.getFillterType();
         switch (fillterType) {

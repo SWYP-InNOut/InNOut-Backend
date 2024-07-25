@@ -60,4 +60,29 @@ public class PostService {
 
         return postResponseDTO;
     }
+
+    public Integer plusInCount(Integer postId) {
+        // post찾고
+        Post post = postRepository.getPostByPostId(postId);
+        //update 쿼리
+        Integer newInCount = post.getInCount() + 1;
+
+        postRepository.updateInCount(postId, newInCount);
+
+        return newInCount;
+    }
+
+    public Integer plusOutCount(Integer postId) {
+        // post찾고
+        Post post = postRepository.getPostByPostId(postId);
+        //update 쿼리
+        Integer newOutCount = post.getOutCount() + 1;
+
+        postRepository.updateOutCount(postId, newOutCount);
+
+        return newOutCount;
+    }
+
+
+
 }
