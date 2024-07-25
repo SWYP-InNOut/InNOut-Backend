@@ -2,6 +2,7 @@ package inandout.backend.entity.member;
 
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.chat.ChatRoom;
+import inandout.backend.entity.post.InOut;
 import inandout.backend.entity.post.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +78,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<ChatRoom> chatrooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
+    private List<InOut> inOuts = new ArrayList<>();
+
     public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId) {
         Member member = new Member();
 
@@ -86,7 +90,6 @@ public class Member {
         member.password = password;
         member.platform = platform;
         member.platformId = platformId;
-
 
         return member;
     }

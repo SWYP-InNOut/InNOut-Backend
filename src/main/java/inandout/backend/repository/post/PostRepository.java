@@ -3,6 +3,7 @@ package inandout.backend.repository.post;
 import inandout.backend.entity.post.Post;
 import inandout.backend.entity.post.PostImage;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -61,5 +62,19 @@ public class PostRepository {
                 .setParameter("member_id", memberId).getSingleResult();
         System.out.println("최근 발행일: "+postCreatedAt);
         return postCreatedAt;
+    }
+
+    @Transactional
+    public void updateInCount(Integer postId, Integer newInCount) {
+        em.createQuery("UPDATE Post p SET p.inCount = :new_in_count WHERE p.id = :post_id")
+                .setParameter("new_in_count", newInCount).setParameter("post_id", postId).executeUpdate();
+
+    }
+
+    @Transactional
+    public void updateOutCount(Integer postId, Integer newOutCount) {
+        em.createQuery("UPDATE Post p SET p.outCount = :new_out_count WHERE p.id = :post_id")
+                .setParameter("new_out_count", newOutCount).setParameter("post_id", postId).executeUpdate();
+
     }
 }
