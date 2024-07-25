@@ -41,8 +41,10 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     INVALID_CLAIMS(4011, HttpStatus.UNAUTHORIZED.value(), "OAuth Claims 값이 올바르지 않습니다."),
     INVALID_REFRESH_TOKEN(4012, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 Refresh Token입니다."),
     EXPIRED_ACCESSTOKEN(4013, HttpStatus.UNAUTHORIZED.value(), "AccessToken 유효 기간이 만료되었습니다."),
-    FAILED_SEND_EMAIL(4014, HttpStatus.BAD_REQUEST.value(), "인증 메일 전송에 실패하였습니다."),
-    FAILED_EMAIL_CERTIFICATION(4015, HttpStatus.UNAUTHORIZED.value(), "이메일 인증에 실패하였습니다."),
+    EXPIRED_REFRESHTOKEN(4014, HttpStatus.UNAUTHORIZED.value(), "RefreshToken 유효 기간이 만료되었습니다."),
+    NOT_FOUND_REFRESHTOKEN(4015, HttpStatus.UNAUTHORIZED.value(), "존재하지 않는 RefreshToken입니다."),
+    FAILED_SEND_EMAIL(4016, HttpStatus.BAD_REQUEST.value(), "인증 메일 전송에 실패하였습니다."),
+    FAILED_EMAIL_CERTIFICATION(4017, HttpStatus.UNAUTHORIZED.value(), "이메일 인증에 실패하였습니다."),
 
     /**
      * 5000: 회원 정보 오류
