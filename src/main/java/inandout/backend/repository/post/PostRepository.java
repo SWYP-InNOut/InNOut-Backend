@@ -16,12 +16,12 @@ public class PostRepository {
     private final EntityManager em;
 
 
-    public List<Integer> getPostIdsByMemberId(Integer memberId) {
-        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt DESC")
-                .setParameter("member_id", memberId).getResultList();
-
-        return postIdList;
-    }
+//    public List<Integer> getPostIdsByMemberId(Integer memberId) {
+//        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id")
+//                .setParameter("member_id", memberId).getResultList();
+//
+//        return postIdList;
+//    }
 
     public Post getPostByPostId(Integer postId){
         Post post = (Post) em.createQuery("SELECT p FROM Post p WHERE p.id = :post_id")
@@ -61,5 +61,34 @@ public class PostRepository {
                 .setParameter("member_id", memberId).getSingleResult();
         System.out.println("최근 발행일: "+postCreatedAt);
         return postCreatedAt;
+    }
+
+    public List<Integer> getPostIdsOrderByLatest(Integer memberId) {
+        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt DESC")
+                .setParameter("member_id", memberId).getResultList();
+
+        return postIdList;
+    }
+
+
+    public List<Integer> getPostIdsOrderByIn(Integer memberId) {
+        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.inCount DESC")
+                .setParameter("member_id", memberId).getResultList();
+
+        return postIdList;
+    }
+
+    public List<Integer> getPostIdsOrderByOut(Integer memberId) {
+        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.outCount DESC")
+                .setParameter("member_id", memberId).getResultList();
+
+        return postIdList;
+    }
+
+    public List<Integer> getPostIdsOrderByOldest(Integer memberId) {
+        List<Integer> postIdList = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id = :member_id ORDER BY p.createdAt ASC")
+                .setParameter("member_id", memberId).getResultList();
+
+        return postIdList;
     }
 }

@@ -70,19 +70,45 @@ public class MyRoomService {
 
 
         // 게시물 id 가져오기 (게시물 최신순)
-        List<Integer> postIdList = postRepository.getPostIdsByMemberId(memberId);
+        List<Integer> postIdListLatest = postRepository.getPostIdsOrderByLatest(memberId);
+        List<Integer> postIdListIn = postRepository.getPostIdsOrderByIn(memberId);
+        List<Integer> postIdListOut = postRepository.getPostIdsOrderByOut(memberId);
+        List<Integer> postIdListOldest = postRepository.getPostIdsOrderByOldest(memberId);
 
-        // 게시물 id로 정보 가져와서 DTO에 추가
-        List<MyRoomPostDTO> myRoomPostDTOList = new ArrayList<>();
-        for (Integer postId : postIdList) {
-            myRoomPostDTOList.add(getMyRoomPostDTO(postId));
+
+        // 게시물 id로 정보 가져와서 DTO에 추가 (최신순)
+        List<MyRoomPostDTO> myRoomPostDTOListLatest = new ArrayList<>();
+        for (Integer postId : postIdListLatest) {
+            myRoomPostDTOListLatest.add(getMyRoomPostDTO(postId));
+        }
+
+        // 게시물 id로 정보 가져와서 DTO에 추가 (in많은순)
+        List<MyRoomPostDTO> myRoomPostDTOListIn = new ArrayList<>();
+        for (Integer postId : postIdListIn) {
+            myRoomPostDTOListIn.add(getMyRoomPostDTO(postId));
+        }
+
+        // 게시물 id로 정보 가져와서 DTO에 추가 (out많은순)
+        List<MyRoomPostDTO> myRoomPostDTOListOut = new ArrayList<>();
+        for (Integer postId : postIdListOut) {
+            myRoomPostDTOListOut.add(getMyRoomPostDTO(postId));
+        }
+
+        // 게시물 id로 정보 가져와서 DTO에 추가 (오래된순)
+        List<MyRoomPostDTO> myRoomPostDTOListOldest = new ArrayList<>();
+        for (Integer postId : postIdListOldest) {
+            myRoomPostDTOListOldest.add(getMyRoomPostDTO(postId));
         }
 
         //리턴할 DTO 만들기
         MyRoomResponseDTO myRoomResponseDTO = new MyRoomResponseDTO();
         myRoomResponseDTO.setMemberName(memberName);
         myRoomResponseDTO.setChats(chatResponseDTOList);
-        myRoomResponseDTO.setPosts(myRoomPostDTOList);
+
+        myRoomResponseDTO.setPostsLatest(myRoomPostDTOListLatest);
+        myRoomResponseDTO.setPostsIn(myRoomPostDTOListIn);
+        myRoomResponseDTO.setPostsOut(myRoomPostDTOListOut);
+        myRoomResponseDTO.setPostsOldest(myRoomPostDTOListOldest);
 
         return myRoomResponseDTO;
     }
@@ -93,9 +119,7 @@ public class MyRoomService {
         Post post = postRepository.getPostByPostId(postId);
         myRoomPostDTO.setPostId(post.getId());
         myRoomPostDTO.setImgUrl(postRepository.getOldestPostImage(postId));
-        myRoomPostDTO.setInCount(post.getInCount());
-        myRoomPostDTO.setOutCount(post.getOutCount());
-        myRoomPostDTO.setCreatedAt(post.getCreatedAt());
+
 
         return myRoomPostDTO;
     }

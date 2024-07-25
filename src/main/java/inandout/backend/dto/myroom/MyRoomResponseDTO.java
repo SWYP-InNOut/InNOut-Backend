@@ -13,7 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyRoomResponseDTO {
-    private String MemberName;
+    private String memberName;
     private List<ChatResponseDTO> chats;
-    private List<MyRoomPostDTO> posts;
+    private List<MyRoomPostDTO> postsLatest; // 최신순
+    private List<MyRoomPostDTO> postsIn; // in많은순
+    private List<MyRoomPostDTO> postsOut; // out많은순
+    private List<MyRoomPostDTO> postsOldest; // 오래된순
+
 }
