@@ -67,6 +67,9 @@ public class PostService {
         //update 쿼리
         Integer newInCount = post.getInCount() + 1;
 
+        //inout 테이블에 insert
+
+
         postRepository.updateInCount(postId, newInCount);
     }
 
@@ -74,8 +77,8 @@ public class PostService {
         // post찾고
         Post post = postRepository.getPostByPostId(postId);
         //update 쿼리
-        Integer newInCount = post.getInCount() + 1;
+        Integer newOutCount = post.getOutCount() + 1;
 
-        postRepository.updateOutCount(postId, newInCount);
+        postRepository.updateOutCount(postId, newOutCount);
     }
 }

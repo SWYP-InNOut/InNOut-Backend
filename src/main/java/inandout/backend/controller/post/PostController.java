@@ -19,17 +19,21 @@ public class PostController {
     public PostService postService;
 
     @PostMapping("/in")
-    public void inController(@RequestParam(value = "postId") Integer postId) {
+    public ResponseEntity inController(@RequestParam(value = "postId") Integer postId) {
         log.info("in");
         postService.plusInCount(postId);
+
+        return ResponseEntity.ok("in증가");
     }
 
     @PostMapping("/out")
-    public void outController(HttpServletRequest request, @RequestParam(value = "postId") Integer postId) {
+    public ResponseEntity outController(HttpServletRequest request, @RequestParam(value = "postId") Integer postId) {
         log.info("out");
         HttpSession session = request.getSession();
-        System.out.println("Session: "+session);
+        System.out.println("Session: "+session.getId());
         postService.plusOutCount(postId);
+
+        return ResponseEntity.ok("out 증가");
     }
 
 }

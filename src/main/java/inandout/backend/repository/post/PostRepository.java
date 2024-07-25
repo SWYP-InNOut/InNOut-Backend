@@ -66,6 +66,7 @@ public class PostRepository {
 
     @Transactional
     public void updateInCount(Integer postId, Integer newInCount) {
+        System.out.println("ㅕ");
         em.createQuery("UPDATE Post p SET p.inCount = :new_in_count WHERE p.id = :post_id")
                 .setParameter("new_in_count", newInCount).setParameter("post_id", postId).executeUpdate();
 

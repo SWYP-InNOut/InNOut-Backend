@@ -33,10 +33,15 @@ public class InOut {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY) // 다대일 양방향 연관 관계 / 연관 관계의 주인
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = true)
     private Member member;
 
 
-
-
+    public InOut(boolean isCheckIn, boolean isCheckOut, boolean isMember, Post post, Member member) {
+        this.isCheckIn = isCheckIn;
+        this.isCheckOut = isCheckOut;
+        this.isMember = isMember;
+        this.post = post;
+        this.member = member;
+    }
 }
