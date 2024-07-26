@@ -2,6 +2,7 @@ package inandout.backend.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import inandout.backend.dto.login.CustomMemberDetails;
+import inandout.backend.entity.member.Member;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
 import jakarta.servlet.FilterChain;
@@ -17,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,11 +52,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
         String email = customMemberDetails.getUsername();
 
+        Optional<Member> member = memberRepository.findByEmail(email);
+
         TokenInfo tokenInfo = jwtUtil.generateToken(email);
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie",
                 "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
+        response.setHeader("Member", String.valueOf(member.get().getId()));
 
         // redis에 refreshToken, memberId 저장
         // TODO: 추후에 clientIp도 저장할 예정
