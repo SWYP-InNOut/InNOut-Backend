@@ -109,4 +109,14 @@ public class PostRepository {
         return postIdList;
 
     }
+
+    public Post getPostByRoodId(Integer chatRoomId) throws Exception {
+        List<Post> post =  em.createQuery("SELECT p FROM Post p WHERE p.chatRoom.id = :chatroom_id")
+                .setParameter("chatroom_id", chatRoomId).getResultList();
+        if (post.size() == 0) {
+            throw new Exception("채팅방이 존재하지않습니다");
+        }
+        return post.get(0);
+
+    }
 }
