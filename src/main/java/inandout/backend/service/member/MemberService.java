@@ -21,4 +21,8 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         member.ifPresent(value -> value.updateNickname(nickname));
     }
+
+    public void updatePassword(String email, String password) {
+
+    }
 }
