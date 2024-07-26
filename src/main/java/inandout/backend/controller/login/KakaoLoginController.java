@@ -8,6 +8,7 @@ import inandout.backend.entity.member.Member;
 import inandout.backend.service.login.KakaoLoginService;
 import inandout.backend.service.login.RedisService;
 import inandout.backend.service.login.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity KakaoLoginCallBack(@RequestParam(value = "code") String code) throws IOException {
+    public ResponseEntity<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse httpServletResponse) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
@@ -60,11 +61,12 @@ public class KakaoLoginController {
 
             //redis에서 refreshToken 칮기
             String prevRefreshToken = redisService.getRefreshToken(email);
-            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, prevRefreshToken,member.get().getName());
+            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, prevRefreshToken,member.get().getName(), true);
 
+            return ResponseEntity.ok().body(kakoLoginResponseDTO);
 
         }else{  //비회원 ->가입
-            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, refreshToken, "홍길동");
+            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, refreshToken, "홍길동", false);
 
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setName("홍길동");  // 닉네임 랜덤으로 부여
@@ -77,6 +79,7 @@ public class KakaoLoginController {
 
             //redis에 refreshToken 저장
             redisService.setValues(email, refreshToken);
+            return ResponseEntity.ok().body(kakoLoginResponseDTO);
 
         }
 
@@ -84,6 +87,6 @@ public class KakaoLoginController {
 //        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
 //        System.out.println("accessToken 유효한지: "+isTokenValid);
 
-        return ResponseEntity.ok().body(kakoLoginResponseDTO);
+       // return ResponseEntity.ok().body(kakoLoginResponseDTO);
     }
 }
