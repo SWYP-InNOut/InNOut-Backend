@@ -15,7 +15,8 @@ public class JoinController {
     private final JoinService joinService;
 
     @PostMapping("/join")
-    public BaseResponse<String> joinProcess(@ModelAttribute JoinDTO joinDTO) {
+    //public BaseResponse<String> joinProcess(@ModelAttribute JoinDTO joinDTO) {
+    public BaseResponse<String> joinProcess(@RequestBody JoinDTO joinDTO) {
         joinService.joinProcess(joinDTO);
         return new BaseResponse<>("인증메일을 보냈습니다.");
     }
