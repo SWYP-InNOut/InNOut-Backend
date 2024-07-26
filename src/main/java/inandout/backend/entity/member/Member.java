@@ -32,7 +32,7 @@ public class Member {
     @Column(name = "member_id", nullable = false)
     private Integer id;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 100, nullable = false)
     private String name;
 
     @Column(length = 100, nullable = false)
@@ -111,6 +111,9 @@ public class Member {
 
     public void updateStatus(MemberStatus status) {
         this.status = status;
+    }
+    public void updateNickname(String nickname) {
+        this.name = nickname;
     }
 
     public void addPost(Post post) {
