@@ -20,5 +20,7 @@ public class MemberService {
 
         Optional<Member> member = memberRepository.findByEmail(email);
         member.ifPresent(value -> value.updateNickname(nickname));
+
+
     }
 }

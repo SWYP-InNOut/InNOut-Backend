@@ -22,7 +22,7 @@ public class LoginDTO {
     private String platformId;
 //    private LocalDateTime createdAt;
 //    private LocalDateTime updatedAt;
-//    private MemberStatus status;
+    private MemberStatus status;
 //    private boolean isPublic;
 
 
