@@ -58,7 +58,7 @@ public class KakaoLoginController {
 
 
         if (member.isPresent()) {   //회원 -> 로그인처리
-
+            System.out.println("회원임");
             //redis에서 refreshToken 칮기
             String prevRefreshToken = redisService.getRefreshToken(email);
             kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, prevRefreshToken,member.get().getName(), true);
@@ -66,6 +66,7 @@ public class KakaoLoginController {
             return ResponseEntity.ok().body(kakoLoginResponseDTO);
 
         }else{  //비회원 ->가입
+            System.out.println("비회원임");
             kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, refreshToken, "홍길동", false);
 
             LoginDTO loginDTO = new LoginDTO();
