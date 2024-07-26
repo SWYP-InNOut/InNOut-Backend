@@ -22,8 +22,7 @@ public class JWTUtil {
     }
 
     public String getEmail(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
     public Boolean isExpired(String token) throws ExpiredJwtException{

@@ -55,6 +55,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     DUPLICATED_EMAIL(5004, HttpStatus.BAD_REQUEST.value(), "중복된 이메일입니다."),
     DUPLICATED_NICKNAME(5005, HttpStatus.BAD_REQUEST.value(), "중복된 닉네임입니다."),
     ACTIVE_MEMBER(5006, HttpStatus.BAD_REQUEST.value(), "이미 가입된 사용자입니다."),
+    INVALID_PASSWORD(5007, HttpStatus.BAD_REQUEST.value(), "비밀번호가 올바르지 않습니다."),
 
     /**
      * 9000: 기타 오류
