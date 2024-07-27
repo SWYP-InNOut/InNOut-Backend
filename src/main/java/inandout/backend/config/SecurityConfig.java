@@ -3,8 +3,12 @@ package inandout.backend.config;
 import inandout.backend.jwt.JWTFilter;
 import inandout.backend.jwt.JWTUtil;
 import inandout.backend.jwt.LoginFilter;
+import inandout.backend.jwt.LogoutHandler;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +18,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -78,13 +86,13 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .logoutUrl("/logout")
                 // 로그아웃 핸들러 추가 (세션 무효화 처리)
-                .addLogoutHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    session.invalidate();
+                .addLogoutHandler(new LogoutHandler())
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        response.sendRedirect("http://stuffinout.site/login");
+                    }
                 })
-                // 로그아웃 성공 핸들러 추가 (리다이렉션 처리)
-                .logoutSuccessHandler((request, response, authentication) ->
-                        response.sendRedirect("http://stuffinout.site/login"))
                 .deleteCookies("JSESSIONID", "refreshToken"));
 
         return http.build();
