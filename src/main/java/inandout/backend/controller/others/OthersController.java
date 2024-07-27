@@ -1,6 +1,7 @@
 package inandout.backend.controller.others;
 
 
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.dto.others.OthersResponseDTO;
 import inandout.backend.service.others.OthersService;
@@ -25,9 +26,9 @@ public class OthersController {
     public OthersService othersService;
 
     @GetMapping("")
-    public ResponseEntity<List<OthersResponseDTO>> getPostController() {
+    public BaseResponse<List<OthersResponseDTO>> getPostController() {
         List<OthersResponseDTO> othersResponseDTOList = othersService.getOthersList();
-        return ResponseEntity.ok(othersResponseDTOList);
+        return new BaseResponse<>(othersResponseDTOList);
     }
 
 }

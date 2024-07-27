@@ -1,6 +1,7 @@
 package inandout.backend.controller.post;
 
 import inandout.backend.chat.stomp.StompChatRoomRepository;
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.MyRoomRequestDTO;
 import inandout.backend.dto.myroom.MyRoomResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
@@ -28,7 +29,7 @@ public class PostController {
     public StuffService stuffService;
 
     @PostMapping("/in")
-    public ResponseEntity inController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
+    public BaseResponse<Integer> inController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("in");
 
         //inout 테이블에 저장
@@ -37,11 +38,11 @@ public class PostController {
         Integer newInCount = postService.plusInCount(inOutRequestDTO.getPostId());
 
 
-        return ResponseEntity.ok(newInCount);
+        return new BaseResponse<>(newInCount);
     }
 
     @PostMapping("/out")
-    public ResponseEntity outController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
+    public BaseResponse<Integer> outController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("out");
        // HttpSession session = request.getSession();
         //inout 테이블에 저장
@@ -50,7 +51,7 @@ public class PostController {
         Integer newOutCount = postService.plusOutCount(inOutRequestDTO.getPostId());
 
 
-        return ResponseEntity.ok(newOutCount);
+        return new BaseResponse<>(newOutCount);
     }
 
 }
