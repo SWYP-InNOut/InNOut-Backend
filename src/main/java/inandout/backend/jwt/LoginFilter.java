@@ -69,7 +69,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie",
                 "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
-        response.setHeader("Member", String.valueOf(member.get().getId()));
 
         // JSON 응답 작성
         LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName());

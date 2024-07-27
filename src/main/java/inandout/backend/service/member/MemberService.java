@@ -1,5 +1,6 @@
 package inandout.backend.service.member;
 
+import inandout.backend.dto.member.IsPublicDTO;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import inandout.backend.repository.login.MemberRepository;
@@ -41,5 +42,12 @@ public class MemberService {
     public void updatePassword(String email, String password) {
         Optional<Member> member = memberRepository.findByEmail(email);
         member.ifPresent(value -> value.updatePassword(passwordEncoder.encode(password)));
+    }
+
+    public IsPublicDTO updateIsPublic(String email) {
+        Member member = memberValidator.validateMember(email);
+        member.updateIsPublic(!member.getIsPublic());
+        IsPublicDTO isPublicDTO = new IsPublicDTO(member.getIsPublic());
+        return isPublicDTO;
     }
 }

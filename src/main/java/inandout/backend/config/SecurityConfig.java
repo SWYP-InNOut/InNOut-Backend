@@ -63,14 +63,16 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
+                        // TODO: 공유 URL만 경로 모든 권한 허용해주기
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token",
-                                "/auth/verify", "/chat", "/ws/chat", "/kakaologin/callback",
-                                "/myroom/chat","/myroom/post/{postId}/chat",
-                                "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others", "/in", "/out", "/nickname", "/password", "/check-password",
-                                "/others/room","/others/post/{postId}").permitAll()    // 모든 권한 허용
-                        .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
-                        .requestMatchers("/main").authenticated());    // 로그인 한 사용자만 접근 가능
+                                "/auth/verify",  "/kakaologin/callback", "/in", "/out", "/myroom", "/others/room").permitAll()    // 모든 권한 허용
+                        // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
+                        .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
+                                "/chat", "/ws/chat", "/myroom/chat","/myroom/post/{postId}/chat",
+                                "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
+                                "/myroom/post/{postId}","/others","/others/post/{postId}").authenticated());
 
         //LoginFilter 이전에 JWTFilter 등록
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);

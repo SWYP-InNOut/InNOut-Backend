@@ -2,6 +2,7 @@ package inandout.backend.controller.login;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.KakoLoginResponseDTO;
 import inandout.backend.dto.login.LoginDTO;
 import inandout.backend.entity.auth.Platform;
@@ -56,7 +57,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response) throws IOException {
+    public BaseResponse<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
@@ -116,7 +117,7 @@ public class KakaoLoginController {
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 
 
-        return ResponseEntity.ok().body(kakoLoginResponseDTO);
+        return new BaseResponse<>(kakoLoginResponseDTO);
 
 //        //accessToken 만료되었는지 검사
 //        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");

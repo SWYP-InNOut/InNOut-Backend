@@ -2,6 +2,7 @@ package inandout.backend.controller.myroom;
 
 import inandout.backend.chat.ChatRoomService;
 import inandout.backend.chat.stomp.StompChatRoomRepository;
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.*;
 import inandout.backend.service.myroom.MyRoomService;
 import inandout.backend.service.myroom.S3Service;
@@ -32,29 +33,29 @@ public class MyRoomController {
     public ChatRoomService chatRoomService;
 
     @PostMapping({"/myroom", "/others/room"})
-    public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
+    public BaseResponse<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
 
         myRoomService.plusUserCount(myRoomRequestDTO);
 
-        return ResponseEntity.ok(myRoomResponseDTO);
+        return new BaseResponse<>(myRoomResponseDTO);
     }
 
     @PostMapping("/myroom/addstuff")
-    public ResponseEntity<MyRoomAddStuffResponseDTO> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
+    public BaseResponse<MyRoomAddStuffResponseDTO> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
                                                                               @RequestPart(value = "file") List<MultipartFile> multipartFile) {
         MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
 
 
-        return ResponseEntity.ok(myRoomAddStuffResponseDTO);
+        return new BaseResponse<>(myRoomAddStuffResponseDTO);
     }
 
     @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
-    public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
+    public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
-        return ResponseEntity.ok(postResponseDTO);
+        return new BaseResponse<>(postResponseDTO);
     }
 
 
