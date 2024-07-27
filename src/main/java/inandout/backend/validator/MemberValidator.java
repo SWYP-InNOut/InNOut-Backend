@@ -32,6 +32,16 @@ public class MemberValidator {
         return member.get();
     }
 
+    public Member validateGeneralMember(String email) {
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
+
+        if (member.isEmpty()) {
+            log.error(NOT_FOUND_MEMBER.getMessage());
+            throw new MemberException(NOT_FOUND_MEMBER);
+        }
+        return member.get();
+    }
+
     public void validateInactiveMember(String email) {
         if (!memberRepository.isActiveMember(email)) {
             log.error(INACTIVE_MEMBER.getMessage());

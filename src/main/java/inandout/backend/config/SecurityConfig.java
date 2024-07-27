@@ -64,7 +64,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
-                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token",
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "find-password",
                                 "/auth/verify",  "/kakaologin/callback", "/in", "/out", "/myroom", "/others/room").permitAll()    // 모든 권한 허용
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")

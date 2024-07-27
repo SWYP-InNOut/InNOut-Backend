@@ -53,4 +53,31 @@ public class EmailUtils {
             throw new MemberException(FAILED_SEND_EMAIL);
         }
     }
+
+    public void sendPasswordEmail(String email, String newPwd) {
+        String receiverMail = email;
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try {
+            message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
+            message.setSubject("in&out 비밀번호 찾기");// 제목
+
+            log.info(email);
+
+            String body = "<div>"
+                    + "<h1> 안녕하세요. in&out 입니다</h1>"
+                    + "<br>"
+                    + "<p>아래의 임시 비밀번호로 회원가입 하세요.<p>"
+                    + "<p>" + newPwd +"<p>"
+                    + "</div>";
+
+            message.setText(body, "utf-8", "html");// 내용, charset 타입, subtype
+            // 보내는 사람의 이메일 주소, 보내는 사람 이름
+            message.setFrom(new InternetAddress(email, "inandout"));// 보내는 사람
+            mailSender.send(message); // 메일 전송
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error(FAILED_SEND_EMAIL.getMessage());
+            throw new MemberException(FAILED_SEND_EMAIL);
+        }
+    }
 }
