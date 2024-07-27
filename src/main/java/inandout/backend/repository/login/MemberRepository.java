@@ -1,5 +1,6 @@
 package inandout.backend.repository.login;
 
+import inandout.backend.common.exception.BaseException;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import jakarta.persistence.EntityManager;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.NOT_FOUND_MEMBER;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,11 +34,16 @@ public class MemberRepository {
     }
 
     public Optional<Member> findById(Integer memberId) {
-        Member member = em.createQuery("select m from Member m where m.id=:memberId", Member.class)
-                .setParameter("memberId", memberId)
-                .getSingleResult();
+        List<Member> member = em.createQuery("select m from Member m where m.id=:memberId", Member.class)
+                .setParameter("memberId", memberId).getResultList();
+               // .getSingleResult();
 
-        return Optional.ofNullable(member);
+        //return Optional.ofNullable(member);
+        if (member.size() == 0) {
+            throw new BaseException(NOT_FOUND_MEMBER);
+        }
+
+        return member.stream().findAny();
     }
 
     public Optional<Member> findByAuthToken(String authToken) {
