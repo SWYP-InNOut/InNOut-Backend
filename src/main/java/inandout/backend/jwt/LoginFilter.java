@@ -70,15 +70,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setCharacterEncoding("utf-8");
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
-//        response.setHeader(HttpHeaders.SET_COOKIE, "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime + "; SameSite=Strict");
-
-        Cookie cookie = new Cookie("refreshToken", tokenInfo.getRefreshToken());
-        cookie.setPath("/");
-        cookie.setDomain(".stuffinout.site");
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(refreshTokenValidTime.intValue());
-        response.addCookie(cookie);
+        response.setHeader(HttpHeaders.SET_COOKIE, "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime + "; SameSite=Strict");
 
         // JSON 응답 작성
         LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName());
