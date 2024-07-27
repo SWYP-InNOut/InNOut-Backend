@@ -41,7 +41,7 @@ public class MemberController {
         return new BaseResponse<>("비밀번호 변경이 완료되었습니다.");
     }
 
-    @PostMapping("/isPublic")
+    @PostMapping("/ispublic")
     public BaseResponse<IsPublicDTO> updateIsPublic(@MemberEmail String email) {
         log.info(email);
         IsPublicDTO isPublicDTO = memberService.updateIsPublic(email);
