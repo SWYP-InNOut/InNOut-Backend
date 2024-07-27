@@ -26,7 +26,7 @@ public class MemberController {
         return new BaseResponse<>("닉네임 설정이 완료되었습니다.");
     }
 
-    @GetMapping("/password")
+    @PostMapping("/check-password")
     public BaseResponse<String> validatePassword(@MemberEmail String email, @RequestBody PasswordDTO password) {
         log.info(email);
         memberService.validatePassword(email, password.getPassword());

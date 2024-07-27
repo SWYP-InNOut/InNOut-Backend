@@ -1,7 +1,10 @@
 package inandout.backend.jwt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.login.CustomMemberDetails;
+import inandout.backend.dto.member.LoginResponseDTO;
+import inandout.backend.dto.member.NicknameDTO;
 import inandout.backend.entity.member.Member;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
@@ -18,7 +21,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.EXPIRED_ACCESSTOKEN;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -55,10 +62,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         TokenInfo tokenInfo = jwtUtil.generateToken(email);
 
+        // 응답의 콘텐츠 타입을 JSON으로 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie",
                 "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
         response.setHeader("Member", String.valueOf(member.get().getId()));
+
+        // JSON 응답 작성
+        LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName());
+        PrintWriter writer = response.getWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        writer.write(mapper.writeValueAsString(nicknameDTO));
+        writer.flush();
+        writer.close();
 
         // redis에 refreshToken, memberId 저장
         // TODO: 추후에 clientIp도 저장할 예정

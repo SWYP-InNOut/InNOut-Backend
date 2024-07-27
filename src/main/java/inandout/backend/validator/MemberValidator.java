@@ -22,6 +22,23 @@ public class MemberValidator {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public Member validateMember(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.isEmpty()) {
+            log.error(NOT_FOUND_MEMBER.getMessage());
+            throw new MemberException(NOT_FOUND_MEMBER);
+        }
+        return member.get();
+    }
+
+    public void validateInactiveMember(String email) {
+        if (!memberRepository.isActiveMember(email)) {
+            log.error(INACTIVE_MEMBER.getMessage());
+            throw new MemberException(INACTIVE_MEMBER);
+        }
+    }
+
     public void validateActiveMember(String email) {
         if (memberRepository.isActiveMember(email)) {
             log.error(ACTIVE_MEMBER.getMessage());

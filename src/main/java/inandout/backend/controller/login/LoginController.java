@@ -1,5 +1,6 @@
 package inandout.backend.controller.login;
 
+import inandout.backend.argumentresolver.MemberEmail;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.jwt.TokenInfo;
 import inandout.backend.service.login.LoginService;
@@ -22,7 +23,7 @@ public class LoginController {
     private final Long refreshTokenValidTime = (60 * 1000L) * 60 * 24 * 7; // 7일
 
     @PostMapping("/regenerate-token")
-    public BaseResponse<String> joinProcess(HttpServletRequest request, HttpServletResponse response) {
+    public BaseResponse<String> regenerateToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie refreshToken = WebUtils.getCookie(request, "refreshToken");
         TokenInfo tokenInfo = loginService.reissue(Objects.requireNonNull(refreshToken).getValue());
 

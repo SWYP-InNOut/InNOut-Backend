@@ -3,8 +3,13 @@ package inandout.backend.config;
 import inandout.backend.jwt.JWTFilter;
 import inandout.backend.jwt.JWTUtil;
 import inandout.backend.jwt.LoginFilter;
+import inandout.backend.jwt.LogoutHandler;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +18,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -53,11 +63,11 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/healthcheck",
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token",
                                 "/auth/verify", "/chat", "/ws/chat", "/kakaologin/callback",
                                 "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others", "/in", "/out", "/nickname", "/password",
+                                "/myroom/post/{postId}","/others", "/in", "/out", "/nickname", "/password", "/check-password",
                                 "/others/room","/others/post/{postId}").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/main").authenticated());    // 로그인 한 사용자만 접근 가능
@@ -72,6 +82,18 @@ public class SecurityConfig {
         http.sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // 세션을 STATELESS 상태로 설정
 
+
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                // 로그아웃 핸들러 추가 (세션 무효화 처리)
+                .addLogoutHandler(new LogoutHandler())
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        response.sendRedirect("https://stuffinout.site/login");
+                    }
+                })
+                .deleteCookies("JSESSIONID", "refreshToken"));
 
         return http.build();
     }

@@ -27,7 +27,7 @@ public class JoinController {
         if (isComplete) {
             return new RedirectView("http://stuffinout.site/login");
         } else {
-            return new RedirectView("http://stuffinout.site");    // 링크 만료 페이지로 이동
+            return new RedirectView("http://stuffinout.site/error");    // 링크 만료 페이지로 이동
         }
     }
 }
