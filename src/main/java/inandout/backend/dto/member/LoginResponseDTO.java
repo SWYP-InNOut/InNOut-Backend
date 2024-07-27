@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponseDTO {
-    private String memberId;
+    private Integer memberId;
     private String nickname;
 
-    public LoginResponseDTO(String memberId, String nickname) {
+    public LoginResponseDTO(Integer memberId, String nickname) {
         this.memberId = memberId;
         this.nickname = nickname;
     }

@@ -72,7 +72,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("Member", String.valueOf(member.get().getId()));
 
         // JSON 응답 작성
-        LoginResponseDTO nicknameDTO = new LoginResponseDTO(String.valueOf(member.get().getId()), member.get().getName());
+        LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName());
         PrintWriter writer = response.getWriter();
         ObjectMapper mapper = new ObjectMapper();
         writer.write(mapper.writeValueAsString(nicknameDTO));
