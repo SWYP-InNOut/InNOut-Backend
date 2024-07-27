@@ -44,9 +44,7 @@ public class MemberController {
     @PostMapping("/isPublic")
     public BaseResponse<IsPublicDTO> updateIsPublic(@MemberEmail String email) {
         log.info(email);
-        memberService.updateIsPublic(email);
-
-        IsPublicDTO isPublicDTO = new IsPublicDTO();
+        IsPublicDTO isPublicDTO = memberService.updateIsPublic(email);
         return new BaseResponse<>(isPublicDTO);
     }
 }

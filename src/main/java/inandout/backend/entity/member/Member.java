@@ -119,6 +119,9 @@ public class Member {
     public void updatePassword(String password) {
         this.password = password;
     }
+    public void updateIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 
     public void addPost(Post post) {
         this.posts.add(post);
