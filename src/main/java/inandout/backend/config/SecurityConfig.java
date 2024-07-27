@@ -53,7 +53,7 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/healthcheck",
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token",
                                 "/auth/verify", "/chat", "/ws/chat", "/kakaologin/callback",
                                 "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff",
