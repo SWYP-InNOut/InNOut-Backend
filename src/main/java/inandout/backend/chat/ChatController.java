@@ -61,11 +61,11 @@ public class ChatController {
 
 
     // 룸 생성 관련
-    @PostMapping("/chat")
-    public ChatRoom createRoom(@RequestParam(value="memberId") int memberId) {
-        System.out.println("ChatController/createRoom");
-        return chatRoomService.createRoom();
-    }
+//    @PostMapping("/chat")
+//    public ChatRoom createRoom(@RequestParam(value="memberId") int memberId) {
+//        System.out.println("ChatController/createRoom");
+//        return chatRoomService.createRoom();
+//    }
 
     @GetMapping("/chat")
     public List<ChatRoom> getAll() {

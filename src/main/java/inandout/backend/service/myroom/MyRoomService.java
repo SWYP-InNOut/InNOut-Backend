@@ -2,10 +2,7 @@ package inandout.backend.service.myroom;
 
 import inandout.backend.common.exception.BaseException;
 import inandout.backend.dto.chat.ChatResponseDTO;
-import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
-import inandout.backend.dto.myroom.MyRoomPostDTO;
-import inandout.backend.dto.myroom.MyRoomRequestDTO;
-import inandout.backend.dto.myroom.MyRoomResponseDTO;
+import inandout.backend.dto.myroom.*;
 import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.post.Post;
@@ -133,7 +130,7 @@ public class MyRoomService {
         //memberRepository.save(member.get());
     }
 
-    public void addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO, List<MultipartFile> multipartFile) {
+    public MyRoomAddStuffResponseDTO addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO, List<MultipartFile> multipartFile) {
         System.out.println("addStuff");
 
         //Member 찾기
@@ -149,6 +146,7 @@ public class MyRoomService {
         // 채팅방 생성
         ChatRoom chatRoom = new ChatRoom(member.get());
         chatRoomJPARepository.save(chatRoom);
+        MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = new MyRoomAddStuffResponseDTO(chatRoom.getId());
 
         // s3에 이미지 저장
         List<String> imageUrls = s3Service.uploadFile(multipartFile);
@@ -163,6 +161,7 @@ public class MyRoomService {
             postImageJPARepository.save(postImage);
         }
 
+        return myRoomAddStuffResponseDTO;
     }
 
 
