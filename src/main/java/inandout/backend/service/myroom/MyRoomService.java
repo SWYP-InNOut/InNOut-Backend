@@ -71,7 +71,7 @@ public class MyRoomService {
 
         // 게시물 id 가져오기
         List<Integer> postIdList = new ArrayList<>();
-        Integer fillterType = myRoomRequestDTO.getFillterType();
+        Integer fillterType = myRoomRequestDTO.getFilterType();
         switch (fillterType) {
             case 0: // 최신순
                 postIdList =  postRepository.getPostIdsOrderByLatest(memberId);

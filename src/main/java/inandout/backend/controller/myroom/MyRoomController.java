@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/myroom")
 public class MyRoomController {
 
     @Autowired
@@ -32,7 +31,7 @@ public class MyRoomController {
     @Autowired
     public ChatRoomService chatRoomService;
 
-    @PostMapping("")
+    @PostMapping({"/myroom", "/others/room"})
     public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
@@ -42,7 +41,7 @@ public class MyRoomController {
         return ResponseEntity.ok(myRoomResponseDTO);
     }
 
-    @PostMapping("/addstuff")
+    @PostMapping("/myroom/addstuff")
     public ResponseEntity<MyRoomAddStuffResponseDTO> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
                                                                               @RequestPart(value = "file") List<MultipartFile> multipartFile) {
         MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
@@ -51,7 +50,7 @@ public class MyRoomController {
         return ResponseEntity.ok(myRoomAddStuffResponseDTO);
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
     public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 

@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MyRoomRequestDTO {
     private Integer memberId;
-    private Integer fillterType;
+    private Integer filterType;
 }
