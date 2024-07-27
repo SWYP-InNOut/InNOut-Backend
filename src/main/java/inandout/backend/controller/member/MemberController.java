@@ -2,6 +2,7 @@ package inandout.backend.controller.member;
 
 import inandout.backend.argumentresolver.MemberEmail;
 import inandout.backend.common.response.BaseResponse;
+import inandout.backend.dto.member.IsPublicDTO;
 import inandout.backend.dto.member.NicknameDTO;
 import inandout.backend.dto.member.PasswordDTO;
 import inandout.backend.service.member.MemberService;
@@ -38,5 +39,14 @@ public class MemberController {
         log.info(email);
         memberService.updatePassword(email, password.getPassword());
         return new BaseResponse<>("비밀번호 변경이 완료되었습니다.");
+    }
+
+    @PostMapping("/isPublic")
+    public BaseResponse<IsPublicDTO> updateIsPublic(@MemberEmail String email) {
+        log.info(email);
+        memberService.updateIsPublic(email);
+
+        IsPublicDTO isPublicDTO = new IsPublicDTO();
+        return new BaseResponse<>(isPublicDTO);
     }
 }

@@ -42,4 +42,8 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         member.ifPresent(value -> value.updatePassword(passwordEncoder.encode(password)));
     }
+
+    public void updateIsPublic(String email) {
+
+    }
 }
