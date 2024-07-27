@@ -102,7 +102,6 @@ public class MyRoomService {
         myRoomResponseDTO.setMemberName(memberName);
 
         myRoomResponseDTO.setPublic(member.get().getIsPublic());
-
         myRoomResponseDTO.setChats(chatResponseDTOList);
         myRoomResponseDTO.setPosts(myRoomPostDTOList);
 
