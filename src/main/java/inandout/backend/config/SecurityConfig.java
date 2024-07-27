@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 "/auth/verify", "/chat", "/ws/chat", "/kakaologin/callback",
                                 "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat", "/myroom", "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others", "/in", "/out", "/nickname", "/password",
+                                "/myroom/post/{postId}","/others", "/in", "/out", "/nickname", "/password", "/check-password",
                                 "/others/room","/others/post/{postId}").permitAll()    // 모든 권한 허용
                         .requestMatchers("/admin").hasRole("ADMIN")    // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/main").authenticated());    // 로그인 한 사용자만 접근 가능

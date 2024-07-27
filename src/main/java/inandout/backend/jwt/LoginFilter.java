@@ -18,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Optional;
 
 @Slf4j
@@ -59,7 +60,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("Set-Cookie",
                 "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
         response.setHeader("Member", String.valueOf(member.get().getId()));
-        response.setHeader("Name", String.valueOf(member.get().getName()));
+        String name = URLEncoder.encode( member.get().getName(), "UTF-8");
+        response.setHeader("Name", name);
 
         // redis에 refreshToken, memberId 저장
         // TODO: 추후에 clientIp도 저장할 예정
