@@ -54,7 +54,7 @@ public class MyRoomService {
 
 
     public MyRoomResponseDTO getMyRoomInfo(MyRoomRequestDTO myRoomRequestDTO) {
-        Integer memberId = myRoomRequestDTO.getMemberId();
+        Integer memberId = myRoomRequestDTO.getOwnerId();
         //memberId로 memberName 얻기
         Optional<Member> member = memberRepository.findById(memberId);
         String memberName = member.get().getName();
@@ -121,7 +121,7 @@ public class MyRoomService {
 
     public void plusUserCount(MyRoomRequestDTO myRoomRequestDTO) {
         System.out.println("plusUserCount");
-        Integer memberId = myRoomRequestDTO.getMemberId();
+        Integer memberId = myRoomRequestDTO.getOwnerId();
         Optional<Member> member = memberRepository.findById(memberId);
         Integer userCount = member.get().getUserCount();
       //  member.get().setUserCount(userCount+1);
