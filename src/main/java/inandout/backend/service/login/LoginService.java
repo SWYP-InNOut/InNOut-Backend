@@ -63,14 +63,4 @@ public class LoginService {
 
         return tokenInfo;
     }
-
-    public void logout(String email) {
-        // 회원인지 검증
-        Member member = memberValidator.validateMember(email);
-
-        // 활성화 회원인지 검증
-        memberValidator.validateInactiveMember(email);
-
-        member.updateStatus(MemberStatus.INACTIVE);
-    }
 }
