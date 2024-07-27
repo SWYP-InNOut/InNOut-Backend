@@ -4,6 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class NicknameDTO {
-    private String nickname;
+public class PasswordDTO {
+    private String password;
 }

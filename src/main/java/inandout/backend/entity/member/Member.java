@@ -116,6 +116,9 @@ public class Member {
     public void updateNickname(String nickname) {
         this.name = nickname;
     }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 
     public void addPost(Post post) {
         this.posts.add(post);
