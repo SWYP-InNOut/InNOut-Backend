@@ -1,9 +1,6 @@
 package inandout.backend.config;
 
-import inandout.backend.jwt.JWTFilter;
-import inandout.backend.jwt.JWTUtil;
-import inandout.backend.jwt.LoginFilter;
-import inandout.backend.jwt.LogoutHandler;
+import inandout.backend.jwt.*;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
 import jakarta.servlet.ServletException;
@@ -64,8 +61,9 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
-                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "find-password",
-                                "/auth/verify",  "/kakaologin/callback", "/in", "/out", "/myroom", "/others/room").permitAll()    // 모든 권한 허용
+                        // 모든 권한 허용
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password",
+                                "/auth/verify",  "/kakaologin/callback", "/in", "/out", "/myroom", "/others/room").permitAll()
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
                         // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
@@ -83,7 +81,6 @@ public class SecurityConfig {
         //세션 설정
         http.sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // 세션을 STATELESS 상태로 설정
-
 
         http.logout(logout -> logout
                 .logoutUrl("/logout")
