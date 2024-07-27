@@ -24,7 +24,7 @@ public class JWTUtil {
     public String getEmail(String token) {
 
         String email;
-        email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+        email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
         if (email == null) {
             email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
         }

@@ -5,6 +5,7 @@ import inandout.backend.jwt.JWTUtil;
 import inandout.backend.jwt.LoginFilter;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -72,6 +74,18 @@ public class SecurityConfig {
         http.sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // 세션을 STATELESS 상태로 설정
 
+
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                // 로그아웃 핸들러 추가 (세션 무효화 처리)
+                .addLogoutHandler((request, response, authentication) -> {
+                    HttpSession session = request.getSession();
+                    session.invalidate();
+                })
+                // 로그아웃 성공 핸들러 추가 (리다이렉션 처리)
+                .logoutSuccessHandler((request, response, authentication) ->
+                        response.sendRedirect("http://stuffinout.site/login"))
+                .deleteCookies("JSESSIONID", "refreshToken"));
 
         return http.build();
     }
