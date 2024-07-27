@@ -90,7 +90,7 @@ public class SecurityConfig {
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("http://stuffinout.site/login");
+                        response.sendRedirect("https://stuffinout.site/login");
                     }
                 })
                 .deleteCookies("JSESSIONID", "refreshToken"));
