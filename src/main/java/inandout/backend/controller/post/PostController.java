@@ -1,5 +1,8 @@
 package inandout.backend.controller.post;
 
+import inandout.backend.chat.stomp.StompChatRoomRepository;
+import inandout.backend.dto.myroom.MyRoomRequestDTO;
+import inandout.backend.dto.myroom.MyRoomResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.dto.others.InOutRequestDTO;
 import inandout.backend.entity.post.Post;

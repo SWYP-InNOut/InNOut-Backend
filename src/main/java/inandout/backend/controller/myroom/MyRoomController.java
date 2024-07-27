@@ -1,9 +1,8 @@
 package inandout.backend.controller.myroom;
 
-import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
-import inandout.backend.dto.myroom.MyRoomRequestDTO;
-import inandout.backend.dto.myroom.MyRoomResponseDTO;
-import inandout.backend.dto.myroom.PostResponseDTO;
+import inandout.backend.chat.ChatRoomService;
+import inandout.backend.chat.stomp.StompChatRoomRepository;
+import inandout.backend.dto.myroom.*;
 import inandout.backend.service.myroom.MyRoomService;
 import inandout.backend.service.myroom.S3Service;
 import inandout.backend.service.post.PostService;
@@ -19,7 +18,6 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/myroom")
 public class MyRoomController {
 
     @Autowired
@@ -30,8 +28,10 @@ public class MyRoomController {
 
     @Autowired
     public PostService postService;
+    @Autowired
+    public ChatRoomService chatRoomService;
 
-    @PostMapping("")
+    @PostMapping({"/myroom", "/others/room"})
     public ResponseEntity<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
@@ -41,17 +41,19 @@ public class MyRoomController {
         return ResponseEntity.ok(myRoomResponseDTO);
     }
 
-    @PostMapping("/addstuff")
-    public ResponseEntity<String> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
-                                                           @RequestPart(value = "file") List<MultipartFile> multipartFile) {
-        myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
+    @PostMapping("/myroom/addstuff")
+    public ResponseEntity<MyRoomAddStuffResponseDTO> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
+                                                                              @RequestPart(value = "file") List<MultipartFile> multipartFile) {
+        MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
 
-        return ResponseEntity.ok("addstuff success");
+
+        return ResponseEntity.ok(myRoomAddStuffResponseDTO);
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
     public ResponseEntity<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
+
         return ResponseEntity.ok(postResponseDTO);
     }
 
