@@ -1,5 +1,7 @@
 package inandout.backend.service.login;
 
+import ch.qos.logback.core.testUtil.RandomUtil;
+import inandout.backend.Util.EmailUtils;
 import inandout.backend.common.exception.MemberException;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
@@ -8,8 +10,11 @@ import inandout.backend.jwt.TokenInfo;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.validator.MemberValidator;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.impl.security.RandomSecretKeyBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +30,9 @@ import static inandout.backend.common.response.status.BaseExceptionResponseStatu
 public class LoginService {
     private final JWTUtil jwtUtil;
     private final RedisService redisService;
-    private final MemberRepository memberRepository;
     private final MemberValidator memberValidator;
+    private final EmailUtils emailUtils;
+    private final PasswordEncoder passwordEncoder;
     private final Long refreshTokenValidTime = (60 * 1000L) * 60 * 24 * 7; // 7일
 
     public TokenInfo reissue(String refreshToken) {
@@ -62,5 +68,16 @@ public class LoginService {
         log.info(redisService.getEmail(tokenInfo.getRefreshToken()));
 
         return tokenInfo;
+    }
+
+    public void findPassword(String email) {
+        Member member = memberValidator.validateGeneralMember(email);
+        memberValidator.validateInactiveMember(email);
+
+        // 임시 비밀번호 만들기
+        String newPwd = RandomStringUtils.randomAlphanumeric(10);
+        member.updatePassword(passwordEncoder.encode(newPwd));
+
+        emailUtils.sendPasswordEmail(email, newPwd);
     }
 }

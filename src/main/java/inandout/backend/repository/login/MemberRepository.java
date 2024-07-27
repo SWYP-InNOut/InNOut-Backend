@@ -1,6 +1,8 @@
 package inandout.backend.repository.login;
 
 import inandout.backend.common.exception.BaseException;
+import inandout.backend.entity.auth.Platform;
+
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import jakarta.persistence.EntityManager;
@@ -93,6 +95,12 @@ public class MemberRepository {
         return members;
     }
 
+    public Optional<Member> findGeneralMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform", Member.class)
+                .setParameter("email", email)
+                .setParameter("platform", Platform.GENERAL)
+                .getResultList();
 
-
+        return members.stream().findAny();
+    }
 }

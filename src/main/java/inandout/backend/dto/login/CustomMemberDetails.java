@@ -54,6 +54,7 @@ public class CustomMemberDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        // ACTIVE인 사용자만 로그인 허용
         return member.getStatus().equals(MemberStatus.ACTIVE);
     }
 }
