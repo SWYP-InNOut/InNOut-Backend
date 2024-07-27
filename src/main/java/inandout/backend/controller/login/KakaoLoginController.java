@@ -7,6 +7,7 @@ import inandout.backend.dto.login.LoginDTO;
 import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
+import inandout.backend.jwt.JWTUtil;
 import inandout.backend.jwt.TokenInfo;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.KakaoLoginService;
@@ -14,6 +15,8 @@ import inandout.backend.service.login.RedisService;
 import inandout.backend.service.login.user.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,19 +30,24 @@ import java.util.Map;
 import java.util.Optional;
 
 
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/kakaologin")
 public class KakaoLoginController {
     private final Long refreshTokenValidTime = (60 * 1000L) * 60 * 24 * 7; // 7일
-
+    private final JWTUtil jwtUtil;
     @Autowired
     public KakaoLoginService kakaoLoginService;
     @Autowired
     public RedisService redisService;
     @Autowired
     public UserService userService;
+    @Autowired
+    public MemberRepository memberRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     @GetMapping("")
     public void KakaoLogin() {
@@ -57,37 +65,33 @@ public class KakaoLoginController {
 
         // 유저 정보 받기
         HashMap<String, Object> kakaoUserInfo = kakaoLoginService.getUserInfo(kakaoToken.get("accessToken"));
-        String accessToken = kakaoToken.get("accessToken");
-        String refreshToken = kakaoToken.get("refreshToken");
+        //카카오&일반로그인 accessToken 방식이 달라 문제 -> 카카오 Token 사용X
+        //String accessToken = kakaoToken.get("accessToken");
+        //String refreshToken = kakaoToken.get("refreshToken");
+
         String email = (String) kakaoUserInfo.get("email");
+        boolean isMember;
+
+        TokenInfo tokenInfo= jwtUtil.generateToken(email);
+        String accessToken = tokenInfo.getAccessToken();
+        String refreshToken = tokenInfo.getRefreshToken();
+
+        //redis에 refreshToken 저장
+        redisService.setValues(email, refreshToken);
 
         // email로 회원 찾기
         Optional<Member> member = userService.findUser(email);
 
-        //쿠키생성
-        Map<String, String> cookieValues = new HashMap<>();
-        cookieValues.put("accessToken", accessToken);
-
-        String newRefreshToken;
+        //String newRefreshToken;
+        // 로그인할때마다 refreshToken 새로 생성
 
         if (member.isPresent()) {   //회원 -> 로그인처리
             System.out.println("회원임");
-            //redis에서 refreshToken 칮기
-            String prevRefreshToken = redisService.getRefreshToken(email);
-            System.out.println("이전 refreshToken: "+prevRefreshToken);
+            isMember = true;
 
-            if (prevRefreshToken == null) {
-                newRefreshToken = refreshToken;
-                redisService.setValues(email, refreshToken);
-
-            } else {
-                newRefreshToken = prevRefreshToken;
-            }
-            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, newRefreshToken, member.get().getName(), true);
 
         }else{  //비회원 ->가입
             System.out.println("비회원임");
-            kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, refreshToken, "홍길동", false);
 
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setName("홍길동");  // 닉네임 랜덤으로 부여
@@ -97,20 +101,17 @@ public class KakaoLoginController {
             loginDTO.setPlatformId("1");
             loginDTO.setStatus(MemberStatus.INACTIVE);
 
-            newRefreshToken = refreshToken;
             System.out.println("저장!");
             userService.save(loginDTO);
-
-            //redis에 refreshToken 저장
-            redisService.setValues(email, refreshToken);
+            isMember = false;
 
         }
 
-        TokenInfo tokenInfo =TokenInfo.builder()
-                .grantType("Bearer")
-                .accessToken(accessToken)
-                .refreshToken(newRefreshToken)
-                .build();
+
+        Member loginMember = memberRepository.findByEmail(email).get();
+        System.out.println("loginMember; "+loginMember.getId());
+        kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId());
+
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 

@@ -13,9 +13,10 @@ import lombok.Setter;
 public class KakoLoginResponseDTO {
 
     private String accessToken;
-    private String refreshToken;
-    private String name;
+//    private String refreshToken;
+//    private String name;
     private boolean isMember;
+    private Integer memberId;
 
 
 

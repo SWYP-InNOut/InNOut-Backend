@@ -82,7 +82,7 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<InOut> inOuts = new ArrayList<>();
 
-    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId) {
+    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId, MemberStatus memberStatus) {
         Member member = new Member();
 
         member.name = name;
@@ -90,6 +90,7 @@ public class Member {
         member.password = password;
         member.platform = platform;
         member.platformId = platformId;
+        member.status = memberStatus;
 
         return member;
     }
