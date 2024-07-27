@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MyRoomResponseDTO {
     private String memberName;
+    private boolean isPublic;
     private List<ChatResponseDTO> chats;
     private List<MyRoomPostDTO> posts; // 최신순
 //    private List<MyRoomPostDTO> postsIn; // in많은순
