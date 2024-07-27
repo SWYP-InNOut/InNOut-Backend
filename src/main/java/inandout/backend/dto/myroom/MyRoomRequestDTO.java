@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyRoomRequestDTO {
-    private Integer memberId;
+    private Integer ownerId;
     private Integer filterType;
 }
