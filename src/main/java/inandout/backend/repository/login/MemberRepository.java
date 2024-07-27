@@ -84,4 +84,7 @@ public class MemberRepository {
         List<Member> members = em.createQuery("SELECT m FROM Member m ORDER BY m.userCount DESC").getResultList();
         return members;
     }
+
+
+
 }

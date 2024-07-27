@@ -22,11 +22,21 @@ public class JWTUtil {
     }
 
     public String getEmail(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
+
+        String email;
+        email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+        if (email == null) {
+            email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
+        }
+        return email;
+       // return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+
     }
 
     public Boolean isExpired(String token) throws ExpiredJwtException{
-
+        System.out.println("isExpired: "+token);
+        System.out.println("secretKey: "+secretKey);
+        System.out.println(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date(System.currentTimeMillis())));
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date(System.currentTimeMillis()));
     }
 
@@ -49,7 +59,7 @@ public class JWTUtil {
     }
 
     public TokenInfo generateToken(String email) {
-        String accessToken = createAccessToken(email, accessTokenValidTime);
+        String accessToken =    createAccessToken(email, accessTokenValidTime);
         String refreshToken = createRefreshToken(refreshTokenValidTime);
 
         return TokenInfo.builder()

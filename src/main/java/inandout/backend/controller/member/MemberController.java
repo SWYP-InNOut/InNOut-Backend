@@ -20,6 +20,8 @@ public class MemberController {
 
     @PostMapping("/nickname")
     public BaseResponse<String> setNickname(@MemberEmail String email, @RequestBody NicknameDTO nickname) {
+        System.out.println("들어옴");
+        System.out.println("email:::: "+email);
         memberService.updateNickname(email, nickname.getNickname());
         return new BaseResponse<>("닉네임 설정이 완료되었습니다.");
     }
