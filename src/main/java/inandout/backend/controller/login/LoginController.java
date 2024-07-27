@@ -30,8 +30,7 @@ public class LoginController {
         TokenInfo tokenInfo = loginService.reissue(Objects.requireNonNull(refreshToken).getValue());
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
-        response.setHeader("Set-Cookie",
-                "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
+        response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 
         return new BaseResponse<>("토큰 발급이 완료되었습니다.");
     }
