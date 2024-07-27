@@ -1,8 +1,10 @@
 package inandout.backend.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.login.CustomMemberDetails;
 import inandout.backend.dto.member.LoginResponseDTO;
+import inandout.backend.dto.member.NicknameDTO;
 import inandout.backend.entity.member.Member;
 import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.RedisService;
@@ -22,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.EXPIRED_ACCESSTOKEN;
 
 
 @Slf4j
