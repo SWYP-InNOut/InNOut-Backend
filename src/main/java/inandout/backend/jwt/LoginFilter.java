@@ -59,6 +59,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("Set-Cookie",
                 "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
         response.setHeader("Member", String.valueOf(member.get().getId()));
+        response.setHeader("Name", String.valueOf(member.get().getName()));
 
         // redis에 refreshToken, memberId 저장
         // TODO: 추후에 clientIp도 저장할 예정
