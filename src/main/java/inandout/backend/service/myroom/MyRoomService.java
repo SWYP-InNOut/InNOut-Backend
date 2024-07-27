@@ -100,7 +100,7 @@ public class MyRoomService {
         //리턴할 DTO 만들기
         MyRoomResponseDTO myRoomResponseDTO = new MyRoomResponseDTO();
         myRoomResponseDTO.setMemberName(memberName);
-        myRoomResponseDTO.setPublic(member.isPresent());
+        myRoomResponseDTO.setPublic(member.get().getIsPublic());
         myRoomResponseDTO.setChats(chatResponseDTOList);
         myRoomResponseDTO.setPosts(myRoomPostDTOList);
 
