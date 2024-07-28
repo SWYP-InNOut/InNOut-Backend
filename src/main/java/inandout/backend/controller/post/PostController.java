@@ -33,7 +33,7 @@ public class PostController {
         log.info("in");
         Integer newInCount;
         //inout 테이블에 저장/삭제
-        if (inOutRequestDTO.getInType() > 0) {
+        if (inOutRequestDTO.getInoutType() > 0) {
             stuffService.saveIn(inOutRequestDTO);
 
         } else {
@@ -41,7 +41,7 @@ public class PostController {
         }
 
         //post 테이블에서 in 증가/감소
-        newInCount = postService.updateInCount(inOutRequestDTO.getPostId(), inOutRequestDTO.getInType());
+        newInCount = postService.updateInCount(inOutRequestDTO.getPostId(), inOutRequestDTO.getInoutType());
 
         return new BaseResponse<>(newInCount);
     }
@@ -49,12 +49,18 @@ public class PostController {
     @PostMapping("/out")
     public BaseResponse<Integer> outController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("out");
-       // HttpSession session = request.getSession();
-        //inout 테이블에 저장
-        stuffService.saveOut(inOutRequestDTO);
-        //post 테이블에서 in 증가
-        Integer newOutCount = postService.plusOutCount(inOutRequestDTO.getPostId());
 
+        Integer newOutCount;
+        //inout 테이블에 저장/삭제
+        if (inOutRequestDTO.getInoutType() > 0) {
+            stuffService.saveOut(inOutRequestDTO);
+
+        } else {
+            stuffService.deleteOut(inOutRequestDTO);
+        }
+
+        //post 테이블에서 in 증가/감소
+        newOutCount = postService.updateOutCount(inOutRequestDTO.getPostId(), inOutRequestDTO.getInoutType());
 
         return new BaseResponse<>(newOutCount);
     }

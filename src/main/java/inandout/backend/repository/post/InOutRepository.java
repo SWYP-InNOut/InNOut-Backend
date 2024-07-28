@@ -34,7 +34,7 @@ public class InOutRepository {
     }
 
 
-    public Integer findByPostAndMember(Integer postId, Integer memberId) {
+    public Integer findInByPostAndMember(Integer postId, Integer memberId) {
         List<Integer> inoutId = em.createQuery("SELECT io.id FROM InOut io " +
                 "WHERE member.id = :member_id AND post.id = :post_id AND isCheckIn = true")
                 .setParameter("member_id", memberId).setParameter("post_id", postId).getResultList();
@@ -49,5 +49,18 @@ public class InOutRepository {
     @Transactional
     public void deleteInOut(Integer inoutId) {
         em.createQuery("DELETE FROM InOut io WHERE io.id = :inout_id").setParameter("inout_id", inoutId).executeUpdate();
+    }
+
+
+    public Integer findOutByPostAndMember(Integer postId, Integer memberId) {
+        List<Integer> inoutId = em.createQuery("SELECT io.id FROM InOut io " +
+                        "WHERE member.id = :member_id AND post.id = :post_id AND isCheckOut = true")
+                .setParameter("member_id", memberId).setParameter("post_id", postId).getResultList();
+
+        for (Integer id : inoutId) {
+            System.out.println("인아웃 id: "+id);
+            return id;
+        }
+        throw new RuntimeException("없는 inout id");
     }
 }

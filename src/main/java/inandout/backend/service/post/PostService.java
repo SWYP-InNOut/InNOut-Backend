@@ -83,11 +83,11 @@ public class PostService {
         return postResponseDTO;
     }
 
-    public Integer updateInCount(Integer postId, Integer inType) {
+    public Integer updateInCount(Integer postId, Integer inoutType) {
         // post찾고
         Post post = postRepository.getPostByPostId(postId);
         //update 쿼리
-        Integer newInCount = post.getInCount() + inType;
+        Integer newInCount = post.getInCount() + inoutType;
 
         postRepository.updateInCount(postId, newInCount);
 
@@ -106,5 +106,14 @@ public class PostService {
     }
 
 
+    public Integer updateOutCount(Integer postId, Integer inoutType) {
+        // post찾고
+        Post post = postRepository.getPostByPostId(postId);
+        //update 쿼리
+        Integer newOutCount = post.getOutCount() + inoutType;
 
+        postRepository.updateOutCount(postId, newOutCount);
+
+        return newOutCount;
+    }
 }
