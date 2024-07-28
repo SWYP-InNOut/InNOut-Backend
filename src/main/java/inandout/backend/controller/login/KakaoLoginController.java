@@ -2,7 +2,6 @@ package inandout.backend.controller.login;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.KakoLoginResponseDTO;
 import inandout.backend.dto.login.LoginDTO;
 import inandout.backend.entity.auth.Platform;
@@ -17,17 +16,16 @@ import inandout.backend.service.login.user.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -57,7 +55,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response) throws IOException {
+    public RedirectView KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response , RedirectAttributes redirectAttributes) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
@@ -86,11 +84,12 @@ public class KakaoLoginController {
         //String newRefreshToken;
         // 로그인할때마다 refreshToken 새로 생성
 
+        String redirectUrl;
         if (member.isPresent()) {   //회원 -> 로그인처리
             System.out.println("회원임");
             isMember = true;
 
-
+            redirectUrl = "/";
         }else{  //비회원 ->가입
             System.out.println("비회원임");
 
@@ -105,7 +104,7 @@ public class KakaoLoginController {
             System.out.println("저장!");
             userService.save(loginDTO);
             isMember = false;
-
+            redirectUrl = "/setting";
         }
 
 
@@ -117,12 +116,7 @@ public class KakaoLoginController {
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 
 
-        return ResponseEntity.ok(kakoLoginResponseDTO);
+        return new RedirectView(redirectUrl);
 
-//        //accessToken 만료되었는지 검사
-//        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
-//        System.out.println("accessToken 유효한지: "+isTokenValid);
-
-       // return ResponseEntity.ok().body(kakoLoginResponseDTO);
     }
 }
