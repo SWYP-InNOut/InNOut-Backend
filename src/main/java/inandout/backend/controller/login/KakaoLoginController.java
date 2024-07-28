@@ -2,6 +2,7 @@ package inandout.backend.controller.login;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.KakoLoginResponseDTO;
 import inandout.backend.dto.login.LoginDTO;
 import inandout.backend.entity.auth.Platform;
@@ -55,8 +56,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
-
-    public RedirectView KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response , RedirectAttributes redirectAttributes) throws IOException {
+    public BaseResponse<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse httpServletResponse) throws IOException {
 
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
@@ -77,13 +77,13 @@ public class KakaoLoginController {
         String accessToken = tokenInfo.getAccessToken();
         String refreshToken = tokenInfo.getRefreshToken();
 
+
         //redis에 refreshToken 저장
         redisService.setValues(email, refreshToken);
 
         // email로 회원 찾기
         Optional<Member> member = userService.findUser(email);
 
-        //String newRefreshToken;
         // 로그인할때마다 refreshToken 새로 생성
 
         String redirectUrl;
@@ -91,7 +91,6 @@ public class KakaoLoginController {
             System.out.println("회원임");
             isMember = true;
 
-            redirectUrl = "/";
         }else{  //비회원 ->가입
             System.out.println("비회원임");
 
@@ -106,7 +105,8 @@ public class KakaoLoginController {
             System.out.println("저장!");
             userService.save(loginDTO);
             isMember = false;
-            redirectUrl = "/setting";
+
+
         }
 
 
@@ -114,12 +114,21 @@ public class KakaoLoginController {
         System.out.println("loginMember; "+loginMember.getId());
         kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId());
 
-        response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
-        response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
+//        response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
+//        response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 
 
+        Cookie Cookie = new Cookie("refreshToken", refreshToken);
+        Cookie.setHttpOnly(true);
+        Cookie.setSecure(true);
+        Cookie.setPath("/");
+        Cookie.setMaxAge(60 * 60 * 24);
+        httpServletResponse.addCookie(Cookie);
+        System.out.println("쿠키 정보 전달 완료 : "+ Cookie);
 
-        return new RedirectView(redirectUrl);
+
+        return new BaseResponse<>(kakoLoginResponseDTO);
+
 
 
 //        //accessToken 만료되었는지 검사
