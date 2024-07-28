@@ -55,7 +55,9 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/callback")
+
     public RedirectView KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response , RedirectAttributes redirectAttributes) throws IOException {
+
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
@@ -116,7 +118,14 @@ public class KakaoLoginController {
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
 
 
+
         return new RedirectView(redirectUrl);
+
+
+//        //accessToken 만료되었는지 검사
+//        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
+//        System.out.println("accessToken 유효한지: "+isTokenValid);
+
 
     }
 }
