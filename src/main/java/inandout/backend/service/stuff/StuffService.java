@@ -74,4 +74,12 @@ public class StuffService {
 
     }
 
+    public void deleteIn(InOutRequestDTO inOutRequestDTO) {
+        System.out.println("deleteIn");
+        // inout Id 찾기 (postid, memberid 같고 in=true인거)
+        Integer inoutId =  inOutRepository.findByPostAndMember(inOutRequestDTO.getPostId(), inOutRequestDTO.getMemberId());
+        System.out.println("inoudtId: " + inoutId);
+        // 삭제
+        inOutRepository.deleteInOut(inoutId);
+    }
 }

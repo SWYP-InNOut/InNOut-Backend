@@ -83,11 +83,11 @@ public class PostService {
         return postResponseDTO;
     }
 
-    public Integer plusInCount(Integer postId) {
+    public Integer updateInCount(Integer postId, Integer inType) {
         // post찾고
         Post post = postRepository.getPostByPostId(postId);
         //update 쿼리
-        Integer newInCount = post.getInCount() + 1;
+        Integer newInCount = post.getInCount() + inType;
 
         postRepository.updateInCount(postId, newInCount);
 

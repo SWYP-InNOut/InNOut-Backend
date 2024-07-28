@@ -1,5 +1,6 @@
 package inandout.backend.repository.post;
 
+import inandout.backend.common.exception.BaseException;
 import inandout.backend.entity.post.InOut;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -30,5 +31,23 @@ public class InOutRepository {
 
         return resultList;
 
+    }
+
+
+    public Integer findByPostAndMember(Integer postId, Integer memberId) {
+        List<Integer> inoutId = em.createQuery("SELECT io.id FROM InOut io " +
+                "WHERE member.id = :member_id AND post.id = :post_id AND isCheckIn = true")
+                .setParameter("member_id", memberId).setParameter("post_id", postId).getResultList();
+
+        for (Integer id : inoutId) {
+            System.out.println("인아웃 id: "+id);
+            return id;
+        }
+        throw new RuntimeException("없는 inout id");
+    }
+
+    @Transactional
+    public void deleteInOut(Integer inoutId) {
+        em.createQuery("DELETE FROM InOut io WHERE io.id = :inout_id").setParameter("inout_id", inoutId).executeUpdate();
     }
 }

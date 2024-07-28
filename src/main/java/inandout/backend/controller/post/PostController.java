@@ -31,12 +31,17 @@ public class PostController {
     @PostMapping("/in")
     public BaseResponse<Integer> inController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("in");
+        Integer newInCount;
+        //inout 테이블에 저장/삭제
+        if (inOutRequestDTO.getInType() > 0) {
+            stuffService.saveIn(inOutRequestDTO);
 
-        //inout 테이블에 저장
-        stuffService.saveIn(inOutRequestDTO);
-        //post 테이블에서 in 증가
-        Integer newInCount = postService.plusInCount(inOutRequestDTO.getPostId());
+        } else {
+            stuffService.deleteIn(inOutRequestDTO);
+        }
 
+        //post 테이블에서 in 증가/감소
+        newInCount = postService.updateInCount(inOutRequestDTO.getPostId(), inOutRequestDTO.getInType());
 
         return new BaseResponse<>(newInCount);
     }
