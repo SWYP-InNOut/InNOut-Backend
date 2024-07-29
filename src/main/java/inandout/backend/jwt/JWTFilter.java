@@ -32,6 +32,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info(request.getRequestURI());
+
         if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/regenerate-token")
                 || request.getRequestURI().equals("/join") || request.getRequestURI().equals("/auth/verify")
                 || request.getRequestURI().equals("/kakaologin/callback")
