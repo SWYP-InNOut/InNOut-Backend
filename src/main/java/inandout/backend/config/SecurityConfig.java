@@ -62,7 +62,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
                         // 모든 권한 허용
-                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password",
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/in", "/out", "/myroom", "/others/room").permitAll()
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
@@ -85,14 +85,15 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .logoutUrl("/logout")
                 // 로그아웃 핸들러 추가 (세션 무효화 처리)
-                .addLogoutHandler(new LogoutHandler())
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("https://stuffinout.site/login");
+                        response.setContentType("application/text");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write("로그아웃 성공");
                     }
                 })
-                .deleteCookies("JSESSIONID", "refreshToken"));
+                .addLogoutHandler(new LogoutHandler(redisService)));
 
         return http.build();
     }
