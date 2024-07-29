@@ -23,6 +23,8 @@ public class S3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
+    private String location = "ap-northeast-2";
+
     private final AmazonS3 s3Client;
 
     public List<String> uploadFile(List<MultipartFile> multipartFile) {
@@ -38,13 +40,15 @@ public class S3Service {
             System.out.println("fileName: "+fileName);
             System.out.println("fileNametype: "+file.getContentType());
 
+            String image_url = "https://"+bucket+".s3."+location+".amazonaws.com/"+fileName;
+
             try(InputStream inputStream = file.getInputStream()) {
                 s3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
             } catch(IOException e) {
                 throw new RuntimeException("uploadFile 오류");
             }
-            fileNameList.add(fileName);
+            fileNameList.add(image_url);
         });
 
         return fileNameList;
@@ -71,6 +75,7 @@ public class S3Service {
         if (!fileValidate.contains(idxFileName)) {
             return "파일 잘못된 형식";
         }
+
         return fileName.substring(fileName.lastIndexOf("."));
     }
 
