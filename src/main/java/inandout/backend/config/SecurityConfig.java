@@ -93,8 +93,7 @@ public class SecurityConfig {
                         response.getWriter().write("로그아웃 성공");
                     }
                 })
-                .addLogoutHandler(new LogoutHandler(redisService))
-                .deleteCookies("JSESSIONID", "refreshToken"));
+                .addLogoutHandler(new LogoutHandler(redisService)));
 
         return http.build();
     }
