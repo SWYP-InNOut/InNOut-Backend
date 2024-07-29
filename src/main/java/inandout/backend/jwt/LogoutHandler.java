@@ -21,6 +21,10 @@ public class LogoutHandler extends SecurityContextLogoutHandler {
     private final RedisService redisService;
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        // redis의 refreshToken 삭제
+        Cookie refreshToken = WebUtils.getCookie(request, "refreshToken");
+        redisService.deleteRefreshToken(Objects.requireNonNull(refreshToken).getValue());
+
         if (this.isInvalidateHttpSession()) {
             HttpSession session = request.getSession(false);
             if (session != null) {
@@ -28,19 +32,12 @@ public class LogoutHandler extends SecurityContextLogoutHandler {
             }
         }
 
-        for (Cookie cookie : request.getCookies()) {
-            String cookieName = cookie.getName();
-            Cookie cookieToDelete = new Cookie(cookieName, null);
-            cookieToDelete.setMaxAge(0);
-            response.addCookie(cookieToDelete);
-        }
+        Cookie cookieToDelete = new Cookie("refreshToken", null);
+        cookieToDelete.setMaxAge(0);
+        response.addCookie(cookieToDelete);
 
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
-
-        // redis의 refreshToken 삭제
-        Cookie refreshToken = WebUtils.getCookie(request, "refreshToken");
-        redisService.deleteRefreshToken(Objects.requireNonNull(refreshToken).getValue());
     }
 }

@@ -85,6 +85,14 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .logoutUrl("/logout")
                 // 로그아웃 핸들러 추가 (세션 무효화 처리)
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        response.setContentType("application/text");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write("로그아웃 성공");
+                    }
+                })
                 .addLogoutHandler(new LogoutHandler(redisService))
                 .deleteCookies("JSESSIONID", "refreshToken"));
 
