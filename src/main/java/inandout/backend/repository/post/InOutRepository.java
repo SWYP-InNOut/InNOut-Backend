@@ -21,14 +21,19 @@ public class InOutRepository {
         em.persist(inOut);
     }
 
-
-    public List getIsCheckedInfo(Integer memberId, Integer postId) {
-
+    public InOut getIsCheckedInfo(int memberId, int postId) {
         // 투표했는지 여부 체크
-        List resultList= em.createQuery("SELECT io.isCheckIn, io.isCheckOut FROM InOut io WHERE member.id = :member_id AND post.id = :post_id")
-                .setParameter("member_id", memberId).setParameter("post_id", postId).getResultList();
+        InOut inout = em.createQuery("select io from InOut io where io.member.id = :member_id and post.id = :post_id", InOut.class)
+                .setParameter("member_id", memberId)
+                .setParameter("post_id", postId)
+                .getSingleResult();
 
-        return resultList;
+        return inout;
+    }
 
+    public Boolean getExistMember(int memberId) {
+        return em.createQuery("select count(io) > 0 from InOut io where member.id = :member_id", Boolean.class)
+                .setParameter("member_id", memberId)
+                .getSingleResult();
     }
 }

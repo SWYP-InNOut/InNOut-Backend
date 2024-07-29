@@ -2,6 +2,7 @@ package inandout.backend.service.post;
 
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
+import inandout.backend.entity.post.InOut;
 import inandout.backend.entity.post.Post;
 import inandout.backend.repository.chat.ChatRepository;
 import inandout.backend.repository.post.InOutRepository;
@@ -49,22 +50,30 @@ public class PostService {
         String outContent = post.get().getOutContent();
 
         //in/out 선택했는지 여부 가져오기
-        List<?> isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
+        InOut isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
         boolean isCheckedIn = false;
         boolean isCheckedOut = false;
 
-        for (Object o : isCheckedInfo) {
-            Object[] result = (Object[]) o;
-            boolean resultIn = (boolean) result[0];
-            boolean resultOut = (boolean) result[1];
-
-            if (resultIn) {
-                isCheckedIn = resultIn;
-            }
-            if (resultOut) {
-                isCheckedOut = resultOut;
-            }
+        if (isCheckedInfo.isCheckIn()) {
+            isCheckedIn = true;
         }
+
+        if (isCheckedInfo.isCheckOut()) {
+            isCheckedOut = true;
+        }
+//
+//        for (Object o : isCheckedInfo) {
+//            Object[] result = (Object[]) o;
+//            boolean resultIn = (boolean) result[0];
+//            boolean resultOut = (boolean) result[1];
+//
+//            if (resultIn) {
+//                isCheckedIn = resultIn;
+//            }
+//            if (resultOut) {
+//                isCheckedOut = resultOut;
+//            }
+//        }
 
         // 상위 5개 가져오기(임의)
         List<ChatResponseDTO> chatResponseDTOS = chatService.getPostChat(memberId, postId);

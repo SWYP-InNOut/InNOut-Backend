@@ -1,4 +1,4 @@
-package inandout.backend.dto.others;
+package inandout.backend.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,4 +13,6 @@ public class InOutRequestDTO {
     private Integer postId;
     private Boolean isMember;
     private Integer memberId;
+    private Boolean in;
+    private Boolean out;
 }

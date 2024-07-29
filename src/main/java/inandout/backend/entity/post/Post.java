@@ -80,4 +80,12 @@ public class Post {
 //        this.chats = chats;
         this.chatRoom = chatRoom;
     }
+
+    public void updateOutCount(int outCount) {
+        this.outCount = outCount;
+    }
+
+    public void updateInCount(int inCount) {
+        this.inCount = inCount;
+    }
 }
