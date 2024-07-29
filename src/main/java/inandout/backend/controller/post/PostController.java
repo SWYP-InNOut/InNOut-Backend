@@ -31,17 +31,4 @@ public class PostController {
         return new BaseResponse<>(inOutResponseDTO);
     }
 
-//    @PostMapping("/out")
-//    public BaseResponse<Integer> outController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
-//        log.info("out");
-//       // HttpSession session = request.getSession();
-//        //inout 테이블에 저장
-//        stuffService.saveOut(inOutRequestDTO);
-//        //post 테이블에서 in 증가
-//        Integer newOutCount = postService.plusOutCount(inOutRequestDTO.getPostId());
-//
-//
-//        return new BaseResponse<>(newOutCount);
-//    }
-
 }

@@ -23,7 +23,7 @@ public class InOutRepository {
 
     public InOut getIsCheckedInfo(int memberId, int postId) {
         // 투표했는지 여부 체크
-        InOut inout = em.createQuery("select io from InOut io where io.member.id = :member_id and post.id = :post_id", InOut.class)
+        InOut inout = em.createQuery("select io from InOut io where io.member.id = :member_id and io.post.id = :post_id", InOut.class)
                 .setParameter("member_id", memberId)
                 .setParameter("post_id", postId)
                 .getSingleResult();
@@ -32,7 +32,7 @@ public class InOutRepository {
     }
 
     public Boolean getExistMember(int memberId) {
-        return em.createQuery("select count(io) > 0 from InOut io where member.id = :member_id", Boolean.class)
+        return em.createQuery("select count(io) > 0 from InOut io where io.member.id = :member_id", Boolean.class)
                 .setParameter("member_id", memberId)
                 .getSingleResult();
     }
