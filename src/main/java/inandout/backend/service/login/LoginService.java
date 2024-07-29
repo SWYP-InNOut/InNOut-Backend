@@ -63,7 +63,7 @@ public class LoginService {
         // redis에 duration 저장하여 만료시간 설정
         // email찾고 accessToken, refreshToken 생성
         TokenInfo tokenInfo = jwtUtil.generateToken(email);
-        redisService.setValues(tokenInfo.getRefreshToken(), email, Duration.ofMillis(refreshTokenValidTime));
+        redisService.setValues(tokenInfo.getRefreshToken(), email);
 
         log.info(redisService.getEmail(tokenInfo.getRefreshToken()));
 
