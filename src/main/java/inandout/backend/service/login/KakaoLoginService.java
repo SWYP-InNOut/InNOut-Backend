@@ -33,6 +33,7 @@ public class KakaoLoginService {
 
     // 토큰 가져오기
     public HashMap<String, String> getAccessToken(String code) throws IOException {
+        System.out.println("KakaoLoginService/getAccessToken");
 //        String reqUrl = "https://kauth.kakao.com/oauth/token";  //얜 픽스되어있는 주소
 //
 //
@@ -72,12 +73,13 @@ public class KakaoLoginService {
             bw.flush();
 
             int responseCode = conn.getResponseCode();
-            log.info("[KakaoApi.getAccessToken] responseCode = {}", responseCode);
+            System.out.println("[KakaoApi.getAccessToken] responseCode = {}"+ responseCode);
 
             BufferedReader br;
             if (responseCode >= 200 && responseCode < 300) {
                 br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {
+                System.out.println("에러시불시불");
                 br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
             }
 
@@ -107,6 +109,7 @@ public class KakaoLoginService {
 
     // accessToken으로 유저정보 가져오기
     public HashMap<String, Object> getUserInfo(String accessToken) throws IOException {
+        System.out.println("KakaoLoginService/accessToken");
         HashMap<String, Object> kakaoUserInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
 
