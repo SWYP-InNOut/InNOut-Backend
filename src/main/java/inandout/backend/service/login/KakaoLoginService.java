@@ -4,6 +4,7 @@ package inandout.backend.service.login;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 
 @Service
+@Slf4j
 public class KakaoLoginService {
 
     @Value("${spring.KAKAO_API_KEY}")
@@ -31,31 +33,58 @@ public class KakaoLoginService {
 
     // 토큰 가져오기
     public HashMap<String, String> getAccessToken(String code) throws IOException {
+        String reqUrl = "https://kauth.kakao.com/oauth/token";  //얜 픽스되어있는 주소
+
+
         HashMap<String, String> kakaoToken = new HashMap<>();
         System.out.println("KakaoLoginService/getAccessToken");
         System.out.println("code: "+code);
         String accessToken = "";
         String refreshToken = "";
 
-        String reqUrl = "https://kauth.kakao.com/oauth/token";  //얜 픽스되어있는 주소
-
         URL url = new URL(reqUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        // POST 전송
-        // POST시 outputstream 객체로 데이터 전송 -> setDoOutput(true)로하여 "outputstream 객체로 전송할 데이터 있음!" 설정
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
+        //필수 헤더 세팅
+        conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        conn.setDoOutput(true); //OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
 
-        // POST 요청시 보낼 파라미터 셋팅
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
         StringBuilder sb = new StringBuilder();
+
+        //필수 쿼리 파라미터 세팅
         sb.append("grant_type=authorization_code");
-        sb.append("&client_id="+kakaoApiKey);
-        sb.append("&redirect_uri="+kakaoRedirectURI);
-        sb.append("&code=" + code);
+        sb.append("&client_id=").append(kakaoApiKey);
+        sb.append("&redirect_uri=").append(kakaoRedirectURI);
+        sb.append("&code=").append(code);
+
         bw.write(sb.toString());
         bw.flush();
+
+
+        int responseCode = conn.getResponseCode();
+        log.info("[KakaoApi.getAccessToken] responseCode = {}", responseCode);
+
+
+
+
+//        URL url = new URL(reqUrl);
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//
+//        // POST 전송
+//        // POST시 outputstream 객체로 데이터 전송 -> setDoOutput(true)로하여 "outputstream 객체로 전송할 데이터 있음!" 설정
+//        conn.setRequestMethod("POST");
+//        conn.setDoOutput(true);
+//
+//        // POST 요청시 보낼 파라미터 셋팅
+//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("grant_type=authorization_code");
+//        sb.append("&client_id="+kakaoApiKey);
+//        sb.append("&redirect_uri="+kakaoRedirectURI);
+//        sb.append("&code=" + code);
+//        bw.write(sb.toString());
+//        bw.flush();
 
         BufferedReader br;
         br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
