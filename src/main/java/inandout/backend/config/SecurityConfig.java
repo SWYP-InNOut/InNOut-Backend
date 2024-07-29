@@ -62,15 +62,16 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
                         // 모든 권한 허용
+
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
-                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room").permitAll()
+                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin").permitAll()
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
                         // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
                         .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
                                 "/chat", "/ws/chat", "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others","/others/post/{postId}", "/kakaologin").authenticated());
+                                "/myroom/post/{postId}","/others","/others/post/{postId}").authenticated());
 
         //LoginFilter 이전에 JWTFilter 등록
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
