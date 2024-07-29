@@ -32,16 +32,9 @@ public class LogoutHandler extends SecurityContextLogoutHandler {
             }
         }
 
-//        Cookie cookieToDelete = new Cookie("refreshToken", null);
-//        cookieToDelete.setHttpOnly(true);
-//        cookieToDelete.setSecure(true);
-//        cookieToDelete.setPath("/");
-//        cookieToDelete.setMaxAge(0);
-//        response.addCookie(cookieToDelete);
-
         String refreshTokenCookie = "refreshToken=; Path=/; HttpOnly; Secure; Max-Age=0; SameSite=None";
         response.setHeader("Set-Cookie", refreshTokenCookie);
-        
+
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0
         response.setHeader("Expires", "0"); // Proxies
