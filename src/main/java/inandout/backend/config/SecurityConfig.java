@@ -85,13 +85,7 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .logoutUrl("/logout")
                 // 로그아웃 핸들러 추가 (세션 무효화 처리)
-                .addLogoutHandler(new LogoutHandler())
-                .logoutSuccessHandler(new LogoutSuccessHandler() {
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("https://stuffinout.site/login");
-                    }
-                })
+                .addLogoutHandler(new LogoutHandler(redisService))
                 .deleteCookies("JSESSIONID", "refreshToken"));
 
         return http.build();
