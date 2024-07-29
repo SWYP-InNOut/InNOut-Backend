@@ -37,6 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/regenerate-token")
                 || request.getRequestURI().equals("/join") || request.getRequestURI().equals("/auth/verify")
                 || request.getRequestURI().equals("/kakaologin/callback")
+                || request.getRequestURI().equals("/kakaologin")
                 || request.getRequestURI().equals("/find-password")) {
             filterChain.doFilter(request, response);
             return;

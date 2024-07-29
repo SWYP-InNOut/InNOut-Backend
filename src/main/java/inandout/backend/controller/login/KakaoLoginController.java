@@ -50,22 +50,31 @@ public class KakaoLoginController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    @GetMapping("")
-    public void KakaoLogin() {
-        System.out.println("KakaoLoginController/KakaoLogin");
-        // 버튼 눌렀을때 로그인창 뜨게하는거 백에서 구현할거면 여기 사용
+    @GetMapping("/callback")
+    public void KakaoLogin(@RequestParam(value = "code") String code) {
+        System.out.println("KakaoLoginController/KakaoLogin -> TEST");
+        System.out.println("Test로 들어온 code: "+code);
+
+
     }
 
-    @GetMapping("/callback")
+
+    @GetMapping("")
     public ResponseEntity<KakoLoginResponseDTO> KakaoLoginCallBack(@RequestParam(value = "code") String code, HttpServletResponse response) throws IOException {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
+
+
+// 주석 풀어야돼
 
         // 엑세스/리프레쉬 토큰 받기
         HashMap<String, String> kakaoToken  = kakaoLoginService.getAccessToken(code);
 
         // 유저 정보 받기
         HashMap<String, Object> kakaoUserInfo = kakaoLoginService.getUserInfo(kakaoToken.get("accessToken"));
+
+
+
         //카카오&일반로그인 accessToken 방식이 달라 문제 -> 카카오 Token 사용X
         //String accessToken = kakaoToken.get("accessToken");
         //String refreshToken = kakaoToken.get("refreshToken");
