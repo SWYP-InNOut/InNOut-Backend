@@ -35,7 +35,7 @@ public class LoginController {
         response.setHeader(HttpHeaders.SET_COOKIE, "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime + "; SameSite=None");
 
         return new BaseResponse<>("토큰 발급이 완료되었습니다.");
-    }
+    }답
 
     @PostMapping("/find-password")
     public BaseResponse<String> findPassword(@RequestBody FindPasswordDTO findPasswordDTO) {
