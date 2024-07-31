@@ -102,7 +102,7 @@ public class StuffService {
 //                post.updateOutCount(post.getOutCount()+1);
 //            }
         }
-        return new InOutResponseDTO(post.getInCount(), post.getOutCount());
+        return new InOutResponseDTO(post.getInCount(), post.getOutCount(), inOutRequestDTO.getIn(), inOutRequestDTO.getOut());
     }
 
 }
