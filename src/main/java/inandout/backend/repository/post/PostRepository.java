@@ -136,8 +136,8 @@ public class PostRepository {
 
     public List<Post> getPostByUserCount(List<Integer> memberIds) {
 
-        List<Post> posts = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id IN (:membersIds) " +
-                "ORDER BY p.userCount DESC").getResultList();
+        List<Post> posts = em.createQuery("SELECT p FROM Post p WHERE p.member.id IN (:membersIds) " +
+                "ORDER BY p.userCount DESC").setParameter("membersIds", memberIds).getResultList();
         return posts;
 
 

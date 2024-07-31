@@ -118,7 +118,10 @@ public class ChatRepository {
     public String getChatContentByChatId(Integer chatId) {
         String content = (String) em.createQuery("SELECT c.chatContent FROM chat c WHERE c.id = :chat_id")
                 .setParameter("chat_id", chatId).getSingleResult();
-
+        if (content.isEmpty()) {
+            System.out.println("null임");
+            return null;
+        }
         return content;
     }
 

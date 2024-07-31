@@ -64,7 +64,7 @@ public class SecurityConfig {
                         // 모든 권한 허용
 
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
-                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin").permitAll()
+                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others").permitAll()
 
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
                                 "/chat", "/ws/chat", "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff").authenticated());
+                                "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff" ).authenticated());
 
         //LoginFilter 이전에 JWTFilter 등록
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
