@@ -29,18 +29,20 @@ public class S3Service {
 
     public List<String> uploadFile(List<MultipartFile> multipartFile, String postId) {
         System.out.println("S3Service/uploadFile");
+        System.out.println("uploadFile/postId: "+postId);
         List<String> fileNameList = new ArrayList<>();
 
         multipartFile.forEach(file -> {
             System.out.println(file.toString());
             String fileName = createFileName(file.getOriginalFilename()); // 파일 이름 가져옴
+            fileName = postId+"-"+fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata(); // s3에 업로드되는 객체 관련 정보
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
             System.out.println("fileName: "+fileName);
             System.out.println("fileNametype: "+file.getContentType());
 
-            String image_url = "https://"+bucket+".s3."+location+".amazonaws.com/"+postId+"-"+fileName;
+            String image_url = "https://"+bucket+".s3."+location+".amazonaws.com/"+fileName;
 
             try(InputStream inputStream = file.getInputStream()) {
                 s3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)

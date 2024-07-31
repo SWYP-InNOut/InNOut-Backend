@@ -154,7 +154,7 @@ public class MyRoomService {
         //post 객체 생성
         Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime, chatRoom);
         Integer postId = postJPARepository.save(post).getId();
-
+        System.out.println("postId: "+postId);
 
         // s3에 이미지 저장
         List<String> imageUrls = s3Service.uploadFile(multipartFile, String.valueOf(postId));
