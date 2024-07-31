@@ -27,7 +27,7 @@ public class S3Service {
 
     private final AmazonS3 s3Client;
 
-    public List<String> uploadFile(List<MultipartFile> multipartFile) {
+    public List<String> uploadFile(List<MultipartFile> multipartFile, String postId) {
         System.out.println("S3Service/uploadFile");
         List<String> fileNameList = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class S3Service {
             System.out.println("fileName: "+fileName);
             System.out.println("fileNametype: "+file.getContentType());
 
-            String image_url = "https://"+bucket+".s3."+location+".amazonaws.com/"+fileName;
+            String image_url = "https://"+bucket+".s3."+location+".amazonaws.com/"+postId+"-"+fileName;
 
             try(InputStream inputStream = file.getInputStream()) {
                 s3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
