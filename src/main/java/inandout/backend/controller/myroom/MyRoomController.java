@@ -57,5 +57,12 @@ public class MyRoomController {
         return new BaseResponse<>(postResponseDTO);
     }
 
+    @GetMapping("/myroom/link")
+    public BaseResponse<LinkResponseDTO> generateLinkController(@RequestBody MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
+        LinkResponseDTO linkResponseDTO = postService.getLink(myRoomLinkRequestDTO);
+
+        return new BaseResponse<>(linkResponseDTO);
+    }
+
 
 }
