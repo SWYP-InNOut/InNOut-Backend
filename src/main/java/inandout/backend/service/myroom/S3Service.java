@@ -27,13 +27,15 @@ public class S3Service {
 
     private final AmazonS3 s3Client;
 
-    public List<String> uploadFile(List<MultipartFile> multipartFile) {
+    public List<String> uploadFile(List<MultipartFile> multipartFile, String postId) {
         System.out.println("S3Service/uploadFile");
+        System.out.println("uploadFile/postId: "+postId);
         List<String> fileNameList = new ArrayList<>();
 
         multipartFile.forEach(file -> {
             System.out.println(file.toString());
             String fileName = createFileName(file.getOriginalFilename()); // 파일 이름 가져옴
+            fileName = postId+"-"+fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata(); // s3에 업로드되는 객체 관련 정보
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
@@ -52,6 +54,18 @@ public class S3Service {
         });
 
         return fileNameList;
+    }
+
+
+    public void deleteFile(Integer postId, List<String> imageUrls){
+        System.out.println("deleteFile from S3!");
+
+        for (String imageUrl : imageUrls) {
+            System.out.println("삭제: " + imageUrls);
+            s3Client.deleteObject(bucket, imageUrl);
+        }
+
+
     }
 
     // 파일명 중복 방지 (UUID)

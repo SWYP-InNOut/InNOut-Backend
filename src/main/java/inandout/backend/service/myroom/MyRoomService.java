@@ -150,12 +150,14 @@ public class MyRoomService {
         chatRoomJPARepository.save(chatRoom);
         MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = new MyRoomAddStuffResponseDTO(chatRoom.getId());
 
-        // s3에 이미지 저장
-        List<String> imageUrls = s3Service.uploadFile(multipartFile);
 
         //post 객체 생성
         Post post = new Post(member.get(), title, outContent, inContent, 0, 0, currentDateTime, currentDateTime, chatRoom);
-        postJPARepository.save(post);
+        Integer postId = postJPARepository.save(post).getId();
+        System.out.println("postId: "+postId);
+
+        // s3에 이미지 저장
+        List<String> imageUrls = s3Service.uploadFile(multipartFile, String.valueOf(postId));
 
         // url을 DB에 저장
         for (String imageUrl : imageUrls) {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -118,5 +119,13 @@ public class PostRepository {
         }
         return post.get(0);
 
+    }
+
+    @Transactional
+    public void updatePost(Integer postId, String title, String inContent, String outContent) {
+        em.createQuery("UPDATE Post p SET p.title = :title, p.inContent = :inContent, p.outContent = :outContent " +
+                "WHERE p.id = :postId").setParameter("title", title).setParameter("inContent", inContent).
+                setParameter("outContent", outContent).setParameter("postId", postId)
+                .executeUpdate();
     }
 }
