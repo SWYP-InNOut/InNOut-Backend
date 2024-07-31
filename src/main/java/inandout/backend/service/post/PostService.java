@@ -1,7 +1,5 @@
 package inandout.backend.service.post;
 
-import inandout.backend.common.exception.BaseException;
-import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.dto.post.UpdateStuffRequestDTO;
@@ -22,8 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
-
-import static inandout.backend.common.response.status.BaseExceptionResponseStatus.BAD_REQUEST;
 
 @Service
 public class PostService {
@@ -152,5 +148,19 @@ public class PostService {
             PostImage postImage = new PostImage(post, imageUrl, currentDateTime, currentDateTime);
             postImageJPARepository.save(postImage);
         }
+    }
+
+    public void plusUserCount(Integer postId) {
+        Integer currentUserCount = postRepository.getPostByPostId(postId).getUserCount();
+        postRepository.updateUserCount(postId, currentUserCount);
+
+
+        //        Integer memberId = myRoomRequestDTO.getOwnerId();
+//        Optional<Member> member = memberRepository.findById(memberId);
+//       // Integer userCount = member.get().getUserCount();
+//      //  member.get().setUserCount(userCount+1);
+//
+//       // memberRepository.updateUserCount(memberId, userCount + 1);
+//        //memberRepository.save(member.get());
     }
 }

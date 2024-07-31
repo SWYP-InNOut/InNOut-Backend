@@ -18,7 +18,7 @@ public class OthersResponseDTO {
     private Integer postCount;
     private Integer inCount;
     private Integer outCount;
-    private Integer userCount; // 조회수
+//    private Integer userCount; // 조회수
     private LocalDateTime recentPostDate;
 
 

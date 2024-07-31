@@ -37,7 +37,7 @@ public class MyRoomController {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
 
-        myRoomService.plusUserCount(myRoomRequestDTO);
+//        myRoomService.plusUserCount(myRoomRequestDTO);
 
         return new BaseResponse<>(myRoomResponseDTO);
     }
@@ -53,6 +53,10 @@ public class MyRoomController {
     @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
     public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
+
+        //조회수 up
+        postService.plusUserCount(postId);
+
 
         return new BaseResponse<>(postResponseDTO);
     }

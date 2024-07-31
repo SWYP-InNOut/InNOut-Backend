@@ -53,10 +53,10 @@ public class OthersService {
             outCount += post.getOutCount();
         }
 
-        Integer userCount = member.getUserCount();
+
         LocalDateTime recentPostDate = postRepository.getRecentPostDateByMemberId(memberId);
 
-        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, postCount, inCount, outCount, userCount, recentPostDate);
+        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, postCount, inCount, outCount, recentPostDate);
         return othersResponseDTO;
 
     }

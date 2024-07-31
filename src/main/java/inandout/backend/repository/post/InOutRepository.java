@@ -23,12 +23,20 @@ public class InOutRepository {
 
     public InOut getIsCheckedInfo(int memberId, int postId) {
         // 투표했는지 여부 체크
-        InOut inout = em.createQuery("select io from InOut io where io.member.id = :member_id and io.post.id = :post_id", InOut.class)
+        List<InOut> inout = em.createQuery("select io from InOut io where io.member.id = :member_id and io.post.id = :post_id", InOut.class)
                 .setParameter("member_id", memberId)
                 .setParameter("post_id", postId)
-                .getSingleResult();
+                .getResultList();
+                //.getSingleResult();
 
-        return inout;
+
+        if (inout.size() != 0) {
+            for(InOut io : inout){
+                return io;
+            }
+        }
+
+        return null;
     }
 
     public Boolean getExistMember(int memberId) {
