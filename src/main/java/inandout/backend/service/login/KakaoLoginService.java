@@ -4,6 +4,7 @@ package inandout.backend.service.login;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 
 @Service
+@Slf4j
 public class KakaoLoginService {
 
     @Value("${spring.KAKAO_API_KEY}")
@@ -31,61 +33,83 @@ public class KakaoLoginService {
 
     // 토큰 가져오기
     public HashMap<String, String> getAccessToken(String code) throws IOException {
-        HashMap<String, String> kakaoToken = new HashMap<>();
         System.out.println("KakaoLoginService/getAccessToken");
-        System.out.println("code: "+code);
+//        String reqUrl = "https://kauth.kakao.com/oauth/token";  //얜 픽스되어있는 주소
+//
+//
+        HashMap<String, String> kakaoToken = new HashMap<>();
+//        System.out.println("KakaoLoginService/getAccessToken");
+//        System.out.println("code: "+code);
+//        String accessToken = "";
+//        String refreshToken = "";
+//
+//        String accessToken = "";
+//        String refreshToken = "";
+//        String reqUrl = "https://kauth.kakao.com/oauth/token";
+
+
         String accessToken = "";
         String refreshToken = "";
+        String reqUrl = "https://kauth.kakao.com/oauth/token";
 
-        String reqUrl = "https://kauth.kakao.com/oauth/token";  //얜 픽스되어있는 주소
+        try{
+            URL url = new URL(reqUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        URL url = new URL(reqUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //필수 헤더 세팅
+            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+            conn.setDoOutput(true); //OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
 
-        // POST 전송
-        // POST시 outputstream 객체로 데이터 전송 -> setDoOutput(true)로하여 "outputstream 객체로 전송할 데이터 있음!" 설정
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
 
-        // POST 요청시 보낼 파라미터 셋팅
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-        StringBuilder sb = new StringBuilder();
-        sb.append("grant_type=authorization_code");
-        sb.append("&client_id="+kakaoApiKey);
-        sb.append("&redirect_uri="+kakaoRedirectURI);
-        sb.append("&code=" + code);
-        bw.write(sb.toString());
-        bw.flush();
+            //필수 쿼리 파라미터 세팅
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=").append(kakaoApiKey);
+            sb.append("&redirect_uri=").append(kakaoRedirectURI);
+            sb.append("&code=").append(code);
 
-        BufferedReader br;
-        br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            bw.write(sb.toString());
+            bw.flush();
 
-        String line = "";
-        StringBuilder responseSb = new StringBuilder();
-        while((line = br.readLine()) != null){
-            responseSb.append(line);
+            int responseCode = conn.getResponseCode();
+            System.out.println("[KakaoApi.getAccessToken] responseCode = {}"+ responseCode);
+
+            BufferedReader br;
+            if (responseCode >= 200 && responseCode < 300) {
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                System.out.println("에러시불시불");
+                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
+
+            String line = "";
+            StringBuilder responseSb = new StringBuilder();
+            while((line = br.readLine()) != null){
+                responseSb.append(line);
+            }
+            String result = responseSb.toString();
+            log.info("responseBody = {}", result);
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+            accessToken = element.getAsJsonObject().get("access_token").getAsString();
+            refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+
+            kakaoToken.put("accessToken", accessToken);
+
+            br.close();
+            bw.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        String result = responseSb.toString();
-        System.out.println("responseBody : "+result);
-
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(result);
-        accessToken = element.getAsJsonObject().get("access_token").getAsString();
-        refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
-
-        kakaoToken.put("accessToken",accessToken);
-        kakaoToken.put("refreshToken",refreshToken);
-        br.close();
-        bw.close();
-
-        System.out.println("accessToken: "+accessToken+", refreshToken: "+refreshToken);
-
         return kakaoToken;
     }
 
 
     // accessToken으로 유저정보 가져오기
     public HashMap<String, Object> getUserInfo(String accessToken) throws IOException {
+        System.out.println("KakaoLoginService/accessToken");
         HashMap<String, Object> kakaoUserInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
 
