@@ -22,12 +22,6 @@ public class RedisService {
         values.set(key, value);
     }
 
-    public void setValues(String key, String value, Duration duration) {
-        System.out.println("RedisService/setValues");
-        ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        values.set(key, value, duration);
-    }
-
     public String getRefreshToken(String email){
         return (String) redisTemplate.opsForValue().get(email);
     }

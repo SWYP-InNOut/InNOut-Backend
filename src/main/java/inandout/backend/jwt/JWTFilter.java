@@ -46,7 +46,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         if (request.getRequestURI().equals("/myroom") || request.getRequestURI().equals("/others/room")
-                || request.getRequestURI().equals("/in") || request.getRequestURI().equals("out")) {
+                || request.getRequestURI().equals("/inout")) {
             if (authorization == null) {
                 filterChain.doFilter(request, response);
                 return;

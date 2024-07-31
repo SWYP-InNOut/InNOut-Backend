@@ -44,4 +44,12 @@ public class InOut {
         this.post = post;
         this.member = member;
     }
+
+    public void updateIn(boolean in) {
+        this.isCheckIn = in;
+    }
+
+    public void updateOut(boolean out) {
+        this.isCheckOut = out;
+    }
 }
