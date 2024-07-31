@@ -47,7 +47,10 @@ spring:
       password: ${REDIS_PASSWORD}
 
   mail:
-    request_Uri: ${MAIL_REQUEST_URI}
+    request-uri: ${MAIL_REQUEST_URI}
+
+#  link:
+#    request-uri: ${LINK_REQUEST_URI}
 
   cloud:
     aws:
@@ -99,7 +102,10 @@ spring:
       password: ${REDIS_PASSWORD}
 
   mail:
-    request_Uri: ${MAIL_REQUEST_URI}
+    request-uri: ${MAIL_REQUEST_URI}
+
+#  link:
+#    request-uri: ${LINK_REQUEST_URI}
 
   cloud:
     aws:
@@ -150,7 +156,10 @@ spring:
       password: ${REDIS_PASSWORD}
 
   mail:
-    request_Uri: ${MAIL_REQUEST_URI}
+    request-uri: ${MAIL_REQUEST_URI}
+
+#  link:
+#    request-uri: ${LINK_REQUEST_URI}
 
   cloud:
     aws:

@@ -21,7 +21,7 @@ import static inandout.backend.common.response.status.BaseExceptionResponseStatu
 public class EmailUtils {
     @Value("${mail.username}")
     private String email;
-    @Value("${spring.mail.request_Uri}")
+    @Value("${spring.mail.request-uri}")
     private String requestUri;
 
     private final JavaMailSender mailSender;

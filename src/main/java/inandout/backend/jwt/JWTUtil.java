@@ -14,8 +14,9 @@ import java.sql.Date;
 @Component
 public class JWTUtil {
     private SecretKey secretKey;
-    private final Long accessTokenValidTime = (60 * 1000L) * 30; // 30분
-    private final Long refreshTokenValidTime = (60 * 1000L) * 60 * 24 * 7; // 7일
+    private final Long ACCESSTOKEN_VALIDTIME = (60 * 1000L) * 30; // 30분
+    private final Long REFRESHTOKEN_VALIDTIME = (60 * 1000L) * 60 * 24 * 7; // 7일
+    private final Long LINKTOKEN_VALIDTIME = (60 * 1000L) * 15; // 15분
 
     public JWTUtil(@Value("${jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
@@ -59,13 +60,24 @@ public class JWTUtil {
     }
 
     public TokenInfo generateToken(String email) {
-        String accessToken =    createAccessToken(email, accessTokenValidTime);
-        String refreshToken = createRefreshToken(refreshTokenValidTime);
+        String accessToken = createAccessToken(email, ACCESSTOKEN_VALIDTIME);
+        String refreshToken = createRefreshToken(REFRESHTOKEN_VALIDTIME);
 
         return TokenInfo.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public String generateLinkToken(int roomId) {
+        Claims claims = Jwts.claims().subject(String.valueOf(roomId)).build();
+        claims.put("ROLD_ANONYMOUS", true);
+        return Jwts.builder()
+                .claims(claims)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + LINKTOKEN_VALIDTIME))
+                .signWith(secretKey)
+                .compact();
     }
 }

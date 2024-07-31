@@ -1,11 +1,14 @@
 package inandout.backend.service.post;
 
 import inandout.backend.dto.chat.ChatResponseDTO;
+import inandout.backend.dto.myroom.LinkResponseDTO;
+import inandout.backend.dto.myroom.MyRoomLinkRequestDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.dto.post.UpdateStuffRequestDTO;
 import inandout.backend.entity.post.InOut;
 import inandout.backend.entity.post.Post;
 import inandout.backend.entity.post.PostImage;
+import inandout.backend.jwt.JWTUtil;
 import inandout.backend.repository.chat.ChatRepository;
 import inandout.backend.repository.post.InOutRepository;
 import inandout.backend.repository.post.PostImageJPARepository;
@@ -13,7 +16,7 @@ import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import inandout.backend.service.chat.ChatService;
 import inandout.backend.service.myroom.S3Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,27 +25,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
-    @Autowired
-    public PostRepository postRepository;
-
-    @Autowired
-    public PostJPARepository postJPARepository;
-
-    @Autowired
-    public ChatRepository chatRepository;
-
-    @Autowired
-    public ChatService chatService;
-
-    @Autowired
-    public PostImageJPARepository postImageJPARepository;
-
-    @Autowired
-    public InOutRepository inOutRepository;
-
-    @Autowired
-    public S3Service s3Service;
+    public final PostRepository postRepository;
+    public final PostJPARepository postJPARepository;
+    public final ChatRepository chatRepository;
+    public final ChatService chatService;
+    public final PostImageJPARepository postImageJPARepository;
+    public final InOutRepository inOutRepository;
+    public final JWTUtil jwtUtil;
+    public final S3Service s3Service;
+//    @Value("${spring.link.request-uri}")
+//    private String linkRequestUri;
 
     public PostResponseDTO getPost(Integer memberId, Integer postId) {
         //postId로 memberId -> memberName
@@ -138,8 +132,6 @@ public class PostService {
 
         //S3에서 삭제
         s3Service.deleteFile(post.getId(), imageUrls);
-
-
     }
 
     public void updatePostImages(Post post, List<String> imageUrls) {
@@ -149,6 +141,12 @@ public class PostService {
             postImageJPARepository.save(postImage);
         }
     }
+  
+      public LinkResponseDTO getLink(MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
+        String linkToken = jwtUtil.generateLinkToken(myRoomLinkRequestDTO.getRoomId());
+//        return new LinkResponseDTO(linkRequestUri + linkToken);
+        return new LinkResponseDTO(linkToken);
+      }
 
     public void plusUserCount(Integer postId) {
         Integer currentUserCount = postRepository.getPostByPostId(postId).getUserCount();
@@ -162,5 +160,8 @@ public class PostService {
 //
 //       // memberRepository.updateUserCount(memberId, userCount + 1);
 //        //memberRepository.save(member.get());
+
+
+
     }
 }
