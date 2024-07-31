@@ -1,15 +1,20 @@
 package inandout.backend.service.post;
 
+import inandout.backend.common.exception.BaseException;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.chat.ChatResponseDTO;
 import inandout.backend.dto.myroom.PostResponseDTO;
+import inandout.backend.dto.post.UpdateStuffRequestDTO;
 import inandout.backend.entity.post.InOut;
 import inandout.backend.entity.post.Post;
+import inandout.backend.entity.post.PostImage;
 import inandout.backend.repository.chat.ChatRepository;
 import inandout.backend.repository.post.InOutRepository;
 import inandout.backend.repository.post.PostImageJPARepository;
 import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import inandout.backend.service.chat.ChatService;
+import inandout.backend.service.myroom.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.BAD_REQUEST;
 
 @Service
 public class PostService {
@@ -37,6 +44,9 @@ public class PostService {
 
     @Autowired
     public InOutRepository inOutRepository;
+
+    @Autowired
+    public S3Service s3Service;
 
     public PostResponseDTO getPost(Integer memberId, Integer postId) {
         //postId로 memberId -> memberName
@@ -115,5 +125,32 @@ public class PostService {
     }
 
 
+    public void updatePost(Post post, UpdateStuffRequestDTO updateStuffRequestDTO) {
 
+        postRepository.updatePost(post.getId(), updateStuffRequestDTO.getTitle(), updateStuffRequestDTO.getInContent(), updateStuffRequestDTO.getOutContent());
+
+    }
+
+
+    public void deleteImage(Post post) {
+        //해당 게시물 기존 이미지 가져오기 & DB에서 삭제
+        List<String> imageUrls = postImageJPARepository.findUrlByPostId(post.getId());
+
+        //DB 에서 삭제
+        postImageJPARepository.deleteById(post.getId());
+        System.out.println("postimage 삭제");
+
+        //S3에서 삭제
+        s3Service.deleteFile(post.getId(), imageUrls);
+
+
+    }
+
+    public void updatePostImages(Post post, List<String> imageUrls) {
+        LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        for (String imageUrl : imageUrls) {
+            PostImage postImage = new PostImage(post, imageUrl, currentDateTime, currentDateTime);
+            postImageJPARepository.save(postImage);
+        }
+    }
 }

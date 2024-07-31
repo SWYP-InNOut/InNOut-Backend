@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 @JsonPropertyOrder({"code", "status", "message", "timestamp"})
-public class BaseErrorResponse implements ResponseStatus {
+public class BaseErrorResponse extends Throwable implements ResponseStatus {
     private final int code;
     private final int status;
     private final String message;

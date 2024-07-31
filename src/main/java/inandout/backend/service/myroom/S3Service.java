@@ -56,6 +56,18 @@ public class S3Service {
         return fileNameList;
     }
 
+
+    public void deleteFile(Integer postId, List<String> imageUrls){
+        System.out.println("deleteFile from S3!");
+
+        for (String imageUrl : imageUrls) {
+            System.out.println("삭제: " + imageUrls);
+            s3Client.deleteObject(bucket, imageUrl);
+        }
+
+
+    }
+
     // 파일명 중복 방지 (UUID)
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));

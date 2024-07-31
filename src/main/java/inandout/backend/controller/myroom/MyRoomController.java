@@ -47,7 +47,6 @@ public class MyRoomController {
                                                                               @RequestPart(value = "file") List<MultipartFile> multipartFile) {
         MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
 
-
         return new BaseResponse<>(myRoomAddStuffResponseDTO);
     }
 
