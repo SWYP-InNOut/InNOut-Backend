@@ -15,11 +15,8 @@ public class OthersResponseDTO {
 
     private String memberName;
     private Integer memberId;
-    private Integer postCount;
-    private Integer inCount;
-    private Integer outCount;
-//    private Integer userCount; // 조회수
-    private LocalDateTime recentPostDate;
+    private String imageUrl;
+    private Integer memberImageId;
 
 
 }

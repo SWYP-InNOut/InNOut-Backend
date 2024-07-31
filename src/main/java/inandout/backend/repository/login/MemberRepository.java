@@ -103,4 +103,16 @@ public class MemberRepository {
 
         return members.stream().findAny();
     }
+
+    public List<Integer> getMemberIsPublic() {
+        List<Integer> members = em.createQuery("SELECT m.id FROM Member m WHERE m.isPublic = true").getResultList();
+        return members;
+    }
+
+    public Integer getMemberImageId(Integer memberId) {
+        Integer memberImageId = (Integer) em.createQuery("SELECT m.memberImageId FROM Member m WHERE m.id = :memberId")
+                .setParameter("memberId", memberId).getSingleResult();
+
+        return memberImageId;
+    }
 }

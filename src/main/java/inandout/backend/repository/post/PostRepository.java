@@ -133,4 +133,13 @@ public class PostRepository {
                 .setParameter("updateUserCount", currentUserCount+1).setParameter("postId", postId)
                 .executeUpdate();
     }
+
+    public List<Post> getPostByUserCount(List<Integer> memberIds) {
+
+        List<Post> posts = em.createQuery("SELECT p.id FROM Post p WHERE p.member.id IN (:membersIds) " +
+                "ORDER BY p.userCount DESC").getResultList();
+        return posts;
+
+
+    }
 }
