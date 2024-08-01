@@ -11,5 +11,6 @@ public class OthersResponseDTO {
     private Integer memberId;
     private String imageUrl;
     private Integer memberImageId;
+    private Integer postId;
 
 }
