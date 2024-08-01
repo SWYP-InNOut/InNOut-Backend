@@ -74,7 +74,7 @@ public class SecurityConfig {
                                 "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff").authenticated());
 
         //LoginFilter 이전에 JWTFilter 등록
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil, memberRepository), LoginFilter.class);
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http.addFilterAt(new LoginFilter(memberRepository, authenticationManager(authenticationConfiguration), jwtUtil, redisService), UsernamePasswordAuthenticationFilter.class);
