@@ -6,12 +6,12 @@ import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,15 +27,8 @@ public class MemberRepository {
         em.persist(member);
     }
 
-    public Optional<Member> findByEmail(String email) {
-        List<Member> members = em.createQuery("select m from Member m where m.email=:email", Member.class)
-                .setParameter("email", email)
-                .getResultList();
-
-        return members.stream().findAny();
-    }
-
     public Optional<Member> findById(Integer memberId) {
+        log.info(memberId.toString());
         List<Member> member = em.createQuery("select m from Member m where m.id=:memberId", Member.class)
                 .setParameter("memberId", memberId).getResultList();
                // .getSingleResult();
@@ -49,8 +42,9 @@ public class MemberRepository {
     }
 
     public Optional<Member> findByAuthToken(String authToken) {
-        List<Member> members = em.createQuery("select m from Member m where m.authToken=:authToken", Member.class)
+        List<Member> members = em.createQuery("select m from Member m where m.authToken=:authToken and m.status=:status", Member.class)
                 .setParameter("authToken", authToken)
+                .setParameter("status", MemberStatus.NONCERTIFIED)
                 .getResultList();
 
         return members.stream().findAny();
@@ -77,9 +71,9 @@ public class MemberRepository {
                 .getSingleResult();
     }
 
-    public boolean isActiveMember(String email) {
-        return em.createQuery("select count(m)>0 from Member m where m.email=:email and m.status=:status", Boolean.class)
-                .setParameter("email", email)
+    public boolean isActiveMember(Integer memberId) {
+        return em.createQuery("select count(m)>0 from Member m where m.id=:memberId and m.status=:status", Boolean.class)
+                .setParameter("memberId", memberId)
                 .setParameter("status", MemberStatus.ACTIVE)
                 .getSingleResult();
     }
@@ -99,6 +93,15 @@ public class MemberRepository {
         List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform", Member.class)
                 .setParameter("email", email)
                 .setParameter("platform", Platform.GENERAL)
+                .getResultList();
+
+        return members.stream().findAny();
+    }
+
+    public Optional<Member> findKakaoMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform", Member.class)
+                .setParameter("email", email)
+                .setParameter("platform", Platform.KAKAO)
                 .getResultList();
 
         return members.stream().findAny();

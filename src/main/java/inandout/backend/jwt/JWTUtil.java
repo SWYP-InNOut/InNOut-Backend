@@ -22,15 +22,26 @@ public class JWTUtil {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    public String getEmail(String token) {
+//    public String getEmail(String token) {
+//
+//        String email;
+//        email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
+//        if (email == null) {
+//            email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
+//        }
+//        return email;
+//       // return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+//
+//    }
 
-        String email;
-        email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
-        if (email == null) {
-            email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
-        }
-        return email;
-       // return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+    public Integer getMemberId(String token) {
+        Integer memberId;
+        memberId = Integer.valueOf(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject());
+//        if (memberId == null) {
+//            email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
+//        }
+        return memberId;
+        // return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
 
     }
 
@@ -41,8 +52,8 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date(System.currentTimeMillis()));
     }
 
-    public String createAccessToken(String email, Long expiredMs) {
-        Claims claims = Jwts.claims().subject(email).build();
+    public String createAccessToken(int memberId, Long expiredMs) {
+        Claims claims = Jwts.claims().subject(String.valueOf(memberId)).build();
         return Jwts.builder()
                 .claims(claims)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -59,8 +70,8 @@ public class JWTUtil {
                 .compact();
     }
 
-    public TokenInfo generateToken(String email) {
-        String accessToken = createAccessToken(email, ACCESSTOKEN_VALIDTIME);
+    public TokenInfo generateToken(int memberId) {
+        String accessToken = createAccessToken(memberId, ACCESSTOKEN_VALIDTIME);
         String refreshToken = createRefreshToken(REFRESHTOKEN_VALIDTIME);
 
         return TokenInfo.builder()

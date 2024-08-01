@@ -65,8 +65,6 @@ public class SecurityConfig {
 
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin").permitAll()
-
-
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
                         // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
@@ -76,7 +74,7 @@ public class SecurityConfig {
                                 "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff").authenticated());
 
         //LoginFilter 이전에 JWTFilter 등록
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil, memberRepository), LoginFilter.class);
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http.addFilterAt(new LoginFilter(memberRepository, authenticationManager(authenticationConfiguration), jwtUtil, redisService), UsernamePasswordAuthenticationFilter.class);
