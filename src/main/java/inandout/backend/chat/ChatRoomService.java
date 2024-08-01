@@ -53,12 +53,9 @@ public class ChatRoomService {
         // 조인은 창 열었을때
 //        room.join(session);
 
-        chatMessage.setMessage(chatMessage.getMessage());
-
         TextMessage textMessage = Util.Chat.resolveTextMessage(chatMessage);
 
         room.sendMessage(textMessage);
-
 
     }
 
