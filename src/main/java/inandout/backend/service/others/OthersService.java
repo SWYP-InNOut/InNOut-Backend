@@ -51,6 +51,7 @@ public class OthersService {
 
         String memberName = post.getMember().getName();
         Integer memberId = post.getMember().getId();
+        Integer postId = post.getId();
         List<String> imageUrls = postImageJPARepository.findUrlByPostIdOrderByCreatedAt(post.getId());
         String imageUrl = null;
         if (imageUrls.size() != 0) {
@@ -58,7 +59,7 @@ public class OthersService {
         }
         Integer memberImageId = memberRepository.getMemberImageId(memberId);
 
-        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, imageUrl, memberImageId);
+        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, imageUrl, memberImageId, postId);
 
         return othersResponseDTO;
 

@@ -10,6 +10,7 @@ import inandout.backend.entity.post.Post;
 import inandout.backend.entity.post.PostImage;
 import inandout.backend.jwt.JWTUtil;
 import inandout.backend.repository.chat.ChatRepository;
+import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.repository.post.InOutRepository;
 import inandout.backend.repository.post.PostImageJPARepository;
 import inandout.backend.repository.post.PostJPARepository;
@@ -35,6 +36,7 @@ public class PostService {
     public final InOutRepository inOutRepository;
     public final JWTUtil jwtUtil;
     public final S3Service s3Service;
+    public final MemberRepository memberRepository;
 //    @Value("${spring.link.request-uri}")
 //    private String linkRequestUri;
 
@@ -42,12 +44,15 @@ public class PostService {
         //postId로 memberId -> memberName
         Integer ownerId = chatRepository.getMemberIdByPostId(postId);
         String ownerName = chatRepository.getMemberNameByMemberId(ownerId);
+        Integer owenerImageId = memberRepository.getMemberImageId(memberId);
 
         //postId로 post객체
         Optional<Post> post = postJPARepository.findById(postId);
         String title = post.get().getTitle();
         String inContent = post.get().getInContent();
         String outContent = post.get().getOutContent();
+        Integer inCount = post.get().getInCount();
+        Integer outCount = post.get().getOutCount();
 
         //in/out 선택했는지 여부 가져오기
         InOut isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
@@ -91,7 +96,7 @@ public class PostService {
         // 이미지 URLs 가져오기
         List<String> imageUrls = postImageJPARepository.findUrlByPostId(postId);
 
-        PostResponseDTO postResponseDTO = new PostResponseDTO(ownerName, ownerId, title, inContent, outContent,  LocalDateTime.now(ZoneId.of("Asia/Seoul")), isCheckedIn, isCheckedOut, chatResponseDTOList, imageUrls);
+        PostResponseDTO postResponseDTO = new PostResponseDTO(ownerName, ownerId, owenerImageId, title, inContent, outContent, LocalDateTime.now(ZoneId.of("Asia/Seoul")), isCheckedIn, isCheckedOut, inCount, outCount, chatResponseDTOList, imageUrls);
 
         return postResponseDTO;
     }

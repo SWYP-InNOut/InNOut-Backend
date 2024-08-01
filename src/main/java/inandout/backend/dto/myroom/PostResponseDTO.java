@@ -13,12 +13,15 @@ public class PostResponseDTO {
 
     private String ownerName;
     private Integer ownerId;
+    private Integer ownerImageId;
     private String title;
     private String inContent;
     private String outContent;
     private LocalDateTime createdAt;
     private boolean isCheckedIn;
     private boolean isCheckedOut;
+    private Integer inCount;
+    private Integer outCount;
     private List<ChatResponseDTO> chats;
     private List<String> imageUrls;
 
