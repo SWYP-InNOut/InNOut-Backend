@@ -31,11 +31,11 @@ public class JoinService {
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
 
-        // 이메일로 가입된 회원이 있는지 검증
-        memberValidator.validateDuplicateEmail(email);
+        memberValidator.validateGeneralActiveMember(email);
 
         String authToken = UUID.randomUUID().toString();
         if (!memberValidator.validateDuplicateEmailAndCheckExpiredToken(email)) {
+            log.info("JoinService ==== "+email);
             // 이메일 중복이 아닐 때만 이름 중복 검사 실시
             memberValidator.validateDuplicateUsername(username);
         } else {
