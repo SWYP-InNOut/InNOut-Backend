@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDTO {
 
-    private String memberName;
+    private String ownerName;
+    private Integer ownerId;
     private String title;
     private String inContent;
     private String outContent;
@@ -24,6 +24,5 @@ public class PostResponseDTO {
     private boolean isCheckedOut;
     private List<ChatResponseDTO> chats;
     private List<String> imageUrls;
-
 
 }

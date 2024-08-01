@@ -1,5 +1,6 @@
 package inandout.backend.controller.myroom;
 
+import inandout.backend.argumentresolver.MemberId;
 import inandout.backend.chat.ChatRoomService;
 import inandout.backend.chat.stomp.StompChatRoomRepository;
 import inandout.backend.common.response.BaseResponse;
@@ -51,12 +52,11 @@ public class MyRoomController {
     }
 
     @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
-    public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
+    public BaseResponse<PostResponseDTO> getPostController(@MemberId Integer memberId, @PathVariable(value = "postId") Integer postId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
         //조회수 up
         postService.plusUserCount(postId);
-
 
         return new BaseResponse<>(postResponseDTO);
     }
