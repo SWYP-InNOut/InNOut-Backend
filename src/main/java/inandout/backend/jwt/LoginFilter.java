@@ -61,9 +61,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
         String email = customMemberDetails.getUsername();
 
-        Optional<Member> member = memberRepository.findByEmail(email);
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
 
-        TokenInfo tokenInfo = jwtUtil.generateToken(email);
+        if (member.isEmpty()) {
+            response.setStatus(401);
+            return;
+        }
+
+        TokenInfo tokenInfo = jwtUtil.generateToken(member.get().getId());
 
         // 응답의 콘텐츠 타입을 JSON으로 설정
         response.setContentType("application/json");
@@ -82,10 +87,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // redis에 refreshToken, memberId 저장
         // TODO: 추후에 clientIp도 저장할 예정
-        if (memberRepository.findByEmail(email).isPresent() && memberRepository.isActiveMember(email)) {
-            redisService.setValues(tokenInfo.getRefreshToken(), email);
-
-            log.info(redisService.getEmail(tokenInfo.getRefreshToken()));
+        if (memberRepository.isActiveMember(member.get().getId())) {
+            redisService.setValues(tokenInfo.getRefreshToken(), member.get().getId());
         }
     }
 
