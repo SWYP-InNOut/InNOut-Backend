@@ -3,6 +3,7 @@ package inandout.backend.controller.member;
 import inandout.backend.argumentresolver.MemberId;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.member.IsPublicDTO;
+import inandout.backend.dto.member.ModifyUserRequestDTO;
 import inandout.backend.dto.member.NicknameDTO;
 import inandout.backend.dto.member.PasswordDTO;
 import inandout.backend.service.member.MemberService;
@@ -46,4 +47,22 @@ public class MemberController {
         IsPublicDTO isPublicDTO = memberService.updateIsPublic(memberId);
         return new BaseResponse<>(isPublicDTO);
     }
+
+    @PostMapping("/user/modify")
+    public BaseResponse<String> modifyUser(@RequestBody ModifyUserRequestDTO modifyUserRequestDTO) {
+        System.out.println("modifyUser");
+        // 닉네임 저장 (중복확인)
+        boolean isDuplicate = memberService.isDuplicateNickname(modifyUserRequestDTO.getNickname(), modifyUserRequestDTO.getMemberId());
+
+        if (isDuplicate) {
+            return new BaseResponse<>("중복된 닉네임입니다.");
+        }
+
+        // 프로필 update
+        memberService.updateProfile(modifyUserRequestDTO);
+
+        return new BaseResponse<>("프로필 변경에 성공하였습니다.");
+
+    }
+
 }

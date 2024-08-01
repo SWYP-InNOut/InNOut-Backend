@@ -38,6 +38,9 @@ public class JWTFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/kakaologin/callback")
                 || request.getRequestURI().equals("/kakaologin")
                 || request.getRequestURI().equals("/find-password")
+         //       || request.getRequestURI().equals("/user/modify")
+
+
         ) {
             filterChain.doFilter(request, response);
             return;
