@@ -2,7 +2,6 @@ package inandout.backend.controller.login;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.KakoLoginResponseDTO;
 import inandout.backend.dto.login.LoginDTO;
 import inandout.backend.entity.auth.Platform;
@@ -14,10 +13,8 @@ import inandout.backend.repository.login.MemberRepository;
 import inandout.backend.service.login.KakaoLoginService;
 import inandout.backend.service.login.RedisService;
 import inandout.backend.service.login.user.UserService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -82,15 +78,8 @@ public class KakaoLoginController {
         String email = (String) kakaoUserInfo.get("email");
         boolean isMember;
 
-        TokenInfo tokenInfo= jwtUtil.generateToken(email);
-        String accessToken = tokenInfo.getAccessToken();
-        String refreshToken = tokenInfo.getRefreshToken();
-
-        //redis에 refreshToken 저장
-        redisService.setValues(email, refreshToken);
-
         // email로 회원 찾기
-        Optional<Member> member = userService.findUser(email);
+        Optional<Member> member = userService.findKakaoUser(email);
 
         //String newRefreshToken;
         // 로그인할때마다 refreshToken 새로 생성
@@ -117,13 +106,21 @@ public class KakaoLoginController {
 
         }
 
-
-        Member loginMember = memberRepository.findByEmail(email).get();
+        Member loginMember = memberRepository.findKakaoMemberByEmail(email).get();
         System.out.println("loginMember; "+loginMember.getId());
+
+        TokenInfo tokenInfo= jwtUtil.generateToken(loginMember.getId());
+        String accessToken = tokenInfo.getAccessToken();
+        String refreshToken = tokenInfo.getRefreshToken();
+
+        //redis에 refreshToken 저장
+        redisService.setValues(refreshToken, loginMember.getId());
+
         kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId());
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
+
 
 
         return ResponseEntity.ok(kakoLoginResponseDTO);

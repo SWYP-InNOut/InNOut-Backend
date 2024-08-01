@@ -46,33 +46,31 @@ public class LoginService {
         }
 
         // 유효할 경우 Refresh Token 을 redis로부터 찾아서 email를 얻음
-        String email = redisService.getEmail(refreshToken);
+        Integer memberId = redisService.getMemberId(refreshToken);
         redisService.deleteRefreshToken(refreshToken);
 
         // Refresh Token이 Redis에 존재하는지 검증
-        if (email == null) {
+        if (memberId == null) {
             throw new MemberException(NOT_FOUND_REFRESHTOKEN);
         }
 
         // 회원인지 검증
-        memberValidator.validateMember(email);
+        memberValidator.validateMember(memberId);
 
         // 활성화 회원인지 검증
-        memberValidator.validateInactiveMember(email);
+        memberValidator.validateInactiveMember(memberId);
 
         // redis에 duration 저장하여 만료시간 설정
         // email찾고 accessToken, refreshToken 생성
-        TokenInfo tokenInfo = jwtUtil.generateToken(email);
-        redisService.setValues(tokenInfo.getRefreshToken(), email);
-
-        log.info(redisService.getEmail(tokenInfo.getRefreshToken()));
+        TokenInfo tokenInfo = jwtUtil.generateToken(memberId);
+        redisService.setValues(tokenInfo.getRefreshToken(), memberId);
 
         return tokenInfo;
     }
 
     public void findPassword(String email) {
         Member member = memberValidator.validateGeneralMember(email);
-        memberValidator.validateInactiveMember(email);
+        memberValidator.validateGeneralMember(email);
 
         // 임시 비밀번호 만들기
         String newPwd = RandomStringUtils.randomAlphanumeric(10);

@@ -1,11 +1,10 @@
 package inandout.backend.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inandout.backend.common.exception.MemberException;
 import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.dto.login.CustomMemberDetails;
-import inandout.backend.entity.auth.Platform;
 import inandout.backend.entity.member.Member;
+import inandout.backend.repository.login.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
+import java.util.Optional;
 
 import static inandout.backend.common.response.status.BaseExceptionResponseStatus.EXPIRED_ACCESSTOKEN;
 
@@ -29,6 +27,7 @@ import static inandout.backend.common.response.status.BaseExceptionResponseStatu
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -92,14 +91,12 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰에서 email 획득
-        String email = jwtUtil.getEmail(token);
-
-        //userEntity를 생성하여 값 set
-        Member member = Member.createGeneralMember("tempname", email, "temppassword", Platform.GENERAL);
+        //토큰에서 memberId 획득
+        Integer memberId = jwtUtil.getMemberId(token);
 
         //UserDetails에 회원 정보 객체 담기
-        CustomMemberDetails customMemberDetails = new CustomMemberDetails(member);
+        Optional<Member> member = memberRepository.findById(memberId);
+        CustomMemberDetails customMemberDetails = new CustomMemberDetails(member.get());
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customMemberDetails, null, customMemberDetails.getAuthorities());

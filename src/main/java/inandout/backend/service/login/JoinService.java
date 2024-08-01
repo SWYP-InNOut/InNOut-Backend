@@ -31,7 +31,8 @@ public class JoinService {
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
 
-        memberValidator.validateActiveMember(email);
+        // 이메일로 가입된 회원이 있는지 검증
+        memberValidator.validateDuplicateEmail(email);
 
         String authToken = UUID.randomUUID().toString();
         if (!memberValidator.validateDuplicateEmailAndCheckExpiredToken(email)) {

@@ -9,7 +9,6 @@ import lombok.Setter;
 public class InOutRequestDTO {
     private Integer postId;
     private Boolean isMember;
-    private Integer memberId;
     private Boolean in;
     private Boolean out;
 }

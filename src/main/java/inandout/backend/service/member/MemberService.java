@@ -20,10 +20,10 @@ public class MemberService {
     private final MemberValidator memberValidator;
     private final PasswordEncoder passwordEncoder;
 
-    public void updateNickname(String email, String nickname) {
+    public void updateNickname(Integer memberId, String nickname) {
         memberValidator.validateDuplicateUsername(nickname);
-        System.out.println("email: "+email);
-        Optional<Member> member = memberRepository.findByEmail(email);
+        System.out.println("memberId: "+memberId);
+        Optional<Member> member = memberRepository.findById(memberId);
         System.out.println(member.get().getId());
 
         member.ifPresent(value -> value.updateNickname(nickname));
@@ -35,17 +35,17 @@ public class MemberService {
 
     }
 
-    public void validatePassword(String email, String password) {
-        memberValidator.validatePassword(email, password);
+    public void validatePassword(Integer memberId, String password) {
+        memberValidator.validatePassword(memberId, password);
     }
 
-    public void updatePassword(String email, String password) {
-        Optional<Member> member = memberRepository.findByEmail(email);
+    public void updatePassword(Integer memberId, String password) {
+        Optional<Member> member = memberRepository.findById(memberId);;
         member.ifPresent(value -> value.updatePassword(passwordEncoder.encode(password)));
     }
 
-    public IsPublicDTO updateIsPublic(String email) {
-        Member member = memberValidator.validateMember(email);
+    public IsPublicDTO updateIsPublic(Integer memberId) {
+        Member member = memberValidator.validateMember(memberId);
         member.updateIsPublic(!member.getIsPublic());
         IsPublicDTO isPublicDTO = new IsPublicDTO(member.getIsPublic());
         return isPublicDTO;

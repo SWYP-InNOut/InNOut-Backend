@@ -17,7 +17,7 @@ public class CustomMemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Member> member = memberRepository.findByEmail(email);
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
         if (!member.isEmpty()) {
             // UserDetails에 담아서 return하면 AutneticationManager가 검증 함
             return new CustomMemberDetails(member.get());

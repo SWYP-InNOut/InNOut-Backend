@@ -16,10 +16,10 @@ public class RedisService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
-    public void setValues(String key, String value) {
+    public void setValues(String refreshToken, Integer memberId) {
         System.out.println("RedisService/setValues");
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        values.set(key, value);
+        values.set(refreshToken, String.valueOf(memberId));
     }
 
     public String getRefreshToken(String email){
@@ -30,8 +30,8 @@ public class RedisService {
         return (String) redisTemplate.opsForValue().getAndDelete(refreshToken);
     }
 
-    public String getEmail(String refreshToken){
-        return (String) redisTemplate.opsForValue().get(refreshToken);
+    public Integer getMemberId(String refreshToken){
+        return Integer.parseInt((String) redisTemplate.opsForValue().get(refreshToken));
     }
 
 //    public void saveTokenWithClientIpAndId(String refreshToken, String clientIp, int memberId) throws JsonProcessingException {
