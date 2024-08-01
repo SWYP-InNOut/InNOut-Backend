@@ -1,5 +1,6 @@
 package inandout.backend.controller.post;
 
+import inandout.backend.argumentresolver.MemberId;
 import inandout.backend.common.exception.BaseException;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.MyRoomAddStuffRequestDTO;
@@ -41,11 +42,11 @@ public class PostController {
     public S3Service s3Service;
 
     @PostMapping("/inout")
-    public BaseResponse<InOutResponseDTO> inOutController(@RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
+    public BaseResponse<InOutResponseDTO> inOutController(@MemberId Integer memberId, @RequestBody InOutRequestDTO inOutRequestDTO) throws Exception {
         log.info("in/out");
 
         //inout 테이블에 저장
-        InOutResponseDTO inOutResponseDTO = stuffService.saveInOut(inOutRequestDTO);
+        InOutResponseDTO inOutResponseDTO = stuffService.saveInOut(memberId, inOutRequestDTO);
 
         return new BaseResponse<>(inOutResponseDTO);
     }

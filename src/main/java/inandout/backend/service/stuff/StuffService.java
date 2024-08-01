@@ -22,14 +22,14 @@ public class StuffService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public InOutResponseDTO saveInOut(InOutRequestDTO inOutRequestDTO) {
+    public InOutResponseDTO saveInOut(Integer memberId, InOutRequestDTO inOutRequestDTO) {
         Post post = postRepository.getPostByPostId(inOutRequestDTO.getPostId());
-        Member member = memberRepository.findById(inOutRequestDTO.getMemberId()).get();
+        Member member = memberRepository.findById(memberId).get();
 
         // 회원이면 이전에 어떤걸 선택했었는지 확인, 비회원이면 로직 건너 뜀
-        if (inOutRequestDTO.getIsMember() && inOutRepository.getExistMember(inOutRequestDTO.getMemberId())) {
+        if (inOutRequestDTO.getIsMember() && inOutRepository.getExistMember(memberId)) {
             // 이전에 선택한 정보가 있으면 InOut DB에 있는 정보 update
-            InOut inOut = inOutRepository.getIsCheckedInfo(inOutRequestDTO.getMemberId(), inOutRequestDTO.getPostId());
+            InOut inOut = inOutRepository.getIsCheckedInfo(memberId, inOutRequestDTO.getPostId());
             if (!inOut.isCheckIn() && !inOut.isCheckOut()) {
                 if (inOutRequestDTO.getIn() && !inOutRequestDTO.getOut()) {
                     log.info("false false → true false → in +1");
@@ -75,7 +75,7 @@ public class StuffService {
                     post.updateInCount(post.getInCount()+1);
                 }
             }
-        } else if (inOutRequestDTO.getIsMember() && !inOutRepository.getExistMember(inOutRequestDTO.getMemberId())) {
+        } else if (inOutRequestDTO.getIsMember() && !inOutRepository.getExistMember(memberId)) {
             // 이전에 선택한 정보가 없으면 새로 넣음
             if (inOutRequestDTO.getIn() && !inOutRequestDTO.getOut()) {
                 log.info("false false → true false → in +1");
