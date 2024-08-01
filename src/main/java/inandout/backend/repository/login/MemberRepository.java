@@ -120,4 +120,28 @@ public class MemberRepository {
         return members.stream().findAny();
 
     }
+
+
+    public boolean isDuplicateNickname(String nickname, Integer memberId) {
+        System.out.println("isDuplicateNickname");
+        List<Member> Members = em.createQuery("SELECT m FROM Member m WHERE m.name = :nickname AND NOT m.id = :memberId")
+                .setParameter("nickname", nickname).setParameter("memberId", memberId)
+                .getResultList();
+        System.out.println(Members.size());
+        if (Members.size() == 0) {
+            return false; // 중복안됨
+        }else{
+            return true; // 중복임
+
+        }
+
+    }
+
+
+    @Transactional
+    public void updateMemberNameImageId(Integer memberId, String nickname, Integer memberImageId) {
+        em.createQuery("UPDATE Member m SET m.name = :nickname, m.memberImageId = :memberImageId WHERE m.id = :memberId")
+                .setParameter("nickname", nickname).setParameter("memberImageId", memberImageId).setParameter("memberId", memberId)
+                .executeUpdate();
+    }
 }

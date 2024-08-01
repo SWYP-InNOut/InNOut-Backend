@@ -2,6 +2,7 @@ package inandout.backend.controller.login;
 
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.JoinDTO;
+import inandout.backend.dto.member.JoinResponseDTO;
 import inandout.backend.service.login.JoinService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,14 @@ public class JoinController {
     private final JoinService joinService;
 
     @PostMapping("/join")
-    public BaseResponse<String> joinProcess(@RequestBody JoinDTO joinDTO) {
-        joinService.joinProcess(joinDTO);
-        return new BaseResponse<>("인증메일을 보냈습니다.");
+    public BaseResponse<JoinResponseDTO> joinProcess(@RequestBody JoinDTO joinDTO) {
+        Integer memberImageId = joinService.joinProcess(joinDTO);
+
+        JoinResponseDTO joinResponseDTO = new JoinResponseDTO("인증메일을 보냈습니다.", memberImageId);
+
+        return new BaseResponse<>(joinResponseDTO);
+        //return new BaseResponse<>("인증메일을 보냈습니다."+memberImageId);
+
     }
 
     @GetMapping("/auth/verify")

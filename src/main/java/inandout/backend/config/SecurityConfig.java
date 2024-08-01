@@ -64,7 +64,7 @@ public class SecurityConfig {
                         // 모든 권한 허용
 
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
-                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others").permitAll()
+                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify").permitAll()
 
 
 

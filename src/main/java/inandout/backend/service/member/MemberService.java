@@ -1,6 +1,7 @@
 package inandout.backend.service.member;
 
 import inandout.backend.dto.member.IsPublicDTO;
+import inandout.backend.dto.member.ModifyUserRequestDTO;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.member.MemberStatus;
 import inandout.backend.repository.login.MemberRepository;
@@ -49,5 +50,21 @@ public class MemberService {
         member.updateIsPublic(!member.getIsPublic());
         IsPublicDTO isPublicDTO = new IsPublicDTO(member.getIsPublic());
         return isPublicDTO;
+    }
+
+    public boolean isDuplicateNickname(String nickname, Integer memberId) {
+        if (memberRepository.isDuplicateNickname(nickname, memberId)) { // 중복이면
+            System.out.println("중복되는 닉네임");
+            return true;
+        }
+        return false;
+
+
+    }
+
+    public void updateProfile(ModifyUserRequestDTO modifyUserRequestDTO) {
+        //닉네임 없데이트
+        memberRepository.updateMemberNameImageId(modifyUserRequestDTO.getMemberId(), modifyUserRequestDTO.getNickname(), modifyUserRequestDTO.getMemberImageId());
+
     }
 }
