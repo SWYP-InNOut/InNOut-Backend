@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import java.util.Objects;
@@ -40,5 +37,11 @@ public class LoginController {
     public BaseResponse<String> findPassword(@RequestBody FindPasswordDTO findPasswordDTO) {
         loginService.findPassword(findPasswordDTO.getEmail());
         return new BaseResponse<>("비밀번호 찾기가 완료되었습니다.");
+    }
+
+    @PostMapping("/login")
+    public void loginController(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        System.out.println("loginController");
+
     }
 }

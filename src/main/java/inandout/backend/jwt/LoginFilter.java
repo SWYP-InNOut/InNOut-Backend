@@ -51,6 +51,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
         //token에 담은 username과 password 검증을 위해 AuthenticationManager로 전달
+        System.out.println("attemptAuthenticationr결과 : "+password);
+        System.out.println(authenticationManager.authenticate(authToken).getAuthorities());
         return authenticationManager.authenticate(authToken);
     }
 
@@ -58,6 +60,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
+        System.out.println("successfulAuthentication");
         //UserDetails
         CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
         String email = customMemberDetails.getUsername();
@@ -79,7 +82,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader(HttpHeaders.SET_COOKIE, "refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime + "; SameSite=None");
 
         // JSON 응답 작성
-        LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName());
+        LoginResponseDTO nicknameDTO = new LoginResponseDTO(member.get().getId(), member.get().getName(), member.get().getMemberImageId());
         PrintWriter writer = response.getWriter();
         ObjectMapper mapper = new ObjectMapper();
         writer.write(mapper.writeValueAsString(nicknameDTO));
@@ -97,6 +100,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         //로그인 실패시 401 응답 코드 반환
+        System.out.println("unsuccessfulAuthentication"+failed.getMessage());
         response.setStatus(401);
     }
 }
