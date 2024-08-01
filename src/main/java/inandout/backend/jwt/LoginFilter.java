@@ -42,6 +42,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // "/login"으로 요청이 오면 해당 메서드 실행됨
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        System.out.println("attemptAuthentication");
         //클라이언트 요청에서 username, password 추출
         // TODO: username, password를 body에 넣게 바꿔야 됨
         String username = obtainUsername(request);

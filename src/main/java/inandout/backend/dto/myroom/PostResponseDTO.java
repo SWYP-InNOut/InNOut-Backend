@@ -19,6 +19,8 @@ public class PostResponseDTO {
     private LocalDateTime createdAt;
     private boolean isCheckedIn;
     private boolean isCheckedOut;
+    private Integer inCount;
+    private Integer outCount;
     private List<ChatResponseDTO> chats;
     private List<String> imageUrls;
 
