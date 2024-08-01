@@ -22,8 +22,8 @@ public class MemberValidator {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member validateMember(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
+    public Member validateMember(Integer memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
 
         if (member.isEmpty()) {
             log.error(NOT_FOUND_MEMBER.getMessage());
@@ -42,15 +42,24 @@ public class MemberValidator {
         return member.get();
     }
 
-    public void validateInactiveMember(String email) {
-        if (!memberRepository.isActiveMember(email)) {
+    public void validateDuplicateEmail(String email) {
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
+
+        if (member.isPresent()) {
+            log.error(NOT_FOUND_MEMBER.getMessage());
+            throw new MemberException(NOT_FOUND_MEMBER);
+        }
+    }
+
+    public void validateInactiveMember(Integer memberId) {
+        if (!memberRepository.isActiveMember(memberId)) {
             log.error(INACTIVE_MEMBER.getMessage());
             throw new MemberException(INACTIVE_MEMBER);
         }
     }
 
-    public void validateActiveMember(String email) {
-        if (memberRepository.isActiveMember(email)) {
+    public void validateActiveMember(Integer memberId) {
+        if (memberRepository.isActiveMember(memberId)) {
             log.error(ACTIVE_MEMBER.getMessage());
             throw new MemberException(ACTIVE_MEMBER);
         }
@@ -93,8 +102,8 @@ public class MemberValidator {
         return false;
     }
 
-    public void validatePassword(String email, String password) {
-        Optional<Member> member = memberRepository.findByEmail(email);
+    public void validatePassword(Integer memberId, String password) {
+        Optional<Member> member = memberRepository.findById(memberId);
 
         if (member.isPresent()) {
             if (!passwordEncoder.matches(password, member.get().getPassword())) {
