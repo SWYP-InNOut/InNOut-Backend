@@ -1,6 +1,5 @@
 package inandout.backend.controller.login;
 
-import inandout.backend.argumentresolver.MemberEmail;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.login.FindPasswordDTO;
 import inandout.backend.jwt.TokenInfo;
