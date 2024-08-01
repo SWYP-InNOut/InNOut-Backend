@@ -33,7 +33,7 @@ public class MyRoomController {
     @Autowired
     public ChatRoomService chatRoomService;
 
-    @PostMapping({"/myroom", "/others/room"})
+    @PostMapping("/myroom")
     public BaseResponse<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
         MyRoomResponseDTO myRoomResponseDTO = myRoomService.getMyRoomInfo(myRoomRequestDTO);
@@ -51,8 +51,9 @@ public class MyRoomController {
         return new BaseResponse<>(myRoomAddStuffResponseDTO);
     }
 
-    @GetMapping({"/myroom/post/{postId}","/others/post/{postId}"})
-    public BaseResponse<PostResponseDTO> getPostController(@MemberId Integer memberId, @PathVariable(value = "postId") Integer postId) {
+
+    @GetMapping("/myroom/post/{postId}")
+    public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
         //조회수 up
