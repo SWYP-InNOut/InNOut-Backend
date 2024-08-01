@@ -51,8 +51,6 @@ public class MyRoomService {
     @Autowired
     private PostImageJPARepository postImageJPARepository;
 
-
-
     public MyRoomResponseDTO getMyRoomInfo(MyRoomRequestDTO myRoomRequestDTO) {
         Integer memberId = myRoomRequestDTO.getOwnerId();
         //memberId로 memberName 얻기
@@ -96,26 +94,15 @@ public class MyRoomService {
             myRoomPostDTOList.add(getMyRoomPostDTO(postId));
         }
 
-
         //리턴할 DTO 만들기
-        MyRoomResponseDTO myRoomResponseDTO = new MyRoomResponseDTO();
-        myRoomResponseDTO.setMemberName(memberName);
-
-        myRoomResponseDTO.setPublic(member.get().getIsPublic());
-        myRoomResponseDTO.setChats(chatResponseDTOList);
-        myRoomResponseDTO.setPosts(myRoomPostDTOList);
-
+        MyRoomResponseDTO myRoomResponseDTO = new MyRoomResponseDTO(memberName, member.get().getIsPublic(), chatResponseDTOList, myRoomPostDTOList);
 
         return myRoomResponseDTO;
     }
 
     public MyRoomPostDTO getMyRoomPostDTO(Integer postId) {
-        MyRoomPostDTO myRoomPostDTO = new MyRoomPostDTO();
-
         Post post = postRepository.getPostByPostId(postId);
-        myRoomPostDTO.setPostId(post.getId());
-        myRoomPostDTO.setImgUrl(postRepository.getOldestPostImage(postId));
-
+        MyRoomPostDTO myRoomPostDTO = new MyRoomPostDTO(post.getId(), postRepository.getOldestPostImage(postId));
 
         return myRoomPostDTO;
     }

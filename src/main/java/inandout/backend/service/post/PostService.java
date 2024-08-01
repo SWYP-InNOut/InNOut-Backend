@@ -54,13 +54,17 @@ public class PostService {
         boolean isCheckedIn = false;
         boolean isCheckedOut = false;
 
-        if (isCheckedInfo.isCheckIn()) {
-            isCheckedIn = true;
+        if (isCheckedInfo != null) {
+            if (isCheckedInfo.isCheckIn()) {
+                isCheckedIn = true;
+            }
+
+            if (isCheckedInfo.isCheckOut()) {
+                isCheckedOut = true;
+            }
         }
 
-        if (isCheckedInfo.isCheckOut()) {
-            isCheckedOut = true;
-        }
+
 //
 //        for (Object o : isCheckedInfo) {
 //            Object[] result = (Object[]) o;
@@ -87,7 +91,7 @@ public class PostService {
         // 이미지 URLs 가져오기
         List<String> imageUrls = postImageJPARepository.findUrlByPostId(postId);
 
-        PostResponseDTO postResponseDTO = new PostResponseDTO(ownerName, title, inContent, outContent,  LocalDateTime.now(ZoneId.of("Asia/Seoul")), isCheckedIn, isCheckedOut, chatResponseDTOList, imageUrls);
+        PostResponseDTO postResponseDTO = new PostResponseDTO(ownerName, ownerId, title, inContent, outContent,  LocalDateTime.now(ZoneId.of("Asia/Seoul")), isCheckedIn, isCheckedOut, chatResponseDTOList, imageUrls);
 
         return postResponseDTO;
     }

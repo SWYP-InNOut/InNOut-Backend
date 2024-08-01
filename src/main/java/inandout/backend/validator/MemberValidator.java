@@ -42,15 +42,6 @@ public class MemberValidator {
         return member.get();
     }
 
-    public void validateDuplicateEmail(String email) {
-        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
-
-        if (member.isPresent()) {
-            log.error(NOT_FOUND_MEMBER.getMessage());
-            throw new MemberException(NOT_FOUND_MEMBER);
-        }
-    }
-
     public void validateInactiveMember(Integer memberId) {
         if (!memberRepository.isActiveMember(memberId)) {
             log.error(INACTIVE_MEMBER.getMessage());
@@ -58,15 +49,17 @@ public class MemberValidator {
         }
     }
 
-    public void validateActiveMember(Integer memberId) {
-        if (memberRepository.isActiveMember(memberId)) {
+    public void validateGeneralActiveMember(String email) {
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
+
+        if (member.isPresent() && memberRepository.isActiveMember(member.get().getId())) {
             log.error(ACTIVE_MEMBER.getMessage());
             throw new MemberException(ACTIVE_MEMBER);
         }
     }
 
     public boolean validateDuplicateEmailAndCheckExpiredToken(String email) {
-        Optional<Member> member = memberRepository.existsMemberByEmail(email);
+        Optional<Member> member = memberRepository.findGeneralMemberByEmail(email);
 
         if (member.isPresent()) {
             if (!isExpired(member.get())) {
@@ -90,7 +83,7 @@ public class MemberValidator {
         LocalDateTime joinRequestTime = LocalDateTime.now();
         LocalDateTime generatedTime = member.getUpdatedAt();
 //        LocalDateTime expirationDateTime = generatedTime.plusDays(1);
-        LocalDateTime expirationDateTime = generatedTime.plusSeconds(60); // 일단은 유효기한 1분으로 해놓음 테스트 위해
+        LocalDateTime expirationDateTime = generatedTime.plusSeconds(60*10); // 유효기한 10분
 
         log.info("expiration date time: {}", expirationDateTime);
         log.info("requested time: {}", joinRequestTime);

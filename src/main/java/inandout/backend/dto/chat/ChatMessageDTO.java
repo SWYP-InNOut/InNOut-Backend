@@ -3,10 +3,8 @@ package inandout.backend.dto.chat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter @Setter
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class ChatMessageDTO {
 
     public enum MessageType {

@@ -49,27 +49,19 @@ public class ChatRepository {
         List<ChatResponseDTO> chatResponseDTOList = new ArrayList<>();
 
         for(Chat result : resultList){
-            ChatResponseDTO chatResponseDTO = new ChatResponseDTO();
-
-            chatResponseDTO.setChatId((long) result.getId());
-            chatResponseDTO.setContent(result.getChatContent());
-            chatResponseDTO.setSender((long) result.getSender());
-            chatResponseDTO.setCreatedAt(result.getCreatedAt());
+            ChatResponseDTO chatResponseDTO = new ChatResponseDTO(result.getId(), result.getSender(), result.getCreatedAt(), result.getChatContent(), result.isReply());
 
             //답장 관련
-            chatResponseDTO.setReply(result.isReply());
             if(result.isReply()){ // 답장있으면
                 String replyContent = getChatContentByChatId(result.getReplyChatId());
-                chatResponseDTO.setReplyContent(replyContent);
-
                 String replyName = getMemberNameByMemberId(result.getReplyMemberId());
-                chatResponseDTO.setReplySenderName(replyName);
+
+                chatResponseDTO.updateReply(replyContent, replyName);
             }
 
             //게시물 관련
             if(result.getPost() != null){
-                chatResponseDTO.setPostChat(true);
-                chatResponseDTO.setStuffName(postRepository.getStuffNameByPostId(result.getPost().getId()));
+                chatResponseDTO.updatePost(true, postRepository.getStuffNameByPostId(result.getPost().getId()));
             }
 
             chatResponseDTOList.add(chatResponseDTO);
