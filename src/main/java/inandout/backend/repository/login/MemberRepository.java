@@ -78,16 +78,16 @@ public class MemberRepository {
                 .getSingleResult();
     }
 
-    @Transactional
-    public void updateUserCount(Integer memberId, Integer userCount) {
-        em.createQuery("UPDATE Member m SET m.userCount = :user_count WHERE m.id = :member_id")
-                .setParameter("user_count", userCount).setParameter("member_id", memberId).executeUpdate();
-    }
+//    @Transactional
+//    public void updateUserCount(Integer memberId, Integer userCount) {
+//        em.createQuery("UPDATE Member m SET m.userCount = :user_count WHERE m.id = :member_id")
+//                .setParameter("user_count", userCount).setParameter("member_id", memberId).executeUpdate();
+//    }
 
-    public List<Member> getMembersOrderByUserCount() {
-        List<Member> members = em.createQuery("SELECT m FROM Member m ORDER BY m.userCount DESC").getResultList();
-        return members;
-    }
+//    public List<Member> getMembersOrderByUserCount() {
+//        List<Member> members = em.createQuery("SELECT m FROM Member m ORDER BY m.userCount DESC").getResultList();
+//        return members;
+//    }
 
     public Optional<Member> findGeneralMemberByEmail(String email) {
         List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform", Member.class)

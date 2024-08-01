@@ -70,7 +70,6 @@ public class LoginService {
 
     public void findPassword(String email) {
         Member member = memberValidator.validateGeneralMember(email);
-        memberValidator.validateGeneralMember(email);
 
         // 임시 비밀번호 만들기
         String newPwd = RandomStringUtils.randomAlphanumeric(10);
