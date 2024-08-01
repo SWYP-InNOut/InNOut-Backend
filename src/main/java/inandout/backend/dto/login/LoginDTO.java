@@ -10,8 +10,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class LoginDTO {
 
@@ -24,7 +22,5 @@ public class LoginDTO {
 //    private LocalDateTime updatedAt;
     private MemberStatus status;
 //    private boolean isPublic;
-
-
 
 }

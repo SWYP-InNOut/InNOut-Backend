@@ -84,13 +84,8 @@ public class KakaoLoginController {
         }else{  //비회원 ->가입
             System.out.println("비회원임");
 
-            LoginDTO loginDTO = new LoginDTO();
-            loginDTO.setName("홍길동");  // 닉네임 랜덤으로 부여
-            loginDTO.setEmail(email);
-            loginDTO.setPassword("");
-            loginDTO.setPlatform(Platform.KAKAO);
-            loginDTO.setPlatformId("1");
-            loginDTO.setStatus(MemberStatus.INACTIVE);
+            // 닉네임 랜덤으로 부여
+            LoginDTO loginDTO = new LoginDTO("홍길동", email, "", Platform.KAKAO, "1", MemberStatus.INACTIVE);
 
             System.out.println("카카오 회원가입!");
             userService.save(loginDTO);
@@ -98,7 +93,6 @@ public class KakaoLoginController {
 
             // 프로필 이미지 랜덤 생성
             memberImageId = (int) ((Math.random()*6)+1);
-
 
         }
 
@@ -112,7 +106,7 @@ public class KakaoLoginController {
         //redis에 refreshToken 저장
         redisService.setValues(refreshToken, loginMember.getId());
 
-        kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId(), memberImageId);
+        kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken, isMember, loginMember.getId(), memberImageId);
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);

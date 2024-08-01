@@ -4,10 +4,7 @@ package inandout.backend.dto.login;
 import lombok.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class KakoLoginResponseDTO {
 
     private String accessToken;
@@ -16,7 +13,5 @@ public class KakoLoginResponseDTO {
     private boolean isMember;
     private Integer memberId;
     private Integer memberImageId;
-
-
 
 }
