@@ -8,8 +8,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class MyRoomAddStuffRequestDTO {
 
     private Integer memberId;
