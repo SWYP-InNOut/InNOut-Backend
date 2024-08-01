@@ -121,16 +121,16 @@ public class MyRoomService {
     }
 
 
-    public void plusUserCount(MyRoomRequestDTO myRoomRequestDTO) {
-        System.out.println("plusUserCount");
-        Integer memberId = myRoomRequestDTO.getOwnerId();
-        Optional<Member> member = memberRepository.findById(memberId);
-        Integer userCount = member.get().getUserCount();
-      //  member.get().setUserCount(userCount+1);
-
-        memberRepository.updateUserCount(memberId, userCount + 1);
-        //memberRepository.save(member.get());
-    }
+//    public void plusUserCount(MyRoomRequestDTO myRoomRequestDTO) {
+//        System.out.println("plusUserCount");
+//        Integer memberId = myRoomRequestDTO.getOwnerId();
+//        Optional<Member> member = memberRepository.findById(memberId);
+//       // Integer userCount = member.get().getUserCount();
+//      //  member.get().setUserCount(userCount+1);
+//
+//       // memberRepository.updateUserCount(memberId, userCount + 1);
+//        //memberRepository.save(member.get());
+//    }
 
     public MyRoomAddStuffResponseDTO addStuff(MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO, List<MultipartFile> multipartFile) {
         System.out.println("addStuff");

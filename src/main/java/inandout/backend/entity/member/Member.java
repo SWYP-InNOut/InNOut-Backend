@@ -5,10 +5,7 @@ import inandout.backend.entity.chat.ChatRoom;
 import inandout.backend.entity.post.InOut;
 import inandout.backend.entity.post.Post;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -41,8 +38,8 @@ public class Member {
 //    @Column(name = "member_img_url", length = 500, nullable = false)
 //    private String memberImgUrl;
 
-    @Column(name = "user_count", nullable = false)
-    private int userCount;
+//    @Column(name = "user_count", nullable = false)
+//    private int userCount;
 
     @Column(length = 500, nullable = false)
     private String password;
@@ -81,6 +78,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<InOut> inOuts = new ArrayList<>();
+
+    @Column(nullable = false)
+    @ColumnDefault("1")
+    private int memberImageId;
 
     public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId, MemberStatus memberStatus) {
         Member member = new Member();

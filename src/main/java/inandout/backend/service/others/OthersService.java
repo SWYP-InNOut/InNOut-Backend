@@ -4,7 +4,9 @@ import inandout.backend.dto.myroom.PostResponseDTO;
 import inandout.backend.dto.others.OthersResponseDTO;
 import inandout.backend.entity.member.Member;
 import inandout.backend.entity.post.Post;
+import inandout.backend.entity.post.PostImage;
 import inandout.backend.repository.login.MemberRepository;
+import inandout.backend.repository.post.PostImageJPARepository;
 import inandout.backend.repository.post.PostJPARepository;
 import inandout.backend.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,40 +25,41 @@ public class OthersService {
     @Autowired
     public PostRepository postRepository;
 
+    @Autowired
+    public PostImageJPARepository postImageJPARepository;
+
 
     public List<OthersResponseDTO> getOthersList() {
         List<OthersResponseDTO> othersResponseDTOList = new ArrayList<>();
 
-        // member에서 usercount 많은 순으로 가져옴
-        List<Member> members = memberRepository.getMembersOrderByUserCount();
+        // isPublic true인 사용자 id
+        List<Integer> members = memberRepository.getMemberIsPublic();
 
-        for (Member member : members) {
-            othersResponseDTOList.add(getOthersDTO(member));
+        //그 id 중에서만 정렬
+        List<Post> posts = postRepository.getPostByUserCount(members);
+
+        //DTO 생성
+        for (Post post : posts) {
+            othersResponseDTOList.add(getOthersDTO(post));
         }
 
         return othersResponseDTOList;
     }
 
-    public OthersResponseDTO getOthersDTO(Member member){
+    public OthersResponseDTO getOthersDTO(Post post){
 
-        String memberName = member.getName();
-        Integer memberId = member.getId();
 
-        //게시물 List
-        List<Post> postList = postRepository.getPostListByMemberId(memberId);
-        Integer postCount = postList.size();
-
-        Integer inCount = 0;
-        Integer outCount = 0;
-        for (Post post : postList) {
-            inCount += post.getInCount();
-            outCount += post.getOutCount();
+        String memberName = post.getMember().getName();
+        Integer memberId = post.getMember().getId();
+        List<String> imageUrls = postImageJPARepository.findUrlByPostIdOrderByCreatedAt(post.getId());
+        String imageUrl = null;
+        if (imageUrls.size() != 0) {
+            imageUrl = imageUrls.get(0);
         }
+        Integer memberImageId = memberRepository.getMemberImageId(memberId);
 
-        Integer userCount = member.getUserCount();
-        LocalDateTime recentPostDate = postRepository.getRecentPostDateByMemberId(memberId);
+        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, imageUrl, memberImageId);
 
-        OthersResponseDTO othersResponseDTO = new OthersResponseDTO(memberName, memberId, postCount, inCount, outCount, userCount, recentPostDate);
         return othersResponseDTO;
 
     }

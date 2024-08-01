@@ -1,7 +1,6 @@
 package inandout.backend.repository.post;
 
 import inandout.backend.entity.post.Post;
-import inandout.backend.entity.post.PostImage;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -127,5 +125,21 @@ public class PostRepository {
                 "WHERE p.id = :postId").setParameter("title", title).setParameter("inContent", inContent).
                 setParameter("outContent", outContent).setParameter("postId", postId)
                 .executeUpdate();
+    }
+
+    @Transactional
+    public void updateUserCount(Integer postId, Integer currentUserCount) {
+        em.createQuery("UPDATE Post p SET p.userCount = :updateUserCount WHERE p.id = :postId")
+                .setParameter("updateUserCount", currentUserCount+1).setParameter("postId", postId)
+                .executeUpdate();
+    }
+
+    public List<Post> getPostByUserCount(List<Integer> memberIds) {
+
+        List<Post> posts = em.createQuery("SELECT p FROM Post p WHERE p.member.id IN (:membersIds) " +
+                "ORDER BY p.userCount DESC").setParameter("membersIds", memberIds).getResultList();
+        return posts;
+
+
     }
 }

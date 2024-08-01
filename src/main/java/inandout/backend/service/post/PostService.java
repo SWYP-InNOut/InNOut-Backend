@@ -141,10 +141,27 @@ public class PostService {
             postImageJPARepository.save(postImage);
         }
     }
-
-    public LinkResponseDTO getLink(MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
+  
+      public LinkResponseDTO getLink(MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
         String linkToken = jwtUtil.generateLinkToken(myRoomLinkRequestDTO.getRoomId());
 //        return new LinkResponseDTO(linkRequestUri + linkToken);
         return new LinkResponseDTO(linkToken);
+      }
+
+    public void plusUserCount(Integer postId) {
+        Integer currentUserCount = postRepository.getPostByPostId(postId).getUserCount();
+        postRepository.updateUserCount(postId, currentUserCount);
+
+
+        //        Integer memberId = myRoomRequestDTO.getOwnerId();
+//        Optional<Member> member = memberRepository.findById(memberId);
+//       // Integer userCount = member.get().getUserCount();
+//      //  member.get().setUserCount(userCount+1);
+//
+//       // memberRepository.updateUserCount(memberId, userCount + 1);
+//        //memberRepository.save(member.get());
+
+
+
     }
 }

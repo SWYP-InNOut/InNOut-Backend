@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -66,6 +67,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)// 다대다(다대일, 일대다) 단방향 연관 관계 / 연관 관계 주인의 반대편
     private List<InOut> inOuts = new ArrayList<>();
 
+    @Column(name = "user_count", nullable = false)
+    @ColumnDefault("0")
+    private int userCount;
 
     public Post(Member member, String title, String outContent, String inContent, int outCount, int inCount, LocalDateTime createdAt, LocalDateTime updatedAt, ChatRoom chatRoom) {
         this.member = member;
