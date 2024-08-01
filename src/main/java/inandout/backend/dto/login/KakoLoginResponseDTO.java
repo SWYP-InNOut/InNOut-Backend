@@ -15,6 +15,7 @@ public class KakoLoginResponseDTO {
 //    private String name;
     private boolean isMember;
     private Integer memberId;
+    private Integer memberImageId;
 
 
 

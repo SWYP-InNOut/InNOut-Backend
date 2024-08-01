@@ -74,8 +74,11 @@ public class KakaoLoginController {
         Optional<Member> member = userService.findKakaoUser(email);
 
 
+        Integer memberImageId;
+
         if (member.isPresent()) {   //회원 -> 로그인처리
             System.out.println("회원임");
+            memberImageId = member.get().getMemberImageId();
             isMember = true;
 
         }else{  //비회원 ->가입
@@ -93,6 +96,10 @@ public class KakaoLoginController {
             userService.save(loginDTO);
             isMember = false;
 
+            // 프로필 이미지 랜덤 생성
+            memberImageId = (int) ((Math.random()*6)+1);
+
+
         }
 
         Member loginMember = memberRepository.findKakaoMemberByEmail(email).get();
@@ -105,7 +112,7 @@ public class KakaoLoginController {
         //redis에 refreshToken 저장
         redisService.setValues(refreshToken, loginMember.getId());
 
-        kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId());
+        kakoLoginResponseDTO = new KakoLoginResponseDTO(accessToken,isMember, loginMember.getId(), memberImageId);
 
         response.addHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         response.setHeader("Set-Cookie","refreshToken=" + tokenInfo.getRefreshToken() + "; Path=/; HttpOnly; Secure; Max-Age=" + refreshTokenValidTime);
