@@ -30,6 +30,7 @@ public class JoinService {
         String username = joinDTO.getUsername();
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
+        Integer memberImageId = joinDTO.getMemberImageId();
 
         // 이메일로 가입된 회원이 있는지 검증
         memberValidator.validateDuplicateEmail(email);
@@ -48,7 +49,7 @@ public class JoinService {
             }
         }
 
-        Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL);
+        Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL, memberImageId);
         member.updateToken(authToken);
 
         memberRepository.save(member);

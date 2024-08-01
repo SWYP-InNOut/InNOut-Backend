@@ -96,13 +96,14 @@ public class Member {
         return member;
     }
 
-    public static Member createGeneralMember(String username, String email, String password, Platform platform) {
+    public static Member createGeneralMember(String username, String email, String password, Platform platform, Integer memberImageId) {
         Member member = new Member();
 
         member.name = username;
         member.email = email;
         member.password = password;
         member.platform = platform;
+        member.memberImageId = memberImageId;
 
         return member;
     }

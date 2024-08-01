@@ -11,4 +11,6 @@ public class JoinDTO {
     private String email;
 
     private String password;
+
+    private Integer memberImageId;
 }

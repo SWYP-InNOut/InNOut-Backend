@@ -60,9 +60,6 @@ public class KakaoLoginController {
         System.out.println("KakaoLoginController/KakaoLoginCallBack");
         KakoLoginResponseDTO kakoLoginResponseDTO = null;
 
-
-// 주석 풀어야돼
-
         // 엑세스/리프레쉬 토큰 받기
         HashMap<String, String> kakaoToken  = kakaoLoginService.getAccessToken(code);
 
@@ -70,24 +67,16 @@ public class KakaoLoginController {
         HashMap<String, Object> kakaoUserInfo = kakaoLoginService.getUserInfo(kakaoToken.get("accessToken"));
 
 
-
-        //카카오&일반로그인 accessToken 방식이 달라 문제 -> 카카오 Token 사용X
-        //String accessToken = kakaoToken.get("accessToken");
-        //String refreshToken = kakaoToken.get("refreshToken");
-
         String email = (String) kakaoUserInfo.get("email");
         boolean isMember;
 
         // email로 회원 찾기
         Optional<Member> member = userService.findKakaoUser(email);
 
-        //String newRefreshToken;
-        // 로그인할때마다 refreshToken 새로 생성
 
         if (member.isPresent()) {   //회원 -> 로그인처리
             System.out.println("회원임");
             isMember = true;
-
 
         }else{  //비회원 ->가입
             System.out.println("비회원임");
@@ -100,7 +89,7 @@ public class KakaoLoginController {
             loginDTO.setPlatformId("1");
             loginDTO.setStatus(MemberStatus.INACTIVE);
 
-            System.out.println("저장!");
+            System.out.println("카카오 회원가입!");
             userService.save(loginDTO);
             isMember = false;
 
@@ -129,6 +118,5 @@ public class KakaoLoginController {
 //        boolean isTokenValid = kakaoLoginService.isValidToken("KMXxzLPp_GjjTaMW1-3Z8t2GmCRxTqV9AAAAAQopyV8AAAGQplhQWxKZRqbpl2cW");
 //        System.out.println("accessToken 유효한지: "+isTokenValid);
 
-       // return ResponseEntity.ok().body(kakoLoginResponseDTO);
     }
 }
