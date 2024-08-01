@@ -12,5 +12,5 @@ public class JoinDTO {
 
     private String password;
 
-    private Integer memberImageId;
+   // private Integer memberImageId;
 }

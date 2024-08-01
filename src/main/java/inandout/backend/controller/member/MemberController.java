@@ -1,6 +1,8 @@
 package inandout.backend.controller.member;
 
 import inandout.backend.argumentresolver.MemberId;
+import inandout.backend.common.exception.BaseException;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.member.IsPublicDTO;
 import inandout.backend.dto.member.ModifyUserRequestDTO;
@@ -12,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static inandout.backend.common.response.status.BaseExceptionResponseStatus.DUPLICATED_NICKNAME;
 
 @Slf4j
 @RestController
@@ -55,7 +59,8 @@ public class MemberController {
         boolean isDuplicate = memberService.isDuplicateNickname(modifyUserRequestDTO.getNickname(), modifyUserRequestDTO.getMemberId());
 
         if (isDuplicate) {
-            return new BaseResponse<>("중복된 닉네임입니다.");
+            throw  new BaseException(DUPLICATED_NICKNAME);
+           // return new BaseResponse<>("중복된 닉네임입니다.");
         }
 
         // 프로필 update

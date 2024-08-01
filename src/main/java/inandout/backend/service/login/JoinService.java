@@ -26,11 +26,10 @@ public class JoinService {
     private final EmailUtils emailUtils;
     private final MemberValidator memberValidator;
 
-    public void joinProcess(JoinDTO joinDTO) {
+    public Integer joinProcess(JoinDTO joinDTO) {
         String username = joinDTO.getUsername();
         String email = joinDTO.getEmail();
         String password = joinDTO.getPassword();
-        Integer memberImageId = joinDTO.getMemberImageId();
 
         // 이메일로 가입된 회원이 있는지 검증
         memberValidator.validateDuplicateEmail(email);
@@ -45,9 +44,12 @@ public class JoinService {
                 Optional<Member> member = memberRepository.existsMemberByEmail(email);
                 member.get().updateToken(authToken);
                 emailUtils.sendEmail(member.get());
-                return;
+                return null;
             }
         }
+
+        // 프로필 이미지 랜덤 생성
+        Integer memberImageId = (int) ((Math.random()*6)+1);
 
         Member member = Member.createGeneralMember(username, email, bCryptPasswordEncoder.encode(password), Platform.GENERAL, memberImageId);
         member.updateToken(authToken);
@@ -55,6 +57,8 @@ public class JoinService {
         memberRepository.save(member);
 
         emailUtils.sendEmail(member);
+
+        return memberImageId;
     }
 
     public boolean updateByVerifyToken(String token) {
