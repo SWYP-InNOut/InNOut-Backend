@@ -1,6 +1,7 @@
 package inandout.backend;
 
 import inandout.backend.argumentresolver.MemberEmailResolver;
+import inandout.backend.argumentresolver.MemberIdResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
-    private final MemberEmailResolver memberIdResolver;
+    private final MemberIdResolver memberIdResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
