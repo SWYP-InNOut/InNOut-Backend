@@ -13,6 +13,7 @@ public class PostResponseDTO {
 
     private String ownerName;
     private Integer ownerId;
+    private Integer ownerImageId;
     private String title;
     private String inContent;
     private String outContent;
