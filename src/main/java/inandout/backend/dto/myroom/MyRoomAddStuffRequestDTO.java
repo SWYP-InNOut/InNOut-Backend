@@ -1,8 +1,10 @@
 package inandout.backend.dto.myroom;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class MyRoomAddStuffRequestDTO {
 
     private Integer memberId;
