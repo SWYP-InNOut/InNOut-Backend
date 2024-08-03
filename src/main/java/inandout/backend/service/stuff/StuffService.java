@@ -27,7 +27,7 @@ public class StuffService {
         Member member = memberRepository.findById(memberId).get();
 
         // 회원이면 이전에 어떤걸 선택했었는지 확인, 비회원이면 로직 건너 뜀
-        if (inOutRequestDTO.getIsMember() && inOutRepository.getExistMember(memberId)) {
+        if (inOutRequestDTO.getIsMember() && inOutRepository.getExistMember(memberId, inOutRequestDTO.getPostId())) {
             // 이전에 선택한 정보가 있으면 InOut DB에 있는 정보 update
             InOut inOut = inOutRepository.getIsCheckedInfo(memberId, inOutRequestDTO.getPostId());
             if (!inOut.isCheckIn() && !inOut.isCheckOut()) {
@@ -75,7 +75,7 @@ public class StuffService {
                     post.updateInCount(post.getInCount()+1);
                 }
             }
-        } else if (inOutRequestDTO.getIsMember() && !inOutRepository.getExistMember(memberId)) {
+        } else if (inOutRequestDTO.getIsMember() && !inOutRepository.getExistMember(memberId, inOutRequestDTO.getPostId())) {
             // 이전에 선택한 정보가 없으면 새로 넣음
             if (inOutRequestDTO.getIn() && !inOutRequestDTO.getOut()) {
                 log.info("false false → true false → in +1");
