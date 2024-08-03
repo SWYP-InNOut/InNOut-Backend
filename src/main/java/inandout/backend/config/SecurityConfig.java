@@ -64,7 +64,8 @@ public class SecurityConfig {
                         // 모든 권한 허용
 
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
-                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify").permitAll()
+                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
+                                "/ws/chat", "/chat").permitAll()
 
 
 
@@ -72,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
                         .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
-                                "/chat", "/ws/chat", "/myroom/chat","/myroom/post/{postId}/chat",
+                                "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
                                 "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff" ).authenticated());
 

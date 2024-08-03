@@ -61,7 +61,7 @@ public class MyRoomController {
 
 
     @GetMapping("/myroom/post/{postId}")
-    public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @RequestParam(value = "memberId") Integer memberId) {
+    public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @MemberId Integer memberId) {
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
         //조회수 up

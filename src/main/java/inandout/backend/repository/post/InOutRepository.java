@@ -39,9 +39,10 @@ public class InOutRepository {
         return null;
     }
 
-    public Boolean getExistMember(int memberId) {
-        return em.createQuery("select count(io) > 0 from InOut io where io.member.id = :member_id", Boolean.class)
+    public Boolean getExistMember(int memberId, int postId) {
+        return em.createQuery("select count(io) > 0 from InOut io where io.member.id = :member_id and io.post.id = :post_id", Boolean.class)
                 .setParameter("member_id", memberId)
+                .setParameter("post_id", postId)
                 .getSingleResult();
     }
 }
