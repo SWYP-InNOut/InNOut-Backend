@@ -59,10 +59,12 @@ public class S3Service {
 
     public void deleteFile(Integer postId, List<String> imageUrls){
         System.out.println("deleteFile from S3!");
+        System.out.println("imageURLS: "+imageUrls.size());
 
         for (String imageUrl : imageUrls) {
-            System.out.println("삭제: " + imageUrls);
-            s3Client.deleteObject(bucket, imageUrl);
+            System.out.println("삭제: " + imageUrl);
+            String fileName = imageUrl.split("/")[3];
+            s3Client.deleteObject(bucket, fileName);
         }
 
 

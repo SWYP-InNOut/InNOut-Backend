@@ -46,6 +46,14 @@ public class MyRoomController {
     @PostMapping("/myroom/addstuff")
     public BaseResponse<MyRoomAddStuffResponseDTO> myRoomAddStuffController(@RequestPart(value = "request") MyRoomAddStuffRequestDTO myRoomAddStuffRequestDTO,
                                                                               @RequestPart(value = "file") List<MultipartFile> multipartFile) {
+        System.out.println(myRoomAddStuffRequestDTO.getInContent());
+        //null 처리
+        if(myRoomAddStuffRequestDTO.getInContent() == null){
+            myRoomAddStuffRequestDTO.setInContent("");
+        }
+        if (myRoomAddStuffRequestDTO.getOutContent() == null) {
+            myRoomAddStuffRequestDTO.setOutContent("");
+        }
         MyRoomAddStuffResponseDTO myRoomAddStuffResponseDTO = myRoomService.addStuff(myRoomAddStuffRequestDTO, multipartFile);
 
         return new BaseResponse<>(myRoomAddStuffResponseDTO);
