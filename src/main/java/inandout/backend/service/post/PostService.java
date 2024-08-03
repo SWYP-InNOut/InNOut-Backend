@@ -136,7 +136,8 @@ public class PostService {
         List<String> imageUrls = postImageJPARepository.findUrlByPostId(post.getId());
 
         //DB 에서 삭제
-        postImageJPARepository.deleteById(post.getId());
+        //postImageJPARepository.deleteById(post.getId());
+        postImageJPARepository.deleteByPostId(post.getId());
         System.out.println("postimage 삭제");
 
         //S3에서 삭제
