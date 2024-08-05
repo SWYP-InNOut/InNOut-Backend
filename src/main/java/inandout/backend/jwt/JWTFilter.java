@@ -39,6 +39,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/kakaologin")
                 || request.getRequestURI().equals("/find-password")
                 || request.getRequestURI().equals("/ws/chat")
+                || request.getRequestURI().equals("/oauth2/authorization/google")
 //                || request.getRequestURI().equals("/user/modify")
 
         ) {

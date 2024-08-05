@@ -71,7 +71,7 @@ public class SecurityConfig {
                         // 모든 권한 허용
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
-                                "/ws/chat", "/chat").permitAll()
+                                "/ws/chat", "/chat", "/oauth2/authorization/google").permitAll()
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
