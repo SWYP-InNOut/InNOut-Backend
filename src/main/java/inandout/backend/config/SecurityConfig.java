@@ -2,11 +2,11 @@ package inandout.backend.config;
 
 import inandout.backend.jwt.*;
 import inandout.backend.repository.login.MemberRepository;
+import inandout.backend.service.login.CustomOAuth2UserService;
 import inandout.backend.service.login.RedisService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,6 +32,8 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final RedisService redisService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -58,16 +59,19 @@ public class SecurityConfig {
         //http basic 인증 방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+        http.oauth2Login((oauth2) -> oauth2
+                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                        .userService(customOAuth2UserService)))
+                .successHandler(customSuccessHandler)
+        );
+
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
                         // 모든 권한 허용
-
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
                                 "/ws/chat", "/chat").permitAll()
-
-
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
