@@ -41,7 +41,7 @@ public class Member {
 //    @Column(name = "user_count", nullable = false)
 //    private int userCount;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 500)
     private String password;
 
     @Column(nullable = false)
