@@ -37,7 +37,6 @@ public class MemberRepository {
         if (member.size() == 0) {
             throw new BaseException(NOT_FOUND_MEMBER);
         }
-
         return member.stream().findAny();
     }
 

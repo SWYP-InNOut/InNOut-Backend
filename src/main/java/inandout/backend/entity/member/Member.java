@@ -107,6 +107,16 @@ public class Member {
         return member;
     }
 
+    public static Member createAnonymousMember(Integer id) {
+        Member member = new Member();
+
+        member.id = id;
+
+        return member;
+    }
+
+
+
     public void updateToken(String token) {
         this.authToken = token;
     }

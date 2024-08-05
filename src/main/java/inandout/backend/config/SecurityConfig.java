@@ -72,8 +72,9 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
 
-                                "/ws/chat", "/chat", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
+                                "/ws/chat", "/chat", "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom/link", "/myroom/post","/link").permitAll()
 
+                        .requestMatchers( "/myroom").anonymous()
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
@@ -81,7 +82,8 @@ public class SecurityConfig {
                         .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
                                 "/myroom/chat","/myroom/post/{postId}/chat",
                                 "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff", "/myroom/link" ).authenticated());
+                                "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff", "/myroom/link", "/myroom/post","/myroom/post/{postId}" ).authenticated());
+
 
         //LoginFilter 이전에 JWTFilter 등록
         http.addFilterBefore(new JWTFilter(jwtUtil, memberRepository), LoginFilter.class);

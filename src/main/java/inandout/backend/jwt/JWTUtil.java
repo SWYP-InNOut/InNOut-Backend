@@ -101,7 +101,7 @@ public class JWTUtil {
     }
 
     public boolean isAnonymous(String token) {
-        System.out.println(Jwts.parser().verifyWith(secretKey).build());
+        System.out.println(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
         String role = String.valueOf(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("ROLE_ANONYMOUS"));
 
         if (role.equals("true")) {
@@ -115,5 +115,15 @@ public class JWTUtil {
         AnonymousAuthenticationToken anonymousAuthenticationToken = new AnonymousAuthenticationToken(key, "anonymousUser", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
 
         return anonymousAuthenticationToken;
+    }
+
+    public Integer getRoomId(String token) {
+        try {
+            Integer roomId = (Integer) Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roomId");
+            return roomId;
+        } catch (ExpiredJwtException e) {
+            return -1;
+        }
+
     }
 }

@@ -49,6 +49,9 @@ public class JWTFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/login/oauth2/code/google")
 //                || request.getRequestURI().equals("/user/modify")
 
+
+                || request.getRequestURI().equals("/link")
+
         ) {
             filterChain.doFilter(request, response);
             return;
@@ -81,8 +84,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //토큰 소멸 시간 검증
         try {
-            System.out.println("췍");
-            System.out.println("토큰 만료됨? "+jwtUtil.isExpired(token));
             jwtUtil.isExpired(token);
         } catch (ExpiredJwtException e) {
 
@@ -108,6 +109,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
                 return;
             }
+
             // 예외 정보를 JSON 형식으로 변환
             BaseErrorResponse errorResponse = new BaseErrorResponse(EXPIRED_ACCESSTOKEN);
 
@@ -129,15 +131,15 @@ public class JWTFilter extends OncePerRequestFilter {
         boolean isAnonymous = jwtUtil.isAnonymous(token);
         if (isAnonymous) { //익명이면
             System.out.println("익명사용자");
+
             //AnonymousToken 만드는게 Filter에서 할일 -> 굳이 안만들었음
             AnonymousAuthenticationToken anonymousToken = jwtUtil.generateAnonymousToken();
             SecurityContextHolder.getContext().setAuthentication(anonymousToken);
 
         }else {
-
             //토큰에서 memberId 획득
             Integer memberId = jwtUtil.getMemberId(token);
-
+            System.out.println("memberId: "+memberId);
 
             //UserDetails에 회원 정보 객체 담기
             Optional<Member> member = memberRepository.findById(memberId);

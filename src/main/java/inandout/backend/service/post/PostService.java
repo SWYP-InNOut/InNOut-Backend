@@ -44,7 +44,7 @@ public class PostService {
         //postId로 memberId -> memberName
         Integer ownerId = chatRepository.getMemberIdByPostId(postId);
         String ownerName = chatRepository.getMemberNameByMemberId(ownerId);
-        Integer owenerImageId = memberRepository.getMemberImageId(memberId);
+        Integer owenerImageId = memberRepository.getMemberImageId(ownerId);
 
         //postId로 post객체
         Optional<Post> post = postJPARepository.findById(postId);
@@ -54,20 +54,22 @@ public class PostService {
         Integer inCount = post.get().getInCount();
         Integer outCount = post.get().getOutCount();
 
-        //in/out 선택했는지 여부 가져오기
-        InOut isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
         boolean isCheckedIn = false;
         boolean isCheckedOut = false;
+        //in/out 선택했는지 여부 가져오기
+        if (memberId >= 0) {
+            InOut isCheckedInfo = inOutRepository.getIsCheckedInfo(memberId, postId);
+            if (isCheckedInfo != null) {
+                if (isCheckedInfo.isCheckIn()) {
+                    isCheckedIn = true;
+                }
 
-        if (isCheckedInfo != null) {
-            if (isCheckedInfo.isCheckIn()) {
-                isCheckedIn = true;
-            }
-
-            if (isCheckedInfo.isCheckOut()) {
-                isCheckedOut = true;
+                if (isCheckedInfo.isCheckOut()) {
+                    isCheckedOut = true;
+                }
             }
         }
+
 
 
 //
@@ -85,7 +87,7 @@ public class PostService {
 //        }
 
         // 상위 5개 가져오기(임의)
-        List<ChatResponseDTO> chatResponseDTOS = chatService.getPostChat(memberId, postId);
+        List<ChatResponseDTO> chatResponseDTOS = chatService.getPostChat(ownerId, postId);
         List<ChatResponseDTO> chatResponseDTOList;
         if(chatResponseDTOS.size() > 5){
             chatResponseDTOList = chatResponseDTOS.subList(0, 5);
@@ -152,12 +154,12 @@ public class PostService {
         }
     }
   
-      public LinkResponseDTO getLink(MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
-          System.out.println("getLink");
-        String linkToken = jwtUtil.generateLinkToken(myRoomLinkRequestDTO.getMemberId());
+      public LinkResponseDTO getLink(Integer memberId) {
+        System.out.println("getLink");
+        String linkToken = jwtUtil.generateLinkToken(memberId);
           System.out.println("linkToken: "+linkToken);
 //        return new LinkResponseDTO(linkRequestUri + linkToken);
-        return new LinkResponseDTO(linkToken);
+        return new LinkResponseDTO(linkToken, true);
       }
 
     public void plusUserCount(Integer postId) {
