@@ -85,7 +85,7 @@ public class KakaoLoginController {
             System.out.println("비회원임");
 
             // 닉네임 랜덤으로 부여
-            LoginDTO loginDTO = new LoginDTO("홍길동", email, "", Platform.KAKAO, "1", MemberStatus.INACTIVE);
+            LoginDTO loginDTO = new LoginDTO("홍길동", email, Platform.KAKAO, MemberStatus.INACTIVE);
 
             System.out.println("카카오 회원가입!");
             userService.save(loginDTO);
