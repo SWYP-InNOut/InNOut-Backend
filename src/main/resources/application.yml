@@ -40,6 +40,21 @@ spring:
   KAKAO_API_KEY: ${KAKAO_API_KEY}
   KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: ${GOOGLE_CLIENT_NAME}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECERT}
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            authorization-grant-type: ${GOOGLE_AUTHORIZATION_TYPE}
+            scope: ${GOOGLE_SCOPE}
+
+  google:
+    callback-uri: ${GOOGLE_CALLBACK_URI}
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -95,6 +110,21 @@ spring:
   KAKAO_API_KEY: ${KAKAO_API_KEY}
   KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: ${GOOGLE_CLIENT_NAME}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECERT}
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            authorization-grant-type: ${GOOGLE_AUTHORIZATION_TYPE}
+            scope: ${GOOGLE_SCOPE}
+
+  google:
+    callback-uri: ${GOOGLE_CALLBACK_URI}
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -148,6 +178,21 @@ spring:
 
   KAKAO_API_KEY: ${KAKAO_API_KEY}
   KAKAO_REDIRECT_URI: ${KAKAO_REDIRECT_URI}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: ${GOOGLE_CLIENT_NAME}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECERT}
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            authorization-grant-type: ${GOOGLE_AUTHORIZATION_TYPE}
+            scope: ${GOOGLE_SCOPE}
+
+  google:
+    callback-uri: ${GOOGLE_CALLBACK_URI}
 
   data:
     redis:

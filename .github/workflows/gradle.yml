@@ -43,7 +43,13 @@ jobs:
           GOOGLE_APP_PASSWORD: ${{ secrets.GOOGLE_APP_PASSWORD }}
           GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
           MAIL_REQUEST_URI: ${{ secrets.MAIL_REQUEST_URI }}
-
+          GOOGLE_CLIENT_NAME: ${{ secrets.GOOGLE_CLIENT_NAME }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECERT: ${{ secrets.GOOGLE_CLIENT_SECERT }}
+          GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+          GOOGLE_AUTHORIZATION_TYPE: ${{ secrets.GOOGLE_AUTHORIZATION_TYPE }}
+          GOOGLE_SCOPE: ${{ secrets.GOOGLE_SCOPE }}
+          GOOGLE_CALLBACK_URI: ${{ secrets.GOOGLE_CALLBACK_URI }}
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -93,6 +99,13 @@ jobs:
           --build-arg GOOGLE_APP_PASSWORD=${{ secrets.GOOGLE_APP_PASSWORD }} \
           --build-arg GOOGLE_EMAIL=${{ secrets.GOOGLE_EMAIL }} \
           --build-arg MAIL_REQUEST_URI=${{ secrets.MAIL_REQUEST_URI }} \
+          --build-arg GOOGLE_CLIENT_NAME=${{ secrets.GOOGLE_CLIENT_NAME }} \
+          --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+          --build-arg GOOGLE_CLIENT_SECERT=${{ secrets.GOOGLE_CLIENT_SECERT }} \
+          --build-arg GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }} \
+          --build-arg GOOGLE_AUTHORIZATION_TYPE=${{ secrets.GOOGLE_AUTHORIZATION_TYPE }} \
+          --build-arg GOOGLE_SCOPE=${{ secrets.GOOGLE_SCOPE }} \
+          --build-arg GOOGLE_CALLBACK_URI=${{ secrets.GOOGLE_CALLBACK_URI }} \
            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           sudo docker images
           sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}:latest
