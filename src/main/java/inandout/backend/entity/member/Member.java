@@ -83,14 +83,12 @@ public class Member {
     @ColumnDefault("1")
     private int memberImageId;
 
-    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId, MemberStatus memberStatus) {
+    public static Member  createSocialMember(String name, String email, Platform platform, MemberStatus memberStatus) {
         Member member = new Member();
 
         member.name = name;
         member.email = email;
-        member.password = password;
         member.platform = platform;
-        member.platformId = platformId;
         member.status = memberStatus;
 
         return member;
