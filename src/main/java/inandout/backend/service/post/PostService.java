@@ -153,7 +153,9 @@ public class PostService {
     }
   
       public LinkResponseDTO getLink(MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
-        String linkToken = jwtUtil.generateLinkToken(myRoomLinkRequestDTO.getRoomId());
+          System.out.println("getLink");
+        String linkToken = jwtUtil.generateLinkToken(myRoomLinkRequestDTO.getMemberId());
+          System.out.println("linkToken: "+linkToken);
 //        return new LinkResponseDTO(linkRequestUri + linkToken);
         return new LinkResponseDTO(linkToken);
       }

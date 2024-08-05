@@ -62,6 +62,7 @@ public class MyRoomController {
 
     @GetMapping("/myroom/post/{postId}")
     public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @MemberId Integer memberId) {
+        System.out.println("MyRoomController/getPostController");
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
         //조회수 up
@@ -72,6 +73,7 @@ public class MyRoomController {
 
     @GetMapping("/myroom/link")
     public BaseResponse<LinkResponseDTO> generateLinkController(@RequestBody MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
+        System.out.println("generateLinkController");
         LinkResponseDTO linkResponseDTO = postService.getLink(myRoomLinkRequestDTO);
 
         return new BaseResponse<>(linkResponseDTO);
