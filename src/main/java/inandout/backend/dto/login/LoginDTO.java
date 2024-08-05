@@ -11,6 +11,7 @@ public class LoginDTO {
 
     private String name;
     private String email;
+    private String password;
     private Platform platform;
 //    private LocalDateTime createdAt;
 //    private LocalDateTime updatedAt;

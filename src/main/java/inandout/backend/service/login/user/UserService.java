@@ -19,7 +19,7 @@ public class UserService{
     @Transactional
     public void save(LoginDTO loginDTO) {
         // 기본은 status='ACTIVE', isPublic=true
-        Member member = Member.createSocialMember(loginDTO.getName(), loginDTO.getEmail(), loginDTO.getPlatform(), loginDTO.getStatus());
+        Member member = Member.createSocialMember(loginDTO.getName(), loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getPlatform(), loginDTO.getStatus());
         memberRepository.save(member);
     }
 
