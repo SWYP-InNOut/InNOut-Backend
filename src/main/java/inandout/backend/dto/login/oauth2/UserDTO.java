@@ -6,9 +6,11 @@ import lombok.Getter;
 public class UserDTO {
     private Integer memberId;
     private String email;
+    private Boolean isActive;
 
-    public UserDTO(Integer memberId, String email) {
+    public UserDTO(Integer memberId, String email, Boolean isActive) {
         this.memberId = memberId;
         this.email = email;
+        this.isActive = isActive;
     }
 }

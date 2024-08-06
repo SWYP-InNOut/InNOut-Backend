@@ -1,6 +1,7 @@
 package inandout.backend.jwt;
 
 import inandout.backend.dto.login.oauth2.CustomOauth2User;
+import inandout.backend.repository.login.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,13 +20,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Value("${google.callback-uri}")
     private String callbackUri;
+    // https://stuffinout.site/oauth-callback?token=&memberId=
+
+    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // OAuth2User
         CustomOauth2User customUserDetails = (CustomOauth2User) authentication.getPrincipal();
         TokenInfo token = jwtUtil.generateToken(customUserDetails.getMemberId());
-
-        response.sendRedirect(callbackUri + token.getAccessToken());
+        response.sendRedirect(callbackUri + token.getAccessToken() + "&memberId=" + customUserDetails.getMemberId() + "&isActive=" + customUserDetails.getIsActive());
     }
 }
