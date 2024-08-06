@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class MyRoomLinkRequestDTO {
-    private int roomId;
+    private int memberId;
 }

@@ -1,18 +1,20 @@
 package inandout.backend.jwt;
 
-import inandout.backend.dto.login.CustomMemberDetails;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.UUID;
 
 @Component
 public class JWTUtil {
+    String key = UUID.randomUUID().toString();
     private SecretKey secretKey;
     private final Long ACCESSTOKEN_VALIDTIME = (60 * 1000L) * 30; // 30분
     private final Long REFRESHTOKEN_VALIDTIME = (60 * 1000L) * 60 * 24 * 7; // 7일
@@ -36,6 +38,7 @@ public class JWTUtil {
 
     public Integer getMemberId(String token) {
         Integer memberId;
+
         memberId = Integer.valueOf(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject());
 //        if (memberId == null) {
 //            email = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
@@ -82,13 +85,45 @@ public class JWTUtil {
     }
 
     public String generateLinkToken(int roomId) {
-        Claims claims = Jwts.claims().subject(String.valueOf(roomId)).build();
-        claims.put("ROLD_ANONYMOUS", true);
+
+        // jjwt 0.12.3 에서는 claims 따로 생성 X
+
+        //Claims claims  = Jwts.claims().subject(String.valueOf(roomId)).build();
+        //claims.put("ROLE_ANONYMOUS", true);
+
         return Jwts.builder()
-                .claims(claims)
+                .claim("roomId", roomId)
+                .claim("ROLE_ANONYMOUS", true)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + LINKTOKEN_VALIDTIME))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public boolean isAnonymous(String token) {
+        System.out.println(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
+        String role = String.valueOf(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("ROLE_ANONYMOUS"));
+
+        if (role.equals("true")) {
+            return true; // 익명사용자임
+        }
+        return false; // 익명아님(로그인X or 회원)
+
+    }
+
+    public AnonymousAuthenticationToken generateAnonymousToken() {
+        AnonymousAuthenticationToken anonymousAuthenticationToken = new AnonymousAuthenticationToken(key, "anonymousUser", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+
+        return anonymousAuthenticationToken;
+    }
+
+    public Integer getRoomId(String token) {
+        try {
+            Integer roomId = (Integer) Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roomId");
+            return roomId;
+        } catch (ExpiredJwtException e) {
+            return -1;
+        }
+
     }
 }

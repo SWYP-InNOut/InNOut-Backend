@@ -19,14 +19,17 @@ public class UserService{
     @Transactional
     public void save(LoginDTO loginDTO) {
         // 기본은 status='ACTIVE', isPublic=true
-        Member member = Member.createSocialMember(loginDTO.getName(), loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getPlatform(), loginDTO.getStatus());
+        Member member = Member.createSocialMember(loginDTO.getName(), loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getPlatform(),"1", loginDTO.getStatus(), loginDTO.getMemberImageId());
         memberRepository.save(member);
     }
 
     public Optional<Member> findKakaoUser(String email) {
-        Optional<Member> member = memberRepository.findKakaoMemberByEmail(email);
+        Optional<Member> member = memberRepository.findActiveKakaoMemberByEmail(email);
 
         return member;
     }
+
+
+
 
 }

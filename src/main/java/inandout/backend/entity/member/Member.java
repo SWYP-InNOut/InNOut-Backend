@@ -83,14 +83,18 @@ public class Member {
     @ColumnDefault("1")
     private int memberImageId;
 
-    public static Member  createSocialMember(String name, String email, String password, Platform platform, MemberStatus memberStatus) {
+
+
+    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId, MemberStatus memberStatus, Integer memberImageId) {
         Member member = new Member();
 
         member.name = name;
         member.email = email;
         member.password = password;
         member.platform = platform;
+        member.platformId = platformId;
         member.status = memberStatus;
+        member.memberImageId = memberImageId;
 
         return member;
     }
@@ -106,6 +110,16 @@ public class Member {
 
         return member;
     }
+
+    public static Member createAnonymousMember(Integer id) {
+        Member member = new Member();
+
+        member.id = id;
+
+        return member;
+    }
+
+
 
     public void updateToken(String token) {
         this.authToken = token;

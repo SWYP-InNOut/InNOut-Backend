@@ -3,8 +3,11 @@ package inandout.backend.controller.myroom;
 import inandout.backend.argumentresolver.MemberId;
 import inandout.backend.chat.ChatRoomService;
 import inandout.backend.chat.stomp.StompChatRoomRepository;
+import inandout.backend.common.exception.BaseException;
+import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.*;
+import inandout.backend.jwt.JWTUtil;
 import inandout.backend.service.myroom.MyRoomService;
 import inandout.backend.service.myroom.S3Service;
 import inandout.backend.service.post.PostService;
@@ -32,7 +35,7 @@ public class MyRoomController {
     public PostService postService;
     @Autowired
     public ChatRoomService chatRoomService;
-
+    public final JWTUtil jwtUtil;
     @PostMapping("/myroom")
     public BaseResponse<MyRoomResponseDTO> myRoomController(@RequestBody MyRoomRequestDTO myRoomRequestDTO) {
 
@@ -59,9 +62,24 @@ public class MyRoomController {
         return new BaseResponse<>(myRoomAddStuffResponseDTO);
     }
 
+    @GetMapping("/myroom/post")
+    public BaseResponse<PostResponseDTO> getPostAnonymousController(@RequestParam(value = "postId") Integer postId) {
+        System.out.println("postId; "+postId);
+        System.out.println("MyRoomController/getPostAnonymousController");
+        Integer memberId = -1;
+
+        PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
+
+        //조회수 up
+        postService.plusUserCount(postId);
+
+        return new BaseResponse<>(postResponseDTO);
+
+    }
 
     @GetMapping("/myroom/post/{postId}")
     public BaseResponse<PostResponseDTO> getPostController(@PathVariable(value = "postId") Integer postId, @MemberId Integer memberId) {
+        System.out.println("MyRoomController/getPostController");
         PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
 
         //조회수 up
@@ -71,10 +89,25 @@ public class MyRoomController {
     }
 
     @GetMapping("/myroom/link")
-    public BaseResponse<LinkResponseDTO> generateLinkController(@RequestBody MyRoomLinkRequestDTO myRoomLinkRequestDTO) {
-        LinkResponseDTO linkResponseDTO = postService.getLink(myRoomLinkRequestDTO);
+    public BaseResponse<LinkResponseDTO> generateLinkController(@RequestParam(value = "ownerId") Integer ownerId) {
+        System.out.println("generateLinkController");
+        LinkResponseDTO linkResponseDTO = postService.getLink(ownerId);
 
         return new BaseResponse<>(linkResponseDTO);
+    }
+
+    @GetMapping("/link")
+    public BaseResponse<MyRoomAddStuffResponseDTO> getMemberIdFromAnonymousTokenContoller(@RequestParam(value = "token") String token) {
+        System.out.println("getMemberIdFromAnonymousToken");
+
+
+        Integer roomId = jwtUtil.getRoomId(token);
+        if (roomId < 0) {
+            BaseErrorResponse errorResponse = new BaseErrorResponse(new BaseErrorResponse(4000, 400, "만료된 익명사용자입니다."));
+            throw new BaseException(errorResponse);
+        }
+        MyRoomAddStuffResponseDTO linkRoomIdResponseDTO = new MyRoomAddStuffResponseDTO(roomId);
+        return new BaseResponse<>(linkRoomIdResponseDTO);
     }
 
 
