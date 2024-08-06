@@ -48,9 +48,9 @@ public class JWTFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/oauth2/authorization/google")
                 || request.getRequestURI().equals("/login/oauth2/code/google")
 //                || request.getRequestURI().equals("/user/modify")
-
-
                 || request.getRequestURI().equals("/link")
+                || request.getRequestURI().equals("/kakaologin/nickname")
+                || request.getRequestURI().equals("/kakaologin/local")
 
         ) {
             filterChain.doFilter(request, response);

@@ -83,7 +83,11 @@ public class Member {
     @ColumnDefault("1")
     private int memberImageId;
 
+<<<<<<< HEAD
     public static Member  createSocialMember(String name, String email, String password, Platform platform, MemberStatus memberStatus) {
+=======
+    public static Member  createSocialMember(String name, String email, String password, Platform platform, String platformId, MemberStatus memberStatus, Integer memberImageId) {
+>>>>>>> 7769045 (Feat(#109): 카카오로그인 후처리)
         Member member = new Member();
 
         member.name = name;
@@ -91,6 +95,7 @@ public class Member {
         member.password = password;
         member.platform = platform;
         member.status = memberStatus;
+        member.memberImageId = memberImageId;
 
         return member;
     }

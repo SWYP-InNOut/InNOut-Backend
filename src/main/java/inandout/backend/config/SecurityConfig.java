@@ -71,8 +71,7 @@ public class SecurityConfig {
                         // 모든 권한 허용
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
                                 "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
-
-                                "/ws/chat", "/chat", "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom/link", "/myroom/post","/link").permitAll()
+                                "/ws/chat", "/chat", "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom/link", "/myroom/post","/link", "/kakaologin/local", "/kakaologin/nickname").permitAll()
 
                         .requestMatchers( "/myroom").anonymous()
 

@@ -17,5 +17,6 @@ public class LoginDTO {
 //    private LocalDateTime updatedAt;
     private MemberStatus status;
 //    private boolean isPublic;
+    private int memberImageId;
 
 }

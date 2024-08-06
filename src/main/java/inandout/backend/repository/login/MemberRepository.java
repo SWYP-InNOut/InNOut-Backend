@@ -117,6 +117,15 @@ public class MemberRepository {
                 .getResultList();
 
         return members.stream().findAny();
+    }
+
+    public Optional<Member> findActiveKakaoMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform and m.status='ACTIVE'", Member.class)
+                .setParameter("email", email)
+                .setParameter("platform", Platform.KAKAO)
+                .getResultList();
+
+        return members.stream().findAny();
 
     }
 
