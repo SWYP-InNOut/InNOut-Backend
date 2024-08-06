@@ -121,6 +121,16 @@ public class MemberRepository {
 
     }
 
+    public Optional<Member> findGoogleMemberByEmail(String email) {
+        List<Member> members = em.createQuery("select m from Member m where m.email=:email and m.platform=:platform", Member.class)
+                .setParameter("email", email)
+                .setParameter("platform", Platform.GOOGLE)
+                .getResultList();
+
+        return members.stream().findAny();
+
+    }
+
 
     public boolean isDuplicateNickname(String nickname, Integer memberId) {
         System.out.println("isDuplicateNickname");
