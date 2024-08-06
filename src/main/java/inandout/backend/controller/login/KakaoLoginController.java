@@ -97,7 +97,7 @@ public class KakaoLoginController {
             // 프로필 이미지 랜덤 생성
             memberImageId = (int) ((Math.random()*6)+1);
             // 닉네임 랜덤으로 부여
-            LoginDTO loginDTO = new LoginDTO("홍길동", email, "", Platform.KAKAO, "1", MemberStatus.INACTIVE,memberImageId);
+            LoginDTO loginDTO = new LoginDTO("홍길동", email, "", Platform.KAKAO,"1", MemberStatus.INACTIVE,memberImageId);
 
 
             System.out.println("카카오 회원가입!");

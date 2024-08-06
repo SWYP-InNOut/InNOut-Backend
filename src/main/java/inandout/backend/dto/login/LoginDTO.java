@@ -13,10 +13,11 @@ public class LoginDTO {
     private String email;
     private String password;
     private Platform platform;
-//    private LocalDateTime createdAt;
+    private String platformId;
+    //    private LocalDateTime createdAt;
 //    private LocalDateTime updatedAt;
     private MemberStatus status;
-//    private boolean isPublic;
+    //    private boolean isPublic;
     private int memberImageId;
 
 }
