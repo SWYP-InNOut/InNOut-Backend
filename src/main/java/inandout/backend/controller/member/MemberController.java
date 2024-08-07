@@ -27,7 +27,7 @@ public class MemberController {
     public BaseResponse<String> setNickname(@MemberId Integer memberId, @RequestBody NicknameDTO nickname) {
         System.out.println("들어옴");
         System.out.println("email:::: "+memberId);
-        memberService.updateNickname(memberId, nickname.getNickname());
+        memberService.setNickname(memberId, nickname.getNickname());
         return new BaseResponse<>("닉네임 설정이 완료되었습니다.");
     }
 
