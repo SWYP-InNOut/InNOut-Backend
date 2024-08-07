@@ -71,7 +71,7 @@ public class SecurityConfig {
                         // 모든 권한 허용
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password",
                                 "/auth/verify",  "/kakaologin/callback", "/kakaologin", "/kakaologin/local",
-                                "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom", "/myroom/post/{postId}", "/myroom/post").permitAll()
+                                "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom",  "/myroom/post").permitAll()
 
 //                        .requestMatchers( "/myroom", "/myroom/post/{postId}").anonymous()
 
@@ -81,7 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/main", "/password", "/check-password", "/nickname", "/logout",
                                 "/others", "/others/room", "/others/room/detail/{postId}/chat", "/others/post/{postId}",
                                 "/myroom/chat","/myroom/post/{postId}/chat", "/myroom/addstuff", "/myroom/updatestuff",
-                                "/myroom/link", "/link",
+                                "/myroom/link", "/link", "/myroom/post/{postId}",
                                 "/ispublic", "/inout", "/user/modify",
                                 "/ws/chat", "/chat").authenticated());
 
