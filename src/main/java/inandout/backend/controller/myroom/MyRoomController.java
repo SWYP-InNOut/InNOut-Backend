@@ -7,6 +7,7 @@ import inandout.backend.common.exception.BaseException;
 import inandout.backend.common.response.BaseErrorResponse;
 import inandout.backend.common.response.BaseResponse;
 import inandout.backend.dto.myroom.*;
+import inandout.backend.dto.post.PostIdRequest;
 import inandout.backend.jwt.JWTUtil;
 import inandout.backend.service.myroom.MyRoomService;
 import inandout.backend.service.myroom.S3Service;
@@ -63,15 +64,15 @@ public class MyRoomController {
     }
 
     @GetMapping("/myroom/post")
-    public BaseResponse<PostResponseDTO> getPostAnonymousController(@RequestParam(value = "postId") Integer postId) {
-        System.out.println("postId; "+postId);
+    public BaseResponse<PostResponseDTO> getPostAnonymousController(@RequestBody PostIdRequest postIdRequest) {
+        System.out.println("postId; "+postIdRequest.getPostId());
         System.out.println("MyRoomController/getPostAnonymousController");
         Integer memberId = -1;
 
-        PostResponseDTO postResponseDTO = postService.getPost(memberId, postId);
+        PostResponseDTO postResponseDTO = postService.getPost(memberId, postIdRequest.getPostId());
 
         //조회수 up
-        postService.plusUserCount(postId);
+        postService.plusUserCount(postIdRequest.getPostId());
 
         return new BaseResponse<>(postResponseDTO);
 
