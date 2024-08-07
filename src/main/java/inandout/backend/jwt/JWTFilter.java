@@ -47,7 +47,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/ws/chat")
                 || request.getRequestURI().equals("/oauth2/authorization/google")
                 || request.getRequestURI().equals("/login/oauth2/code/google")
-//                || request.getRequestURI().equals("/user/modify")
                 || request.getRequestURI().equals("/link")
                 || request.getRequestURI().equals("/kakaologin/nickname")
                 || request.getRequestURI().equals("/kakaologin/local")
@@ -60,13 +59,13 @@ public class JWTFilter extends OncePerRequestFilter {
         //request에서 Authorization 헤더를 찾음
         String authorization = request.getHeader("Authorization");
 
-        if (request.getRequestURI().equals("/myroom") || request.getRequestURI().equals("/others/room")
-                || request.getRequestURI().equals("/inout")) {
-            if (authorization == null) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
+//        if (request.getRequestURI().equals("/myroom") || request.getRequestURI().equals("/others/room")
+//                || request.getRequestURI().equals("/inout") || request.getRequestURI().equals("/myroom/post/{postId}")) {
+//            if (authorization == null) {
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
+//        }
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
