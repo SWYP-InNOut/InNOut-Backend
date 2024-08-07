@@ -71,9 +71,9 @@ public class SecurityConfig {
                         // 모든 권한 허용
                         .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password",
                                 "/auth/verify",  "/kakaologin/callback", "/kakaologin", "/kakaologin/local",
-                                "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
+                                "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom", "/myroom/post/{postId}").permitAll()
 
-                        .requestMatchers( "/myroom", "/myroom/post/{postId}").anonymous()
+//                        .requestMatchers( "/myroom", "/myroom/post/{postId}").anonymous()
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
@@ -81,7 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/main", "/password", "/check-password", "/nickname", "/logout",
                                 "/others", "/others/room", "/others/room/detail/{postId}/chat", "/others/post/{postId}",
                                 "/myroom/chat","/myroom/post/{postId}/chat", "/myroom/addstuff", "/myroom/updatestuff",
-                                "/myroom", "/myroom/post", "/myroom/post/{postId}", "/myroom/link", "/link",
+                                "/myroom/post", "/myroom/link", "/link",
                                 "/ispublic", "/inout", "/user/modify",
                                 "/ws/chat", "/chat").authenticated());
 
