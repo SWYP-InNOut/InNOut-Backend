@@ -64,15 +64,15 @@ public class MyRoomController {
     }
 
     @GetMapping("/myroom/post")
-    public BaseResponse<PostResponseDTO> getPostAnonymousController(@RequestBody PostIdRequest postIdRequest) {
-        System.out.println("postId; "+postIdRequest.getPostId());
+    public BaseResponse<PostResponseDTO> getPostAnonymousController(@RequestParam(value = "postId") String postId) {
+        System.out.println("postId; "+Integer.parseInt(postId));
         System.out.println("MyRoomController/getPostAnonymousController");
         Integer memberId = -1;
 
-        PostResponseDTO postResponseDTO = postService.getPost(memberId, postIdRequest.getPostId());
+        PostResponseDTO postResponseDTO = postService.getPost(memberId, Integer.parseInt(postId));
 
         //조회수 up
-        postService.plusUserCount(postIdRequest.getPostId());
+        postService.plusUserCount(Integer.parseInt(postId));
 
         return new BaseResponse<>(postResponseDTO);
 
