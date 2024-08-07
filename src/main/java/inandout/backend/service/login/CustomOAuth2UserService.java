@@ -45,10 +45,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             memberRepository.save(newMember);
             Optional<Member> savedMember = memberRepository.findGoogleMemberByEmail(oAuth2Response.getEmail());
 
-            UserDTO userDTO = new UserDTO(savedMember.get().getId(), oAuth2Response.getEmail(), false);
+            UserDTO userDTO = new UserDTO(savedMember.get().getId(), oAuth2Response.getEmail(), false, savedMember.get().getMemberImageId());
             return new CustomOauth2User(userDTO);
         } else {
-            UserDTO userDTO = new UserDTO(member.get().getId(), oAuth2Response.getEmail(), true);
+            UserDTO userDTO = new UserDTO(member.get().getId(), oAuth2Response.getEmail(), true, member.get().getMemberImageId());
             return new CustomOauth2User(userDTO);
         }
     }

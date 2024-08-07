@@ -36,4 +36,9 @@ public class CustomOauth2User implements OAuth2User {
 
         return userDTO.getIsActive();
     }
+
+    public Integer getImageId() {
+
+        return userDTO.getImageId();
+    }
 }

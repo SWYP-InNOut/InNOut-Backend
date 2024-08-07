@@ -29,6 +29,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // OAuth2User
         CustomOauth2User customUserDetails = (CustomOauth2User) authentication.getPrincipal();
         TokenInfo token = jwtUtil.generateToken(customUserDetails.getMemberId());
-        response.sendRedirect(callbackUri + token.getAccessToken() + "&memberId=" + customUserDetails.getMemberId() + "&isActive=" + customUserDetails.getIsActive());
+        response.sendRedirect(callbackUri + token.getAccessToken() +
+                "&memberId=" + customUserDetails.getMemberId() +
+                "&isActive=" + customUserDetails.getIsActive() +
+                "&imageId=" + customUserDetails.getImageId());
     }
 }
