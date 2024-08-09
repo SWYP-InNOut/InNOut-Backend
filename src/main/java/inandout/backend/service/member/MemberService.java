@@ -21,19 +21,15 @@ public class MemberService {
     private final MemberValidator memberValidator;
     private final PasswordEncoder passwordEncoder;
 
-    public void updateNickname(Integer memberId, String nickname) {
+    public void setNickname(Integer memberId, String nickname) {
         memberValidator.validateDuplicateUsername(nickname);
-        System.out.println("memberId: "+memberId);
+        memberValidator.validateMember(memberId);
         Optional<Member> member = memberRepository.findById(memberId);
-        System.out.println(member.get().getId());
 
-        member.ifPresent(value -> value.updateNickname(nickname));
         if (member.isPresent()) {
-            System.out.println("member존재함!");
+            member.get().updateNickname(nickname);
             member.get().updateStatus(MemberStatus.ACTIVE);
-            System.out.println(member.get().getStatus());
         }
-
     }
 
     public void validatePassword(Integer memberId, String password) {

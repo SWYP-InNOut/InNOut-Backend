@@ -69,19 +69,21 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         // TODO: 공유 URL만 경로 모든 권한 허용해주기
                         // 모든 권한 허용
-                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password", "/logout",
-                                "/auth/verify",  "/kakaologin/callback", "/inout", "/myroom", "/others/room", "/kakaologin", "/others", "/user/modify",
-                                "/ws/chat", "/chat", "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom/link", "/myroom/post","/link", "/kakaologin/local", "/kakaologin/nickname").permitAll()
+                        .requestMatchers("/login", "/", "/join", "/healthcheck", "/regenerate-token", "/find-password",
+                                "/auth/verify",  "/kakaologin/callback", "/kakaologin", "/kakaologin/local",
+                                "/oauth2/authorization/google", "/login/oauth2/code/google", "/myroom",  "/myroom/post").permitAll()
 
-                        .requestMatchers( "/myroom").anonymous()
+//                        .requestMatchers( "/myroom", "/myroom/post/{postId}").anonymous()
 
                         // "ADMIN"이라는 권한을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
                         // 로그인 한 사용자만 접근 가능, 즉 Header에 Authorization이 있는 경로만 허용
-                        .requestMatchers("/main", "/ispublic", "/password", "/check-password", "/nickname",
-                                "/myroom/chat","/myroom/post/{postId}/chat",
-                                "/others/room/detail/{postId}/chat",  "/myroom/addstuff",
-                                "/myroom/post/{postId}","/others","/others/post/{postId}","/myroom/updatestuff", "/myroom/link", "/myroom/post","/myroom/post/{postId}" ).authenticated());
+                        .requestMatchers("/main", "/password", "/check-password", "/nickname", "/logout",
+                                "/others", "/others/room", "/others/room/detail/{postId}/chat", "/others/post/{postId}",
+                                "/myroom/chat","/myroom/post/{postId}/chat", "/myroom/addstuff", "/myroom/updatestuff",
+                                "/myroom/link", "/link", "/myroom/post/{postId}",
+                                "/ispublic", "/inout", "/user/modify",
+                                "/ws/chat", "/chat").authenticated());
 
 
         //LoginFilter 이전에 JWTFilter 등록
@@ -89,8 +91,6 @@ public class SecurityConfig {
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http.addFilterAt(new LoginFilter(memberRepository, authenticationManager(authenticationConfiguration), jwtUtil, redisService), UsernamePasswordAuthenticationFilter.class);
-
-
 
         //세션 설정
         http.sessionManagement((session) -> session

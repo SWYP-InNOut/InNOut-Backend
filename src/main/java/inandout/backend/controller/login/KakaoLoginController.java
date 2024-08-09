@@ -133,22 +133,22 @@ public class KakaoLoginController {
 
     }
 
-    @PostMapping("/nickname")
-    public BaseResponse KakaoLoginNickname(@RequestBody KakaoNicknameRequestDTO kakaoNicknameRequestDTO) {
-        System.out.println("KakaoLoginController/KakaoLoginNickname");
-        Integer memberId = kakaoNicknameRequestDTO.getMemberId();
-        String nickname = kakaoNicknameRequestDTO.getNickname();
-
-        //닉네임 중복 확인
-        if (memberService.isDuplicateNickname(nickname, memberId)) {
-            // 중복
-            BaseException baseException = new BaseException(DUPLICATED_NICKNAME);
-            throw new MemberException(DUPLICATED_NICKNAME);
-        }
-
-        // 닉네임 변환 & ACTIVE로 변환
-        memberService.updateNickname(memberId, nickname);
-
-        return new BaseResponse("success");
-    }
+//    @PostMapping("/nickname")
+//    public BaseResponse KakaoLoginNickname(@RequestBody KakaoNicknameRequestDTO kakaoNicknameRequestDTO) {
+//        System.out.println("KakaoLoginController/KakaoLoginNickname");
+//        Integer memberId = kakaoNicknameRequestDTO.getMemberId();
+//        String nickname = kakaoNicknameRequestDTO.getNickname();
+//
+//        //닉네임 중복 확인
+//        if (memberService.isDuplicateNickname(nickname, memberId)) {
+//            // 중복
+//            BaseException baseException = new BaseException(DUPLICATED_NICKNAME);
+//            throw new MemberException(DUPLICATED_NICKNAME);
+//        }
+//
+//        // 닉네임 변환 & ACTIVE로 변환
+//        memberService.setNickname(memberId, nickname);
+//
+//        return new BaseResponse("success");
+//    }
 }

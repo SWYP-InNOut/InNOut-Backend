@@ -18,7 +18,7 @@ public class JWTUtil {
     private SecretKey secretKey;
     private final Long ACCESSTOKEN_VALIDTIME = (60 * 1000L) * 30; // 30분
     private final Long REFRESHTOKEN_VALIDTIME = (60 * 1000L) * 60 * 24 * 7; // 7일
-    private final Long LINKTOKEN_VALIDTIME = (60 * 1000L) * 15; // 15분
+    private final Long LINKTOKEN_VALIDTIME = (60 * 1000L) * 60 * 24 * 3; // 72시간
 
     public JWTUtil(@Value("${jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());

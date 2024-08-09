@@ -41,14 +41,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
         Optional<Member> member = memberRepository.findGoogleMemberByEmail(oAuth2Response.getEmail());
         if (member.isEmpty()) {
-            Member newMember = Member.createSocialMember("google", oAuth2Response.getEmail(), "", Platform.GOOGLE,"2", MemberStatus.ACTIVE, (int) ((Math.random()*6)+1));
+            Member newMember = Member.createSocialMember("google", oAuth2Response.getEmail(), "", Platform.GOOGLE,"2", MemberStatus.INACTIVE, (int) ((Math.random()*6)+1));
             memberRepository.save(newMember);
             Optional<Member> savedMember = memberRepository.findGoogleMemberByEmail(oAuth2Response.getEmail());
 
-            UserDTO userDTO = new UserDTO(savedMember.get().getId(), oAuth2Response.getEmail());
+            UserDTO userDTO = new UserDTO(savedMember.get().getId(), oAuth2Response.getEmail(), false, savedMember.get().getMemberImageId());
             return new CustomOauth2User(userDTO);
         } else {
-            UserDTO userDTO = new UserDTO(member.get().getId(), oAuth2Response.getEmail());
+            UserDTO userDTO = new UserDTO(member.get().getId(), oAuth2Response.getEmail(), true, member.get().getMemberImageId());
             return new CustomOauth2User(userDTO);
         }
     }
