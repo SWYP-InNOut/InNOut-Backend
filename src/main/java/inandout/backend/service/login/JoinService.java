@@ -56,6 +56,7 @@ public class JoinService {
 
         memberRepository.save(member);
 
+        log.info("이메일 인증");
         emailUtils.sendEmail(member);
 
         return memberImageId;
