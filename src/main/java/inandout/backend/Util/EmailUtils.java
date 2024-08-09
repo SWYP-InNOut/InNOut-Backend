@@ -30,6 +30,8 @@ public class EmailUtils {
         String receiverMail = member.getEmail();
         MimeMessage message = mailSender.createMimeMessage();
 
+        log.info("이메일 인증");
+
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
             message.setSubject("In&Out 회원가입 이메일 인증");// 제목
@@ -103,6 +105,7 @@ public class EmailUtils {
     public void sendPasswordEmail(String email, String newPwd) {
         String receiverMail = email;
         MimeMessage message = mailSender.createMimeMessage();
+        log.info("비밀번호 찾기");
 
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
