@@ -80,7 +80,7 @@ jobs:
       - name: Docker Hub build & push
         run: |
           sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
-          sudo docker build --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
+          sudo docker build --no-cache --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
           --build-arg DATASOURCE_URL_LOCAL=${{ secrets.DATASOURCE_URL_LOCAL }} \
           --build-arg DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }} \
           --build-arg DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }} \
