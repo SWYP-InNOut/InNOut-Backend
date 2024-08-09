@@ -42,11 +42,14 @@ public class EmailUtils {
 
             String body = "<body>" +
                     "    <div style=\"width: 592px\">" +
-                    "      <img" +
-                    "        src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/logo.svg\"" +
-                    "      />\n" +
+                    "            <div style=\"display: flex; width: 170px\">\n" +
+                    "        <img\n" +
+                    "          src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/inandoutlogo.png\"\n" +
+                    "          style=\"width: 100%; height: auto\"\n" +
+                    "        />\n" +
+                    "      </div>\n" +
                     "      <div style=\"margin: 0 20px\">" +
-                    "        <div style=\"font-size: 40px; font-weight: 700; margin-top: 32px\">" +
+                    "        <div style=\"font-size: 40px; font-weight: 700; margin-top: 32px; color:#000;\">" +
                     "          회원가입을 위한<br />" +
                     "          가장 마지막 절차예요!" +
                     "        </div>" +
@@ -115,11 +118,14 @@ public class EmailUtils {
             log.info("비밀번호 찾기");
 
             String body = "<div style=\"width: 592px\">\n" +
-                    "      <img\n" +
-                    "        src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/logo.svg\"\n" +
-                    "      />\n" +
+                    "            <div style=\"display: flex; width: 170px\">\n" +
+                    "        <img\n" +
+                    "          src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/inandoutlogo.png\"\n" +
+                    "          style=\"width: 100%; height: auto\"\n" +
+                    "        />\n" +
+                    "      </div>\n" +
                     "      <div style=\"margin: 0 20px\">\n" +
-                    "        <div style=\"font-size: 40px; font-weight: 700; margin-top: 32px\">\n" +
+                    "        <div style=\"font-size: 40px; font-weight: 700; margin-top: 32px; color:#000;\">\n" +
                     "          요청하신\n" +
                     "          <br />\n" +
                     "          임시 비밀번호가 발급됐어요\n" +
