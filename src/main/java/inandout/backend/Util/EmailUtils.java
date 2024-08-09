@@ -64,22 +64,22 @@ public class EmailUtils {
                     "<a" +
                     "          href=\"" + requestUri + member.getAuthToken() + "\"" +
                     "          style=\"" +
-                    "            margin-top: 80px;" +
-                    "            background-color: black;" +
-                    "            color: white;" +
-                    "            border: none;" +
-                    "            border-radius: 99px;" +
-                    "            width: 100%;" +
-                    "            height: 80px;" +
-                    "            font-size: 22px;" +
-                    "            font-weight: 500;" +
-                    "            cursor: pointer;" +
-                    "            text-decoration: none;" +
-                    "            display: flex;" +
-                    "            text-align: center;" +
-                    "            justify-content: center;" +
-                    "            align-items: center;" +
-                    "          \"" +
+                    "            margin-top: 80px;\n" +
+                    "            background-color: black;\n" +
+                    "            color: white;\n" +
+                    "            border: none;\n" +
+                    "            border-radius: 99px;\n" +
+                    "            width: 100%;\n" +
+                    "            height: 80px;\n" +
+                    "            font-size: 22px;\n" +
+                    "            font-weight: 500;\n" +
+                    "            cursor: pointer;\n" +
+                    "            text-decoration: none;\n" +
+                    "            display: flex;\n" +
+                    "            text-align: center;\n" +
+                    "            justify-content: center;\n" +
+                    "            align-items: center;\n" +
+                    "          \"\n" +
                     "        >" +
                     "          메일 인증하기" +
                     "        </a>" +
@@ -152,6 +152,9 @@ public class EmailUtils {
                     "            gap: 12px;\n" +
                     "            align-self: stretch;\n" +
                     "            margin-top: 80px;\n" +
+                    "            flex-direction: column;\n" +
+                    "            text-align: center;\n" +
+                    "            justify-content: center;" +
                     "          \"\n" +
                     "        >\n" +
                     "          <div style=\"font-size: 22px; color: #898989; font-weight: 500\">\n" +
@@ -173,24 +176,24 @@ public class EmailUtils {
                     "<a" +
                     "          href=\"http://stuffinout.site/login\"" +
                     "          style=\"" +
-                    "            margin-top: 80px;" +
-                    "            background-color: black;" +
-                    "            color: white;" +
-                    "            border: none;" +
-                    "            border-radius: 99px;" +
-                    "            width: 100%;" +
-                    "            height: 80px;" +
-                    "            font-size: 22px;" +
-                    "            font-weight: 500;" +
-                    "            cursor: pointer;" +
-                    "            text-decoration: none;" +
-                    "            display: flex;" +
-                    "            text-align: center;" +
-                    "            justify-content: center;" +
-                    "            align-items: center;" +
+                    "            margin-top: 80px;\n" +
+                    "            background-color: black;\n" +
+                    "            color: white;\n" +
+                    "            border: none;\n" +
+                    "            border-radius: 99px;\n" +
+                    "            width: 100%;\n" +
+                    "            height: 80px;\n" +
+                    "            font-size: 22px;\n" +
+                    "            font-weight: 500;\n" +
+                    "            cursor: pointer;\n" +
+                    "            text-decoration: none;\n" +
+                    "            display: flex;\n" +
+                    "            text-align: center;\n" +
+                    "            justify-content: center;\n" +
+                    "            align-items: center;\n" +
                     "          \"" +
                     "        >" +
-                    "          메일 인증하기" +
+                    "          로그인하러 가기" +
                     "        </a>" +
                     "        <div\n" +
                     "          style=\"\n" +
