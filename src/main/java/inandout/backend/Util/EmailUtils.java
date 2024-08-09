@@ -32,17 +32,10 @@ public class EmailUtils {
 
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
-            message.setSubject("in&out 회원가입 이메일 인증");// 제목
+            message.setSubject("In&Out 회원가입 이메일 인증");// 제목
 
             log.info(member.getAuthToken());
             log.info(email);
-
-//            String body = "<div>"
-//                    + "<h1> 안녕하세요. in&out 입니다</h1>"
-//                    + "<br>"
-//                    + "<p>아래 링크를 클릭하면 이메일 인증이 완료됩니다.<p>"
-//                    + "<a href='" + requestUri + member.getAuthToken() + "'>인증 링크</a>"
-//                    + "</div>";
 
             String body = "<body>" +
                     "    <div style=\"width: 592px\">" +
@@ -112,16 +105,9 @@ public class EmailUtils {
 
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, receiverMail);// 보내는 대상
-            message.setSubject("in&out 비밀번호 찾기");// 제목
+            message.setSubject("In&Out 비밀번호 찾기");// 제목
 
             log.info(email);
-
-//            String body = "<div>"
-//                    + "<h1> 안녕하세요. in&out 입니다</h1>"
-//                    + "<br>"
-//                    + "<p>아래의 임시 비밀번호로 회원가입 하세요.<p>"
-//                    + "<p>" + newPwd +"<p>"
-//                    + "</div>";
 
             String body = "<div style=\"width: 592px\">\n" +
                     "      <img\n" +
