@@ -36,6 +36,7 @@ public class EmailUtils {
 
             log.info(member.getAuthToken());
             log.info(email);
+            log.info("이메일 인증");
 
             String body = "<body>" +
                     "    <div style=\"width: 592px\">" +
