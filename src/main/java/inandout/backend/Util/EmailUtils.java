@@ -109,6 +109,7 @@ public class EmailUtils {
             message.setSubject("In&Out 비밀번호 찾기");// 제목
 
             log.info(email);
+            log.info("비밀번호 찾기");
 
             String body = "<div style=\"width: 592px\">\n" +
                     "      <img\n" +
