@@ -39,7 +39,7 @@ public class EmailUtils {
 
             String body = "<body>" +
                     "    <div style=\"width: 592px\">" +
-                    "            <div style=\"display: flex; width: 170px\">\n" +
+                    "      <div style=\"display: flex; width: 170px\">\n" +
                     "        <img\n" +
                     "          src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/inandoutlogo.png\"\n" +
                     "          style=\"width: 100%; height: auto\"\n" +
@@ -51,12 +51,7 @@ public class EmailUtils {
                     "          가장 마지막 절차예요!" +
                     "        </div>" +
                     "        <div" +
-                    "          style=\"" +
-                    "            color: #b4b4b4;" +
-                    "            font-size: 22px;" +
-                    "            font-weight: 500;" +
-                    "            margin-top: 16px;" +
-                    "          \"" +
+                    "          style=\"color: #b4b4b4; font-size: 22px; font-weight: 500; margin-top: 16px;\"" +
                     "        >" +
                     "          메일 확인과 개인정보보호를 위해 인증절차를 진행하고 있어요.<br />" +
                     "          인증 버튼을 눌러 회원가입을 완료해주세요." +
@@ -64,32 +59,27 @@ public class EmailUtils {
                     "<a" +
                     "          href=\"" + requestUri + member.getAuthToken() + "\"" +
                     "          style=\"" +
-                    "            margin-top: 80px;\n" +
-                    "            background-color: black;\n" +
-                    "            color: white;\n" +
-                    "            border: none;\n" +
-                    "            border-radius: 99px;\n" +
-                    "            width: 100%;\n" +
-                    "            height: 80px;\n" +
-                    "            font-size: 22px;\n" +
-                    "            font-weight: 500;\n" +
-                    "            cursor: pointer;\n" +
-                    "            text-decoration: none;\n" +
-                    "            display: flex;\n" +
-                    "            text-align: center;\n" +
-                    "            justify-content: center;\n" +
-                    "            align-items: center;\n" +
-                    "          \"\n" +
+                    "            margin-top: 80px; " +
+                    "            background-color: black; " +
+                    "            color: white; " +
+                    "            border: none; " +
+                    "            border-radius: 99px; " +
+                    "            width: 100%; " +
+                    "            height: 80px; " +
+                    "            font-size: 22px; " +
+                    "            font-weight: 500; " +
+                    "            cursor: pointer; " +
+                    "            text-decoration: none; " +
+                    "            display: flex; " +
+                    "            text-align: center; " +
+                    "            justify-content: center; " +
+                    "            align-items: center; " +
+                    "          \"" +
                     "        >" +
                     "          메일 인증하기" +
                     "        </a>" +
                     "        <div" +
-                    "          style=\"" +
-                    "            color: #b4b4b4;" +
-                    "            font-size: 22px;" +
-                    "            font-weight: 500;" +
-                    "            margin-top: 120px;" +
-                    "          \"" +
+                    "          style=\"color: #b4b4b4; font-size: 22px; font-weight: 500; margin-top: 120px;\"" +
                     "        >" +
                     "          * 본 메일은 발신전용으로 회신이 불가능합니다." +
                     "        </div>" +
@@ -131,32 +121,27 @@ public class EmailUtils {
                     "          임시 비밀번호가 발급됐어요\n" +
                     "        </div>\n" +
                     "        <div\n" +
-                    "          style=\"\n" +
-                    "            color: #b4b4b4;\n" +
-                    "            font-size: 22px;\n" +
-                    "            font-weight: 500;\n" +
-                    "            margin-top: 16px;\n" +
-                    "          \"\n" +
-                    "        >\n" +
+                    "          style=\"color: #b4b4b4; font-size: 22px; font-weight: 500; margin-top: 16px;\"" +
+                    "        >" +
                     "          개인정보보호를 위해 임시 비밀번호는 꼭 변경해주세요.\n" +
                     "        </div>\n" +
                     "\n" +
-                    "        <div\n" +
-                    "          style=\"\n" +
-                    "            background-color: #fce9e0;\n" +
-                    "            display: flex;\n" +
-                    "            padding: 24px 0px;\n" +
-                    "            flex-direction: column;\n" +
-                    "            justify-content: center;\n" +
-                    "            align-items: center;\n" +
-                    "            gap: 12px;\n" +
-                    "            align-self: stretch;\n" +
-                    "            margin-top: 80px;\n" +
-                    "            flex-direction: column;\n" +
-                    "            text-align: center;\n" +
+                    "        <div" +
+                    "          style=\"" +
+                    "            background-color: #fce9e0;" +
+                    "            display: flex;" +
+                    "            padding: 24px 0px;" +
+                    "            flex-direction: column;" +
                     "            justify-content: center;" +
-                    "          \"\n" +
-                    "        >\n" +
+                    "            align-items: center;" +
+                    "            gap: 12px;" +
+                    "            align-self: stretch;" +
+                    "            margin-top: 80px;" +
+                    "            flex-direction: column;" +
+                    "            text-align: center;" +
+                    "            justify-content: center;" +
+                    "          \"" +
+                    "        >" +
                     "          <div style=\"font-size: 22px; color: #898989; font-weight: 500\">\n" +
                     "            임시비밀번호\n" +
                     "          </div>\n" +
@@ -176,33 +161,28 @@ public class EmailUtils {
                     "<a" +
                     "          href=\"http://stuffinout.site/login\"" +
                     "          style=\"" +
-                    "            margin-top: 80px;\n" +
-                    "            background-color: black;\n" +
-                    "            color: white;\n" +
-                    "            border: none;\n" +
-                    "            border-radius: 99px;\n" +
-                    "            width: 100%;\n" +
-                    "            height: 80px;\n" +
-                    "            font-size: 22px;\n" +
-                    "            font-weight: 500;\n" +
-                    "            cursor: pointer;\n" +
-                    "            text-decoration: none;\n" +
-                    "            display: flex;\n" +
-                    "            text-align: center;\n" +
-                    "            justify-content: center;\n" +
-                    "            align-items: center;\n" +
+                    "            margin-top: 80px; " +
+                    "            background-color: black; " +
+                    "            color: white; " +
+                    "            border: none; " +
+                    "            border-radius: 99px; " +
+                    "            width: 100%; " +
+                    "            height: 80px; " +
+                    "            font-size: 22px; " +
+                    "            font-weight: 500; " +
+                    "            cursor: pointer; " +
+                    "            text-decoration: none; " +
+                    "            display: flex; " +
+                    "            text-align: center; " +
+                    "            justify-content: center; " +
+                    "            align-items: center; " +
                     "          \"" +
                     "        >" +
                     "          로그인하러 가기" +
                     "        </a>" +
-                    "        <div\n" +
-                    "          style=\"\n" +
-                    "            color: #b4b4b4;\n" +
-                    "            font-size: 22px;\n" +
-                    "            font-weight: 500;\n" +
-                    "            margin-top: 100px;\n" +
-                    "          \"\n" +
-                    "        >\n" +
+                    "        <div" +
+                    "          style=\"color: #b4b4b4; font-size: 22px; font-weight: 500; margin-top: 120px;\"" +
+                    "        >" +
                     "          * 본 메일은 발신전용으로 회신이 불가능합니다.\n" +
                     "        </div>\n" +
                     "      </div>\n" +
