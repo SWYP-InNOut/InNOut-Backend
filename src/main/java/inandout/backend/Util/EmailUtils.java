@@ -39,12 +39,12 @@ public class EmailUtils {
 
             String body = "<body>" +
                     "    <div style=\"width: 592px\">" +
-                    "      <div style=\"display: flex; width: 170px\">\n" +
-                    "        <img\n" +
-                    "          src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/inandoutlogo.png\"\n" +
-                    "          style=\"width: 100%; height: auto\"\n" +
-                    "        />\n" +
-                    "      </div>\n" +
+                    "      <div style=\"display: flex; width: 170px\">" +
+                    "        <img" +
+                    "          src=\"https://inandout-bucket.s3.ap-northeast-2.amazonaws.com/inandoutlogo.png\"" +
+                    "          style=\"width: 100%; height: auto\"" +
+                    "        />" +
+                    "      </div>" +
                     "      <div style=\"margin: 0 20px\">" +
                     "        <div style=\"font-size: 40px; font-weight: 700; margin-top: 32px; color:#000;\">" +
                     "          회원가입을 위한<br />" +
@@ -58,24 +58,8 @@ public class EmailUtils {
                     "        </div>" +
                     "<a" +
                     "          href=\"" + requestUri + member.getAuthToken() + "\"" +
-                    "          style=\"" +
-                    "            margin-top: 80px; " +
-                    "            background-color: black; " +
-                    "            color: white; " +
-                    "            border: none; " +
-                    "            border-radius: 99px; " +
-                    "            width: 100%; " +
-                    "            height: 80px; " +
-                    "            font-size: 22px; " +
-                    "            font-weight: 500; " +
-                    "            cursor: pointer; " +
-                    "            text-decoration: none; " +
-                    "            display: flex; " +
-                    "            text-align: center; " +
-                    "            justify-content: center; " +
-                    "            align-items: center; " +
-                    "          \"" +
-                    "        >" +
+                    "          style=\"margin-top: 80px; background-color: black; color: white; border: none; border-radius: 99px; width: 100%; height: 80px; font-size: 22px; font-weight: 500; cursor: pointer; text-decoration: none; display: flex; text-align: center; justify-content: center; align-items: center;\"" +
+                    ">" +
                     "          메일 인증하기" +
                     "        </a>" +
                     "        <div" +
@@ -160,24 +144,8 @@ public class EmailUtils {
                     "\n" +
                     "<a" +
                     "          href=\"http://stuffinout.site/login\"" +
-                    "          style=\"" +
-                    "            margin-top: 80px; " +
-                    "            background-color: black; " +
-                    "            color: white; " +
-                    "            border: none; " +
-                    "            border-radius: 99px; " +
-                    "            width: 100%; " +
-                    "            height: 80px; " +
-                    "            font-size: 22px; " +
-                    "            font-weight: 500; " +
-                    "            cursor: pointer; " +
-                    "            text-decoration: none; " +
-                    "            display: flex; " +
-                    "            text-align: center; " +
-                    "            justify-content: center; " +
-                    "            align-items: center; " +
-                    "          \"" +
-                    "        >" +
+                    "          style=\"margin-top: 80px; background-color: black; color: white; border: none; border-radius: 99px; width: 100%; height: 80px; font-size: 22px; font-weight: 500; cursor: pointer; text-decoration: none; text-align: center; display: flex; justify-content: center; align-items: center;\"" +
+                    ">" +
                     "          로그인하러 가기" +
                     "        </a>" +
                     "        <div" +
